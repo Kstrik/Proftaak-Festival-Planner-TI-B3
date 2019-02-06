@@ -1,11 +1,9 @@
-import view.ViewBuilder;
+import controller.AgendaController;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        ViewBuilder application = new ViewBuilder();
-
-        application.startup();
+        new AgendaController();
     }
 }
