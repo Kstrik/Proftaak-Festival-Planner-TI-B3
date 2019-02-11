@@ -15,6 +15,16 @@ public class LessonEntity {
         return (this.getEndTime() - this.getStartTime());
     }
 
+    public String getParsedStartTime() {
+
+        return ((int) this.getStartTime()) + ":" + ((int) ((this.getStartTime() % 1) * 60));
+    }
+
+    public String getParsedEndTime() {
+
+        return ((int) this.getEndTime()) + ":" + ((int) ((this.getEndTime() % 1) * 60));
+    }
+
     // setters
     public void setName(String name) {
 

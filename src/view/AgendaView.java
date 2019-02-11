@@ -20,6 +20,9 @@ import java.util.List;
 
 public class AgendaView extends Application {
 
+    private static final int BLOCK_WIDTH = 150;
+    private static final int BLOCK_HEIGHT = 75;
+
     private AgendaEntity agenda;
     private GridPane gridPane = new GridPane();
     private Canvas canvas = new Canvas();
@@ -52,15 +55,19 @@ public class AgendaView extends Application {
 
             LessonEntity lesson = this.agenda.getLesson(i);
 
-            double x = (100 * this.agenda.getClassRoomKey(lesson.getClassRoom()));
-            double y = (80 * (lesson.getStartTime() - this.agenda.getAgendaStartTime()));
-            double width = 100;
-            double height = (lesson.getLessonLength() > 0.5) ? (80 * lesson.getLessonLength()) : 40;
+            double x = (BLOCK_WIDTH * this.agenda.getClassRoomKey(lesson.getClassRoom()));
+            double y = (BLOCK_HEIGHT * (lesson.getStartTime() - this.agenda.getAgendaStartTime()));
+            double height = (lesson.getLessonLength() > 0.5) ? (BLOCK_HEIGHT * lesson.getLessonLength()) : 40;
 
             graphics.setColor(Color.RED);
-            graphics.draw(new Rectangle2D.Double(x, y, width, height));
-
-            graphics.;
+            graphics.draw(new Rectangle2D.Double(x, y, BLOCK_WIDTH, height));
+            graphics.setColor(Color.BLACK);
+            graphics.drawString(
+                lesson.getName() + " - " + lesson.getTeacher() + "\n" +
+                lesson.getClassRoom() + " - " + lesson.getGroup() + "\n" +
+                lesson.getParsedStartTime() + " - " + lesson.getParsedEndTime(),
+                (int) x + 10, (int) y + 20
+            );
         }
     }
 
@@ -81,7 +88,7 @@ public class AgendaView extends Application {
             VBox vBox = new VBox();
             vBox.setStyle(
                 "-fx-pref-width: 40;" +
-                "-fx-pref-height: 75;" +
+                "-fx-pref-height: " + BLOCK_HEIGHT + ";" +
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2 2 0 0;" +
                 "-fx-border-color: lightgrey;"
@@ -103,7 +110,7 @@ public class AgendaView extends Application {
 
             Label label = new Label(" " + classRooms.get(i));
             label.setStyle(
-                "-fx-pref-width: 100;" +
+                "-fx-pref-width: " + BLOCK_WIDTH + ";" +
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 0 0 2 2;" +
                 "-fx-border-color: lightgrey;"
@@ -118,8 +125,8 @@ public class AgendaView extends Application {
     private Scene setScene() {
 
         this.canvas = new Canvas(
-            (100 * this.agenda.getAmountOfClassRooms()),
-            (80 * this.agenda.getAgendaLength())
+            (BLOCK_WIDTH * this.agenda.getAmountOfClassRooms()),
+            (BLOCK_HEIGHT * this.agenda.getAgendaLength())
         );
 
         GridPane.setConstraints(this.canvas, 1, 1);
@@ -139,8 +146,8 @@ public class AgendaView extends Application {
 
         return new Scene(
             scrollPane,
-            (this.canvas.getWidth() < 1000) ? this.canvas.getWidth() + 63 : 1050,
-            (this.canvas.getHeight() < 500) ? this.canvas.getHeight() : 500
+/*          (this.canvas.getWidth() < BLOCK_WIDTH0) ? this.canvas.getWidth() + 63 : 1050, */ 1000,
+/*          (this.canvas.getHeight() < 500) ? this.canvas.getHeight() + 30 : 530 */  500
         );
     }
 }

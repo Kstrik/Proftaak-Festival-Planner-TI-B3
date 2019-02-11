@@ -35,7 +35,7 @@ public class AgendaModel {
 
         agenda.setName((String) jsonAgenda.get("name"));
 
-        JSONArray jsonLessons = (JSONArray) jsonAgenda.get("lessons");
+        JSONArray jsonLessons = (JSONArray) jsonAgenda.get("schedule");
 
         for (Object object : jsonLessons) {
 
