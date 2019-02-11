@@ -19,7 +19,7 @@ public class AgendaModel {
 
         try {
 
-            agenda = convert((JSONObject) parser.parse(new FileReader(path)));
+            agenda = convertJSON((JSONObject) parser.parse(new FileReader(path)));
 
         } catch (Exception e) {
 
@@ -29,7 +29,7 @@ public class AgendaModel {
         return agenda;
     }
 
-    private AgendaEntity convert(JSONObject jsonAgenda) {
+    private AgendaEntity convertJSON(JSONObject jsonAgenda) {
 
         AgendaEntity agenda = new AgendaEntity();
 

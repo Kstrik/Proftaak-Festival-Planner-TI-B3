@@ -1,13 +1,14 @@
 {
   "name" : "testAgenda",
-  "lessons" :
+  "lessons" : "",
+  "schedule" :
   [
     {
       "name" : "Wiskunde",
       "group" : "A6",
       "teacher" : "Pieter",
       "classRoom" : "LD004",
-      "startTime" : "12.30",
+      "startTime" : "12.50",
       "endTime" : "14.00"
     },
     {
@@ -16,39 +17,39 @@
       "teacher" : "Johan",
       "classRoom" : "LD005",
       "startTime" : "11.00",
-      "endTime" : "17.30"
+      "endTime" : "17.50"
     },
     {
       "name" : "OOM2",
       "group" : "B2",
       "teacher" : "Jan",
       "classRoom" : "LD137",
-      "startTime" : "12.30",
-      "endTime" : "14.30"
+      "startTime" : "12.50",
+      "endTime" : "14.50"
     },
     {
       "name" : "2D graphics",
       "group" : "A6",
       "teacher" : "Mauries",
       "classRoom" : "LD106",
-      "startTime" : "14.30",
-      "endTime" : "17.30"
+      "startTime" : "14.50",
+      "endTime" : "17.50"
     },
     {
       "name" : "Inzage OGP1",
       "group" : "B3",
       "teacher" : "Johan",
       "classRoom" : "HF003",
-      "startTime" : "8.35",
-      "endTime" : "10.30"
+      "startTime" : "8.60",
+      "endTime" : "10.50"
     },
     {
       "name" : "P&OC2",
       "group" : "A6",
       "teacher" : "Jesica",
       "classRoom" : "LA523",
-      "startTime" : "10.35",
-      "endTime" : "11.45"
+      "startTime" : "10.60",
+      "endTime" : "11.75"
     }
   ]
 }

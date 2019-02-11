@@ -1,6 +1,7 @@
 package view;
 
 import entity.AgendaEntity;
+import entity.LessonEntity;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -37,27 +38,37 @@ public class AgendaView extends Application {
         setTime();
         setClassRooms();
 
-        draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
 
-        primaryStage.setTitle("School Agenda Manager");
+        primaryStage.setTitle("School Agenda Manager: " + this.agenda.getName());
         primaryStage.setScene(setScene());
         primaryStage.show();
+
+        draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
     }
 
-    public void draw(FXGraphics2D graphics) {
+    private void draw(FXGraphics2D graphics) {
 
-        graphics.setColor(Color.RED);
-        graphics.draw(new Rectangle2D.Double(0, 0, 1000, 1000));
+        for (int i = 0; i < this.agenda.getAmountOfLessons(); i++) {
+
+            LessonEntity lesson = this.agenda.getLesson(i);
+
+            double x = (100 * this.agenda.getClassRoomKey(lesson.getClassRoom()));
+            double y = (80 * (lesson.getStartTime() - this.agenda.getAgendaStartTime()));
+            double width = 100;
+            double height = (lesson.getLessonLength() > 0.5) ? (80 * lesson.getLessonLength()) : 40;
+
+            graphics.setColor(Color.RED);
+            graphics.draw(new Rectangle2D.Double(x, y, width, height));
+
+            graphics.;
+        }
     }
 
     private void setTime() {
 
-        int startTime = (int) Math.floor(this.agenda.getEarliestLessonStartTime());
-        int endTime = (int) Math.ceil(this.agenda.getLatestLessonEndTime());
+        for (int i = this.agenda.getAgendaStartTime(); i < this.agenda.getAgendaEndTime(); i++) {
 
-        for (int hour = startTime; hour < endTime; hour++) {
-
-            Label label = new Label(" " + hour + ":00");
+            Label label = new Label(" " + i + ":00");
 
             Pane pane = new Pane();
             pane.setStyle(
@@ -77,7 +88,7 @@ public class AgendaView extends Application {
             );
             vBox.getChildren().addAll(label, pane);
 
-            GridPane.setConstraints(vBox, 0, (hour - startTime) + 1);
+            GridPane.setConstraints(vBox, 0, (i - this.agenda.getAgendaStartTime()) + 1);
 
             this.gridPane.getChildren().add(vBox);
         }
@@ -106,9 +117,14 @@ public class AgendaView extends Application {
 
     private Scene setScene() {
 
+        this.canvas = new Canvas(
+            (100 * this.agenda.getAmountOfClassRooms()),
+            (80 * this.agenda.getAgendaLength())
+        );
+
         GridPane.setConstraints(this.canvas, 1, 1);
         GridPane.setColumnSpan(this.canvas, this.agenda.getAmountOfClassRooms());
-        GridPane.setRowSpan(this.canvas, (int) (this.agenda.getLatestLessonEndTime() - this.agenda.getEarliestLessonStartTime()));
+        GridPane.setRowSpan(this.canvas, this.agenda.getAgendaLength());
 
         this.gridPane.getChildren().add(this.canvas);
         this.gridPane.setStyle(
@@ -121,6 +137,10 @@ public class AgendaView extends Application {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(this.gridPane);
 
-        return new Scene(scrollPane, this.gridPane.getWidth(), this.gridPane.getHeight());
+        return new Scene(
+            scrollPane,
+            (this.canvas.getWidth() < 1000) ? this.canvas.getWidth() + 63 : 1050,
+            (this.canvas.getHeight() < 500) ? this.canvas.getHeight() : 500
+        );
     }
 }

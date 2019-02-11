@@ -41,6 +41,12 @@ public class AgendaEntity {
         return classRooms.size();
     }
 
+    public int getClassRoomKey(String classRoom) {
+
+        List<String> classRooms = getAllClassRooms();
+        return (classRooms.contains(classRoom)) ? classRooms.indexOf(classRoom) : 0;
+    }
+
     public List<String> getAllClassRooms() {
 
         List<String> classRooms = new ArrayList<>();
@@ -50,6 +56,23 @@ public class AgendaEntity {
                 classRooms.add(lesson.getClassRoom());
 
         return classRooms;
+    }
+
+    public int getAgendaStartTime() {
+
+        LessonEntity lesson = this.getEarliestLesson();
+        return (int) Math.floor(lesson.getStartTime());
+    }
+
+    public int getAgendaEndTime() {
+
+        LessonEntity lesson = this.getLatestLesson();
+        return (int) Math.ceil(lesson.getEndTime());
+    }
+
+    public int getAgendaLength() {
+
+        return (this.getAgendaEndTime() - this.getAgendaStartTime());
     }
 
     public LessonEntity getEarliestLesson() {
@@ -63,12 +86,6 @@ public class AgendaEntity {
         return earliestLesson;
     }
 
-    public double getEarliestLessonStartTime() {
-
-        LessonEntity lesson = this.getEarliestLesson();
-        return lesson.getStartTime();
-    }
-
     public LessonEntity getLatestLesson() {
 
         LessonEntity latestLesson = this.lessons.get(0);
@@ -78,12 +95,6 @@ public class AgendaEntity {
                 latestLesson = lesson;
 
         return latestLesson;
-    }
-
-    public double getLatestLessonEndTime() {
-
-        LessonEntity lesson = this.getLatestLesson();
-        return lesson.getEndTime();
     }
 
     // setters

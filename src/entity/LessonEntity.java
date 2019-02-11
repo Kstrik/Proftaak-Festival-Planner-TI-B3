@@ -9,6 +9,12 @@ public class LessonEntity {
     private double startTime; // for instance: 12.30
     private double endTime;   // for instance: 14.00
 
+    // method
+    public double getLessonLength() {
+
+        return (this.getEndTime() - this.getStartTime());
+    }
+
     // setters
     public void setName(String name) {
 
