@@ -1,0 +1,55 @@
+{
+  "name" : "testAgenda",
+  "lessons" :
+  [
+    {
+      "name" : "Wiskunde",
+      "group" : "A6",
+      "teacher" : "Pieter",
+      "classRoom" : "LD004",
+      "startTime" : "12.30",
+      "endTime" : "14.00"
+    },
+    {
+      "name" : "OGP2",
+      "group" : "B3",
+      "teacher" : "Johan",
+      "classRoom" : "LD005",
+      "startTime" : "11.00",
+      "endTime" : "17.30"
+    },
+    {
+      "name" : "OOM2",
+      "group" : "B2",
+      "teacher" : "Jan",
+      "classRoom" : "LD137",
+      "startTime" : "12.30",
+      "endTime" : "14.30"
+    },
+    {
+      "name" : "2D graphics",
+      "group" : "A6",
+      "teacher" : "Mauries",
+      "classRoom" : "LD106",
+      "startTime" : "14.30",
+      "endTime" : "17.30"
+    },
+    {
+      "name" : "Inzage OGP1",
+      "group" : "B3",
+      "teacher" : "Johan",
+      "classRoom" : "HF003",
+      "startTime" : "8.35",
+      "endTime" : "10.30"
+    },
+    {
+      "name" : "P&OC2",
+      "group" : "A6",
+      "teacher" : "Jesica",
+      "classRoom" : "LA523",
+      "startTime" : "10.35",
+      "endTime" : "11.45"
+    }
+  ]
+}
+

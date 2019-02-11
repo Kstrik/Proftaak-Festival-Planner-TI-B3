@@ -1,13 +1,12 @@
 package controller;
 
-import view.ViewBuilder;
+import view.AgendaView;
 
 public class AgendaController {
 
-    public AgendaController()
-    {
+    public AgendaController() {
 
-        ViewBuilder viewBuilder = new ViewBuilder();
-        viewBuilder.startup();
+        AgendaView agendaView = new AgendaView();
+        agendaView.startup();
     }
 }
