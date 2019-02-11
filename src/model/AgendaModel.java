@@ -15,7 +15,7 @@ public class AgendaModel {
 
         JSONParser parser = new JSONParser();
 
-        String path = "C:\\Users\\wessel\\Desktop\\Avans\\Periode 1.3\\Proftaak\\Proftaak-Festival-Planner-TI-B3\\src\\files\\" + fileName + ".json";
+        String path = "src/files/" + fileName + ".json";
 
         try {
 
