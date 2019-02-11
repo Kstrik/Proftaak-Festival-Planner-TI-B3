@@ -1,13 +1,12 @@
 package agenda;
 
-import java.sql.Time;
 
 public class ScheduleItem {
     private Teacher teacher;
-    private Time start, end;
+    private double start, end;
     private Classroom classroom;
 
-    public ScheduleItem(Time start, Time end, Teacher teacher, Classroom classroom) {
+    public ScheduleItem(double start, double end, Teacher teacher, Classroom classroom) {
         this.start = start;
         this.end = end;
         this.teacher = teacher;
@@ -24,19 +23,19 @@ public class ScheduleItem {
         this.teacher = teacher;
     }
 
-    public Time getStart() {
-        return start;
+    public double getStart() {
+        return this.start;
     }
 
-    public void setStart(Time start) {
+    public void setStart(double start) {
         this.start = start;
     }
 
-    public Time getEnd() {
-        return end;
+    public double getEnd() {
+        return this.end;
     }
 
-    public void setEnd(Time end) {
+    public void setEnd(double end) {
         this.end = end;
     }
 

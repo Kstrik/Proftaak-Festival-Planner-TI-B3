@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Group {
     private ArrayList<Person> members;
+    private Schedule schedule;
     private boolean isTeacherGroup = false;
 
     public Group(ArrayList<Person> members) {
@@ -18,6 +19,14 @@ public class Group {
         if(!this.CanGetIndex(index)) return null;
 
         return this.members.get(index);
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public Schedule getSchedule() {
+        return this.schedule;
     }
 
     private boolean CanGetIndex(int index) {

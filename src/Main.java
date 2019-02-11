@@ -14,13 +14,12 @@ public class Main extends Application {
     static private ArrayList<Person> studentList = new ArrayList<>();
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         Agenda agenda = new Agenda();
@@ -34,7 +33,9 @@ public class Main extends Application {
         fetchedSchedule.setDate(new Date());
         fetchedSchedule.addScheduleItem(new ScheduleItem());
 
-        System.out.println(fetchedSchedule.getDate());
+        studentGroup.setSchedule(fetchedSchedule);
+
+        System.out.println(studentGroup.getSchedule().getDate());
     }
 
     //TODO: remove once everything is tested
