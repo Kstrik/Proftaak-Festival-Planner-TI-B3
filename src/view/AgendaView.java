@@ -15,6 +15,7 @@ import model.AgendaModel;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -51,23 +52,35 @@ public class AgendaView extends Application {
 
     private void draw(FXGraphics2D graphics) {
 
-        for (int i = 0; i < this.agenda.getAmountOfLessons(); i++) {
+        for (int b = 0; b < this.agenda.getAmountOfLessons(); b++) {
 
-            LessonEntity lesson = this.agenda.getLesson(i);
+            LessonEntity lesson = this.agenda.getLesson(b);
 
-            double x = (BLOCK_WIDTH * this.agenda.getClassRoomKey(lesson.getClassRoom()));
+            double x = ((BLOCK_WIDTH * this.agenda.getClassRoomKey(lesson.getClassRoom())) + 10);
             double y = (BLOCK_HEIGHT * (lesson.getStartTime() - this.agenda.getAgendaStartTime()));
-            double height = (lesson.getLessonLength() > 0.5) ? (BLOCK_HEIGHT * lesson.getLessonLength()) : 40;
+            double height = (lesson.getLessonLength() > 0.5) ? (BLOCK_HEIGHT * lesson.getLessonLength()) : 65;
 
             graphics.setColor(Color.RED);
-            graphics.draw(new Rectangle2D.Double(x, y, BLOCK_WIDTH, height));
+            graphics.fill(new Rectangle2D.Double(x, y, BLOCK_WIDTH - 17, height));
             graphics.setColor(Color.BLACK);
+            graphics.draw(new Rectangle2D.Double(x, y, BLOCK_WIDTH - 17, height));
             graphics.drawString(
                 lesson.getName() + " - " + lesson.getTeacher() + "\n" +
                 lesson.getClassRoom() + " - " + lesson.getGroup() + "\n" +
                 lesson.getParsedStartTime() + " - " + lesson.getParsedEndTime(),
                 (int) x + 10, (int) y + 20
             );
+        }
+
+        graphics.setColor(Color.LIGHT_GRAY);
+
+        for (int a = 1; a < this.agenda.getAmountOfClassRooms(); a++) {
+
+            Line2D line = new Line2D.Double((BLOCK_WIDTH * a) + 2, 0, (BLOCK_WIDTH * a) + 2, this.canvas.getHeight());
+            Stroke stroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {5}, 10);
+
+            graphics.setStroke(stroke);
+            graphics.draw(line);
         }
     }
 
@@ -90,8 +103,8 @@ public class AgendaView extends Application {
                 "-fx-pref-width: 40;" +
                 "-fx-pref-height: " + BLOCK_HEIGHT + ";" +
                 "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2 2 0 0;" +
-                "-fx-border-color: lightgrey;"
+                "-fx-border-width: 3 3 0 0;" +
+                "-fx-border-color: grey;"
             );
             vBox.getChildren().addAll(label, pane);
 
@@ -101,8 +114,7 @@ public class AgendaView extends Application {
         }
     }
 
-    private void setClassRooms()
-    {
+    private void setClassRooms() {
 
         List<String> classRooms = this.agenda.getAllClassRooms();
 
@@ -112,8 +124,8 @@ public class AgendaView extends Application {
             label.setStyle(
                 "-fx-pref-width: " + BLOCK_WIDTH + ";" +
                 "-fx-border-style: solid inside;" +
-                "-fx-border-width: 0 0 2 2;" +
-                "-fx-border-color: lightgrey;"
+                "-fx-border-width: 0 0 3 3;" +
+                "-fx-border-color: grey;"
             );
 
             GridPane.setConstraints(label, i + 1, 0);
@@ -136,9 +148,9 @@ public class AgendaView extends Application {
         this.gridPane.getChildren().add(this.canvas);
         this.gridPane.setStyle(
             "-fx-border-style: solid inside;" +
-            "-fx-border-color: lightgrey;" +
+            "-fx-border-color: grey;" +
             "-fx-border-insets: 2;" +
-            "-fx-border-width: 2;"
+            "-fx-border-width: 3;"
         );
 
         ScrollPane scrollPane = new ScrollPane();
@@ -146,8 +158,8 @@ public class AgendaView extends Application {
 
         return new Scene(
             scrollPane,
-/*          (this.canvas.getWidth() < BLOCK_WIDTH0) ? this.canvas.getWidth() + 63 : 1050, */ 1000,
-/*          (this.canvas.getHeight() < 500) ? this.canvas.getHeight() + 30 : 530 */  500
+            (this.canvas.getWidth() < 1000) ? this.canvas.getWidth() + 63 : 1063,
+            (this.canvas.getHeight() < 500) ? this.canvas.getHeight() + 30 : 530
         );
     }
 }

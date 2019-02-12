@@ -29,6 +29,15 @@ public class AgendaModel {
         return agenda;
     }
 
+    public AgendaEntity getAgenda() {
+
+        AgendaEntity agenda = null;
+
+
+
+        return agenda;
+    }
+
     private AgendaEntity convertJSON(JSONObject jsonAgenda) {
 
         AgendaEntity agenda = new AgendaEntity();
