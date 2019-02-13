@@ -1,4 +1,4 @@
-package entity;
+package model.agendaEntity_old;
 
 public class LessonEntity {
 

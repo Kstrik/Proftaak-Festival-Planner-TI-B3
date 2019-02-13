@@ -1,17 +1,20 @@
 package model;
 
-import entity.AgendaEntity;
-import entity.LessonEntity;
+import model.agendaEntity.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class AgendaModel {
 
-    public AgendaEntity getAgendaWithJSONFile(String fileName) {
+    public Agenda getAgendaWithJSONFile(String fileName) {
 
-        AgendaEntity agenda = null;
+        Agenda agenda = null;
 
         JSONParser parser = new JSONParser();
 
@@ -19,7 +22,7 @@ public class AgendaModel {
 
         try {
 
-            agenda = convertJSON((JSONObject) parser.parse(new FileReader(path)));
+            agenda = this.convertJSONAgenda((JSONObject) parser.parse(new FileReader(path)));
 
         } catch (Exception e) {
 
@@ -29,39 +32,106 @@ public class AgendaModel {
         return agenda;
     }
 
-    public AgendaEntity getAgenda() {
+    private Agenda convertJSONAgenda(JSONObject jsonAgenda) throws ParseException {
 
-        AgendaEntity agenda = null;
-
-
+        Agenda agenda = new Agenda();
+        agenda.setName((String) jsonAgenda.get("name"));
+        agenda.setGroups(this.convertJSONGroups((JSONArray) jsonAgenda.get("groups")));
+        agenda.setSchedules(this.convertJSONSchedules((JSONArray) jsonAgenda.get("schedules")));
 
         return agenda;
     }
 
-    private AgendaEntity convertJSON(JSONObject jsonAgenda) {
+    private ArrayList<Group> convertJSONGroups(JSONArray jsonGroups) {
 
-        AgendaEntity agenda = new AgendaEntity();
+        ArrayList<Group> groups = new ArrayList<>();
 
-        agenda.setName((String) jsonAgenda.get("name"));
+        for (Object objectGroup : jsonGroups)
+            groups.add(this.convertJSONGroup((JSONObject) objectGroup));
 
-        JSONArray jsonLessons = (JSONArray) jsonAgenda.get("schedule");
+        return groups;
+    }
 
-        for (Object object : jsonLessons) {
+    private Group convertJSONGroup(JSONObject jsonGroup) {
 
-            JSONObject jsonLesson = (JSONObject) object;
+        Group group = new Group();
+        group.setName((String) jsonGroup.get("name"));
+        group.setScheduleItemIDs((ArrayList) jsonGroup.get("scheduledItems_ids"));
+        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members")));
+        group.setTeacherGroup((boolean) jsonGroup.get("isTeacherGroup"));
 
-            LessonEntity lessonEntity = new LessonEntity();
+        return group;
+    }
 
-            lessonEntity.setName((String) jsonLesson.get("name"));
-            lessonEntity.setGroup((String) jsonLesson.get("group"));
-            lessonEntity.setTeacher((String) jsonLesson.get("teacher"));
-            lessonEntity.setClassRoom((String) jsonLesson.get("classRoom"));
-            lessonEntity.setStartTime(Double.parseDouble((String) jsonLesson.get("startTime")));
-            lessonEntity.setEndTime(Double.parseDouble((String) jsonLesson.get("endTime")));
+    private ArrayList<Member> convertJSONMembers(JSONArray jsonMembers) {
 
-            agenda.addLesson(lessonEntity);
-        }
+        ArrayList<Member> members = new ArrayList<>();
 
-        return agenda;
+        for (Object objectMember : jsonMembers)
+            members.add(this.convertJSONMember((JSONObject) objectMember));
+
+        return members;
+    }
+
+    private Member convertJSONMember(JSONObject jsonMember) {
+
+        Member member = new Member();
+        member.setName((String) jsonMember.get("name"));
+        member.setGender((String) jsonMember.get("gender"));
+        member.setMemberID((int) jsonMember.get("memberID"));
+        member.setIsTeacher((boolean) jsonMember.get("isMember"));
+
+        return member;
+    }
+
+    private ArrayList<Schedule> convertJSONSchedules(JSONArray jsonSchedules) throws ParseException {
+
+        ArrayList<Schedule> schedules = new ArrayList<>();
+
+        for (Object objectSchedule : jsonSchedules)
+            schedules.add(this.convertJSONSchedule((JSONObject) objectSchedule));
+
+        return schedules;
+    }
+
+    private Schedule convertJSONSchedule(JSONObject jsonSchedule) throws ParseException {
+
+        Schedule schedule = new Schedule();
+        schedule.setName((String) jsonSchedule.get("name"));
+        schedule.setDate(new SimpleDateFormat("yyyy-MM-dd").parse((String) jsonSchedule.get("date")));
+        schedule.setScheduleItems(this.convertJSONScheduleItems((JSONArray) jsonSchedule.get("scheduledItems")));
+
+        return schedule;
+    }
+
+    private ArrayList<ScheduleItem> convertJSONScheduleItems(JSONArray jsonScheduleItems) throws ParseException {
+
+        ArrayList<ScheduleItem> scheduleItems = new ArrayList<>();
+
+        for (Object objectScheduleItem : jsonScheduleItems)
+            scheduleItems.add(this.convertJSONScheduleItem((JSONObject) objectScheduleItem));
+
+        return scheduleItems;
+    }
+
+    private ScheduleItem convertJSONScheduleItem(JSONObject jsonScheduleItem) throws ParseException {
+
+        ScheduleItem scheduleItem = new ScheduleItem();
+        scheduleItem.setName((String) jsonScheduleItem.get("name"));
+        scheduleItem.setGroupID((int) jsonScheduleItem.get("group_id"));
+        scheduleItem.setClassroom(this.convertJSONClassroom((JSONObject) jsonScheduleItem.get("classroom")));
+        scheduleItem.setStart((Time) new SimpleDateFormat("hh:mm:ss").parse((String) jsonScheduleItem.get("start")));
+        scheduleItem.setEnd((Time) new SimpleDateFormat("hh:mm:ss").parse((String) jsonScheduleItem.get("end")));
+        scheduleItem.setTeacher(this.convertJSONMember((JSONObject) jsonScheduleItem.get("teacher")));
+
+        return scheduleItem;
+    }
+
+    private Classroom convertJSONClassroom(JSONObject jsonClassroom) {
+
+        Classroom classroom = new Classroom();
+        classroom.setName((String) jsonClassroom.get("name"));
+
+        return classroom;
     }
 }

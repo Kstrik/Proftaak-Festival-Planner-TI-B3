@@ -1,4 +1,4 @@
-package entity;
+package model.agendaEntity_old;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 public class AgendaEntity {
 
     private String name;                 // for instance: Woensdag
-    private List<LessonEntity> lessons;  // all lessons of this agenda
+    private List<LessonEntity> lessons;  // all lessons of this model.agendaEntity
 
     // constructor
     public AgendaEntity() {
