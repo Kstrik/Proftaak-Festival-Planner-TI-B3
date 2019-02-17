@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class ScheduleItem {
 
-    private long groupID;
+    private int id;
     private String name;
     private Member teacher;
     private LocalDateTime start, end;
     private Classroom classroom;
 
-    public ScheduleItem(int groupID, String name, LocalDateTime start, LocalDateTime end, Member teacher, Classroom classroom) {
+    public ScheduleItem(int id, String name, LocalDateTime start, LocalDateTime end, Member teacher, Classroom classroom) {
 
-        this.groupID = groupID;
+        this.id = id;
         this.name = name;
         this.start = start;
         this.end = end;
@@ -70,9 +70,9 @@ public class ScheduleItem {
     }
 
     // getters
-    public long getGroupID() {
+    public int getId() {
 
-        return groupID;
+        return this.id;
     }
 
     public String getName() {
@@ -101,9 +101,9 @@ public class ScheduleItem {
     }
 
     // setters
-    public void setGroupID(long groupID) {
+    public void setId(int id) {
 
-        this.groupID = groupID;
+        this.id = id;
     }
 
     public void setName(String name) {

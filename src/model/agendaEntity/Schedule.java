@@ -5,11 +5,13 @@ import java.util.ArrayList;
 
 public class Schedule {
 
+    private int id;
     private LocalDateTime date;
     private ArrayList<ScheduleItem> scheduleItems;
 
-    public Schedule(LocalDateTime date, ArrayList<ScheduleItem> scheduleItems) {
+    public Schedule(int id, LocalDateTime date, ArrayList<ScheduleItem> scheduleItems) {
 
+        this.id = id;
         this.date = date;
         this.scheduleItems = scheduleItems;
     }
@@ -30,9 +32,14 @@ public class Schedule {
         this.scheduleItems.addAll(scheduleItems);
     }
 
-    public void addScheduleItem(ScheduleItem item) {
+    public void addScheduleItem(ScheduleItem scheduleItem) {
 
-        this.scheduleItems.add(item);
+        this.scheduleItems.add(scheduleItem);
+    }
+
+    public boolean containsScheduleItem(ScheduleItem scheduleItem) {
+
+        return (this.scheduleItems.contains(scheduleItem));
     }
 
     public LocalDateTime getScheduleStart() {
@@ -72,6 +79,17 @@ public class Schedule {
         return this.scheduleItems.size();
     }
 
+    public ArrayList<Member> getAllTeachers() {
+
+        ArrayList<Member> teachers = new ArrayList<>();
+
+        for (ScheduleItem scheduleItem : this.scheduleItems)
+            if (!teachers.contains(scheduleItem.getTeacher()) && scheduleItem.getTeacher().isTeacher())
+                teachers.add(scheduleItem.getTeacher());
+
+        return teachers;
+    }
+
     public int getAmountOfClassrooms() {
 
         return getAllClassrooms().size();
@@ -94,6 +112,11 @@ public class Schedule {
     }
 
     // getters
+    public int getId() {
+
+        return this.id;
+    }
+
     public LocalDateTime getDate() {
 
         return date;
@@ -105,6 +128,11 @@ public class Schedule {
     }
 
     // setters
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
     public void setDate(LocalDateTime date) {
 
         this.date = date;

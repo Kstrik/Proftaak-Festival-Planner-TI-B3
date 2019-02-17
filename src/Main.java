@@ -4,6 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        new AgendaController();
+        AgendaController agendaController = new AgendaController();
+        agendaController.startup();
     }
 }

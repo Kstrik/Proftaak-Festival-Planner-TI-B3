@@ -1,16 +1,19 @@
 package model.agendaEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Group {
 
+    private int id;
     private String name;
     private ArrayList<Member> members;
     private ArrayList<Schedule> schedules;
     private boolean isTeacherGroup = false;
 
-    public Group(String name, ArrayList<Member> members, ArrayList<Schedule> schedules, boolean isTeacherGroup) {
+    public Group(int id, String name, ArrayList<Member> members, ArrayList<Schedule> schedules, boolean isTeacherGroup) {
 
+        this.id = id;
         this.name = name;
         this.members = members;
         this.schedules = schedules;
@@ -22,19 +25,37 @@ public class Group {
     }
 
     // methods
+    public boolean containsScheduleItem(ScheduleItem scheduleItem) {
+
+        for (Schedule schedule : this.schedules)
+            if (schedule.containsScheduleItem(scheduleItem))
+                return true;
+
+        return false;
+    }
+
     public void addMember(Member member) {
 
         this.members.add(member);
     }
 
-    public void addScheduleItemID(Schedule schedule) {
+    public void addSchedule(Schedule schedule) {
 
         this.schedules.add(schedule);
     }
 
-    public Member getPerson(int index) {
+    public Member getPerson(int key) {
 
-        return (!this.CanGetIndex(index)) ? null : this.members.get(index);
+        return this.members.get(key);
+    }
+
+    public Schedule getScheduleByDate(LocalDateTime date) {
+
+        for (Schedule schedule : this.schedules)
+            if (schedule.getDate().equals(date))
+                return schedule;
+
+        return null;
     }
 
     public Schedule getSchedule(int key) {
@@ -42,12 +63,12 @@ public class Group {
         return this.schedules.get(key);
     }
 
-    private boolean CanGetIndex(int index) {
+    // getters
+    public int getId() {
 
-        return (!(index >= this.members.toArray().length || index < 0));
+        return this.id;
     }
 
-    // getters
     public String getName() {
 
         return this.name;
@@ -69,6 +90,11 @@ public class Group {
     }
 
     // setters
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
     public void setName(String name) {
 
         this.name = name;

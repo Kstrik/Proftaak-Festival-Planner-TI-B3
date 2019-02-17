@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class AgendaModel {
+public class JSONModel {
 
     public Agenda getAgendaWithJSONFile(String fileName) {
 
@@ -35,6 +35,7 @@ public class AgendaModel {
     private Agenda convertJSONAgenda(JSONObject jsonAgenda) {
 
         Agenda agenda = new Agenda();
+        agenda.setId(Math.toIntExact((long) jsonAgenda.get("id")));
         agenda.setName((String) jsonAgenda.get("name"));
         agenda.setGroups(this.convertJSONGroups((JSONArray) jsonAgenda.get("groups")));
 
@@ -54,6 +55,7 @@ public class AgendaModel {
     private Group convertJSONGroup(JSONObject jsonGroup) {
 
         Group group = new Group();
+        group.setId(Math.toIntExact((long) jsonGroup.get("id")));
         group.setName((String) jsonGroup.get("name"));
         group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members")));
         group.setSchedules(this.convertJSONSchedules((JSONArray) jsonGroup.get("schedules")));
@@ -75,6 +77,7 @@ public class AgendaModel {
     private Member convertJSONMember(JSONObject jsonMember) {
 
         Member member = new Member();
+        member.setId(Math.toIntExact((long) jsonMember.get("id")));
         member.setName((String) jsonMember.get("name"));
         member.setGender((String) jsonMember.get("gender"));
         member.setMemberID((long) jsonMember.get("memberNumber"));
@@ -96,6 +99,7 @@ public class AgendaModel {
     private Schedule convertJSONSchedule(JSONObject jsonSchedule) {
 
         Schedule schedule = new Schedule();
+        schedule.setId(Math.toIntExact((long) jsonSchedule.get("id")));
         schedule.setDate(LocalDateTime.parse((String) jsonSchedule.get("date")));
         schedule.setScheduleItems(this.convertJSONScheduleItems((JSONArray) jsonSchedule.get("scheduleItems")));
 
@@ -115,8 +119,8 @@ public class AgendaModel {
     private ScheduleItem convertJSONScheduleItem(JSONObject jsonScheduleItem) {
 
         ScheduleItem scheduleItem = new ScheduleItem();
+        scheduleItem.setId(Math.toIntExact((long) jsonScheduleItem.get("id")));
         scheduleItem.setName((String) jsonScheduleItem.get("name"));
-        scheduleItem.setGroupID((long) jsonScheduleItem.get("group_id"));
         scheduleItem.setClassroom(this.convertJSONClassroom((JSONObject) jsonScheduleItem.get("classroom")));
         scheduleItem.setStart(LocalDateTime.parse((String) jsonScheduleItem.get("start")));
         scheduleItem.setEnd(LocalDateTime.parse((String) jsonScheduleItem.get("end")));
@@ -128,6 +132,7 @@ public class AgendaModel {
     private Classroom convertJSONClassroom(JSONObject jsonClassroom) {
 
         Classroom classroom = new Classroom();
+        classroom.setId(Math.toIntExact((long) jsonClassroom.get("id")));
         classroom.setName((String) jsonClassroom.get("name"));
 
         return classroom;

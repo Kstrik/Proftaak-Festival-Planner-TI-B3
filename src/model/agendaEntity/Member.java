@@ -2,13 +2,15 @@ package model.agendaEntity;
 
 public class Member {
 
+    private int id;
     private String name;
     private String gender;
     private long memberID;
     private boolean isTeacher;
 
-    public Member(String name, String gender, int memberID, boolean isTeacher) {
+    public Member(int id, String name, String gender, int memberID, boolean isTeacher) {
 
+        this.id = id;
         this.name = name;
         this.gender = gender;
         this.memberID = memberID;
@@ -20,6 +22,11 @@ public class Member {
     }
 
     // getters
+    public int getId() {
+
+        return this.id;
+    }
+
     public long getMemberID() {
 
         return this.memberID;
@@ -41,6 +48,11 @@ public class Member {
     }
 
     // setters
+    public void setId(int id) {
+
+        this.id= id;
+    }
+
     public void setName(String name) {
 
         this.name = name;
