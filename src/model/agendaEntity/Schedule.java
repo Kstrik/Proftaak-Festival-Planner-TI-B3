@@ -1,19 +1,23 @@
 package model.agendaEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Schedule {
 
-    private String name;
-    private Date date;
+    private LocalDateTime date;
     private ArrayList<ScheduleItem> scheduleItems;
 
-    public Schedule(String name, Date date, ArrayList<ScheduleItem> scheduleItems) {
+    public Schedule(LocalDateTime date, ArrayList<ScheduleItem> scheduleItems) {
 
-        this.name = name;
         this.date = date;
         this.scheduleItems = scheduleItems;
+    }
+
+    public Schedule(LocalDateTime date) {
+
+        this.date = date;
+        this.scheduleItems = new ArrayList<>();
     }
 
     public Schedule() {
@@ -21,9 +25,41 @@ public class Schedule {
     }
 
     // methods
+    public void addScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+
+        this.scheduleItems.addAll(scheduleItems);
+    }
+
     public void addScheduleItem(ScheduleItem item) {
 
         this.scheduleItems.add(item);
+    }
+
+    public LocalDateTime getScheduleStart() {
+
+        LocalDateTime time = this.scheduleItems.get(0).getStart();
+
+        for (ScheduleItem scheduleItem : this.scheduleItems)
+            if (time.isAfter(scheduleItem.getStart()))
+                time = scheduleItem.getStart();
+
+        return time;
+    }
+
+    public LocalDateTime getScheduleEnd() {
+
+        LocalDateTime time = this.scheduleItems.get(0).getEnd();
+
+        for (ScheduleItem scheduleItem : this.scheduleItems)
+            if (time.isBefore(scheduleItem.getEnd()))
+                time = scheduleItem.getEnd();
+
+        return time;
+    }
+
+    public int getScheduleLength() {
+
+        return (getScheduleEnd().getHour() - getScheduleStart().getHour());
     }
 
     public ScheduleItem getScheduleItem(int key) {
@@ -31,13 +67,34 @@ public class Schedule {
         return this.scheduleItems.get(key);
     }
 
-    // getters
-    public String getName() {
+    public int getAmountOfScheduleItems() {
 
-        return name;
+        return this.scheduleItems.size();
     }
 
-    public Date getDate() {
+    public int getAmountOfClassrooms() {
+
+        return getAllClassrooms().size();
+    }
+
+    public ArrayList<Classroom> getAllClassrooms() {
+
+        ArrayList<Classroom> classrooms = new ArrayList<>();
+
+        for(ScheduleItem scheduleItem : this.scheduleItems)
+            if (!classrooms.contains(scheduleItem.getClassroom()))
+                classrooms.add(scheduleItem.getClassroom());
+
+        return classrooms;
+    }
+
+    public int getClassRoomKey(Classroom classroom) {
+
+        return this.getAllClassrooms().indexOf(classroom);
+    }
+
+    // getters
+    public LocalDateTime getDate() {
 
         return date;
     }
@@ -48,12 +105,7 @@ public class Schedule {
     }
 
     // setters
-    public void setName(String name) {
-
-        this.name = name;
-    }
-
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
 
         this.date = date;
     }

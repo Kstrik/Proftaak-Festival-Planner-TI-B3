@@ -6,14 +6,14 @@ public class Group {
 
     private String name;
     private ArrayList<Member> members;
-    private ArrayList<Integer> scheduleItemsIDs;
+    private ArrayList<Schedule> schedules;
     private boolean isTeacherGroup = false;
 
-    public Group(String name, ArrayList<Member> members, ArrayList<Integer> scheduleItemsIDs, boolean isTeacherGroup) {
+    public Group(String name, ArrayList<Member> members, ArrayList<Schedule> schedules, boolean isTeacherGroup) {
 
         this.name = name;
         this.members = members;
-        this.scheduleItemsIDs = scheduleItemsIDs;
+        this.schedules = schedules;
         this.isTeacherGroup = isTeacherGroup;
     }
 
@@ -27,14 +27,19 @@ public class Group {
         this.members.add(member);
     }
 
-    public void addScheduleItemID(Integer scheduleItemID) {
+    public void addScheduleItemID(Schedule schedule) {
 
-        this.scheduleItemsIDs.add(scheduleItemID);
+        this.schedules.add(schedule);
     }
 
     public Member getPerson(int index) {
 
         return (!this.CanGetIndex(index)) ? null : this.members.get(index);
+    }
+
+    public Schedule getSchedule(int key) {
+
+        return this.schedules.get(key);
     }
 
     private boolean CanGetIndex(int index) {
@@ -53,9 +58,9 @@ public class Group {
         return this.members;
     }
 
-    public ArrayList<Integer> getScheduleItemIDs() {
+    public ArrayList<Schedule> getSchedules() {
 
-        return this.scheduleItemsIDs;
+        return this.schedules;
     }
 
     public boolean isTeacherGroup() {
@@ -74,9 +79,9 @@ public class Group {
         this.members = members;
     }
 
-    public void setScheduleItemIDs(ArrayList<Integer> scheduleItemsIDs) {
+    public void setSchedules(ArrayList<Schedule> schedules) {
 
-        this.scheduleItemsIDs = scheduleItemsIDs;
+        this.schedules = schedules;
     }
 
     public void setTeacherGroup(boolean teacherGroup) {

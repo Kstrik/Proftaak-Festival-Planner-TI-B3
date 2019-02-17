@@ -1,16 +1,16 @@
 package model.agendaEntity;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 public class ScheduleItem {
 
-    private int groupID;
+    private long groupID;
     private String name;
     private Member teacher;
-    private Time start, end;
+    private LocalDateTime start, end;
     private Classroom classroom;
 
-    public ScheduleItem(int groupID, String name, Time start, Time end, Member teacher, Classroom classroom) {
+    public ScheduleItem(int groupID, String name, LocalDateTime start, LocalDateTime end, Member teacher, Classroom classroom) {
 
         this.groupID = groupID;
         this.name = name;
@@ -24,8 +24,53 @@ public class ScheduleItem {
 
     }
 
+    // methods
+    public double getLessonDouble() {
+
+        return this.getEndDouble() - this.getStartDouble();
+    }
+
+    public double getStartDouble() {
+
+        return this.start.getHour() + (((double) this.start.getMinute()) * ((double) 100 / 60) / 100);
+    }
+
+    public double getEndDouble() {
+
+        return this.end.getHour() + (((double) this.end.getMinute()) * ((double) 100/60) / 100);
+    }
+
+    public String getString() {
+
+        return
+            this.name + " in " +
+            this.classroom.getName() + "\nTeacher: " +
+            this.teacher.getName() + "\n" +
+            this.getParsedStart() + " - " +
+            this.getParsedEnd()
+        ;
+    }
+
+    public String getParsedStart() {
+
+        String string = this.start.getHour() + ":";
+
+        if (Integer.toString(this.start.getMinute()).length() < 2) string += "0";
+
+        return string + this.start.getMinute();
+    }
+
+    public String getParsedEnd() {
+
+        String string = this.end.getHour() + ":";
+
+        if (Integer.toString(this.end.getMinute()).length() < 2) string += "0";
+
+        return string + this.end.getMinute();
+    }
+
     // getters
-    public int getGroupID() {
+    public long getGroupID() {
 
         return groupID;
     }
@@ -40,12 +85,12 @@ public class ScheduleItem {
         return teacher;
     }
 
-    public Time getStart() {
+    public LocalDateTime getStart() {
 
         return start;
     }
 
-    public Time getEnd() {
+    public LocalDateTime getEnd() {
 
         return end;
     }
@@ -56,7 +101,7 @@ public class ScheduleItem {
     }
 
     // setters
-    public void setGroupID(int groupID) {
+    public void setGroupID(long groupID) {
 
         this.groupID = groupID;
     }
@@ -71,12 +116,12 @@ public class ScheduleItem {
         this.teacher = teacher;
     }
 
-    public void setStart(Time start) {
+    public void setStart(LocalDateTime start) {
 
         this.start = start;
     }
 
-    public void setEnd(Time end) {
+    public void setEnd(LocalDateTime end) {
 
         this.end = end;
     }

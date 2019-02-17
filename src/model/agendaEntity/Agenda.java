@@ -1,44 +1,50 @@
 package model.agendaEntity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Agenda {
 
     private String name;
     private ArrayList<Group> groups;
-    private ArrayList<Schedule> schedules;
 
     public Agenda() {
 
-        this.schedules = new ArrayList<>();
     }
 
     // methods
-    public ArrayList<Date> getScheduleDates() {
+    public Schedule getFirstSchedule() {
 
-        ArrayList<Date> dates = new ArrayList<>();
-
-        for (Schedule schedule : this.schedules)
-            if (!dates.contains(schedule.getDate()))
-                dates.add(schedule.getDate());
-
-        return dates;
+        return this.getScheduleByDate(this.getScheduleDates().get(0));
     }
 
-    public void addSchedule(Schedule schedule) {
+    public Schedule getScheduleByDate(LocalDateTime date) {
 
-        this.schedules.add(schedule);
+        Schedule dateSchedule = new Schedule(date);
+
+        for (Group group : this.groups)
+            for (Schedule schedule : group.getSchedules())
+                if (schedule.getDate().isEqual(date))
+                    dateSchedule.addScheduleItems(schedule.getScheduleItems());
+
+        return dateSchedule;
+    }
+
+    public ArrayList<LocalDateTime> getScheduleDates() {
+
+        ArrayList<LocalDateTime> dates = new ArrayList<>();
+
+        for (Group group : this.groups)
+            for (Schedule schedule : group.getSchedules())
+                if (!dates.contains(schedule.getDate()))
+                    dates.add(schedule.getDate());
+
+        return dates;
     }
 
     public void addGroup(Group group) {
 
         this.groups.add(group);
-    }
-
-    public Schedule getschedule(int key) {
-
-        return this.schedules.get(key);
     }
 
     public Group getGroup(int key) {
@@ -52,11 +58,6 @@ public class Agenda {
         this.name = name;
     }
 
-    public void setSchedules(ArrayList<Schedule> schedules) {
-
-        this.schedules = schedules;
-    }
-
     public void setGroups(ArrayList<Group> groups) {
 
         this.groups = groups;
@@ -66,11 +67,6 @@ public class Agenda {
     public String getName() {
 
         return this.name;
-    }
-
-    public ArrayList<Schedule> getSchedules() {
-
-        return this.schedules;
     }
 
     public ArrayList<Group> getGroups() {

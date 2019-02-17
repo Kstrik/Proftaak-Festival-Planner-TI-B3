@@ -4,7 +4,7 @@ public class Member {
 
     private String name;
     private String gender;
-    private int memberID;
+    private long memberID;
     private boolean isTeacher;
 
     public Member(String name, String gender, int memberID, boolean isTeacher) {
@@ -20,7 +20,7 @@ public class Member {
     }
 
     // getters
-    public int getMemberID() {
+    public long getMemberID() {
 
         return this.memberID;
     }
@@ -51,7 +51,7 @@ public class Member {
         this.gender = gender;
     }
 
-    public void setMemberID(int memberID) {
+    public void setMemberID(long memberID) {
 
         this.memberID = memberID;
     }
