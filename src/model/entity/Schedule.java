@@ -1,4 +1,4 @@
-package model.agendaEntity;
+package model.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,8 +16,9 @@ public class Schedule {
         this.scheduleItems = scheduleItems;
     }
 
-    public Schedule(LocalDateTime date) {
+    public Schedule(int id, LocalDateTime date) {
 
+        this.id = id;
         this.date = date;
         this.scheduleItems = new ArrayList<>();
     }
@@ -37,9 +38,13 @@ public class Schedule {
         this.scheduleItems.add(scheduleItem);
     }
 
-    public boolean containsScheduleItem(ScheduleItem scheduleItem) {
+    public boolean containsScheduleItem(ScheduleItem searchedScheduleItem) {
 
-        return (this.scheduleItems.contains(scheduleItem));
+        for (ScheduleItem scheduleItem : this.scheduleItems)
+            if (scheduleItem.getId() == searchedScheduleItem.getId())
+                return true;
+        
+        return false;
     }
 
     public LocalDateTime getScheduleStart() {

@@ -1,4 +1,4 @@
-package model.agendaEntity;
+package model.entity;
 
 import java.time.LocalDateTime;
 

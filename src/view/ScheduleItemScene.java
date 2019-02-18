@@ -2,14 +2,14 @@ package view;
 
 import controller.ScheduleItemUpdate;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.agendaEntity.Agenda;
-import model.agendaEntity.ScheduleItem;
+import model.AgendaModel;
+import model.entity.Agenda;
+import model.entity.ScheduleItem;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,9 +17,10 @@ import java.util.ArrayList;
 
 public class ScheduleItemScene {
 
+    private AgendaModel agendaModel;
+
     private ScheduleItemUpdate observer;
     private ScheduleItem scheduleItem;
-    private Agenda agenda;
 
     private VBox main;
 
@@ -34,9 +35,11 @@ public class ScheduleItemScene {
     // scene methods
     public Scene getScene(Stage primaryStage) {
 
+        this.agendaModel = new AgendaModel();
+
         setScheduleItem();
 
-        Scene scene = new Scene(new ScrollPane(this.main), 1000, 500);
+        Scene scene = new Scene(new ScrollPane(this.main), 295, 292);
         scene.getStylesheets().add("view/style/style.css");
 
         primaryStage.setTitle(getTitle());
@@ -57,7 +60,7 @@ public class ScheduleItemScene {
 
         // group
         this.group = new ComboBox<>();
-        this.group.setItems(FXCollections.observableArrayList(this.agenda.getGroupNames()));
+        this.group.setItems(FXCollections.observableArrayList(this.agendaModel.getAllGroupNames()));
 
         Label groupLabel = new Label("Group: ");
         groupLabel.getStyleClass().add("scheduleItem-label");
@@ -82,7 +85,7 @@ public class ScheduleItemScene {
 
         // teacher
         this.teacher = new ComboBox<>();
-        this.teacher.setItems(FXCollections.observableArrayList(this.agenda.getAllTeacherNames()));
+        this.teacher.setItems(FXCollections.observableArrayList(this.agendaModel.getAllTeacherNames()));
 
         Label teacherLabel = new Label("Teacher: ");
         teacherLabel.getStyleClass().add("scheduleItem-label");
@@ -119,7 +122,7 @@ public class ScheduleItemScene {
 
         // classroom
         this.classroom = new ComboBox<>();
-        this.classroom.setItems(FXCollections.observableArrayList(this.agenda.getAllClassroomNames()));
+        this.classroom.setItems(FXCollections.observableArrayList(this.agendaModel.getAllClassroomNames()));
 
         Label classroomLabel = new Label("Classroom: ");
         classroomLabel.getStyleClass().add("scheduleItem-label");
@@ -127,7 +130,7 @@ public class ScheduleItemScene {
         classroomBox.getChildren().addAll(classroomLabel, this.classroom);
 
         this.main.getChildren().addAll(groupBox, dateBox, nameBox, startTimeBox, endTimeBox, teacherBox, classroomBox);
-        this.main.getStyleClass().add("main");
+        this.main.getStyleClass().addAll("main");
     }
 
     public void setButtons() {
@@ -139,13 +142,26 @@ public class ScheduleItemScene {
         Button apply = new Button("Apply");
         apply.getStyleClass().add("button");
         apply.setOnMouseClicked(e -> this.observer.onScheduleItemChange(
-            this.agenda.getGroupByName(this.group.getValue()),
+
+            this.agendaModel.getGroupByName(this.group.getValue()),
             this.parseTime(0, 0),
             this.getScheduleItem()
         ));
 
         HBox buttonBox = new HBox();
-        buttonBox.getChildren().addAll(cancel, apply);
+        buttonBox.getStyleClass().add("button-box");
+
+        if (this.scheduleItem != null) {
+
+            Button delete = new Button("delete");
+            delete.getStyleClass().add("button");
+            delete.setOnMouseClicked(e -> this.observer.onScheduleItemDelete(this.getScheduleItem()));
+
+            buttonBox.getChildren().addAll(cancel, delete, apply);
+        } else {
+
+            buttonBox.getChildren().addAll(cancel, apply);
+        }
 
         this.main.getChildren().add(buttonBox);
     }
@@ -154,8 +170,8 @@ public class ScheduleItemScene {
 
         if (this.scheduleItem != null) {
 
-            this.group.setValue(this.agenda.getGroupNameOfScheduleItem(scheduleItem));
-            this.date.setValue(LocalDate.from(this.agenda.getDateOfScheduleItem(scheduleItem)));
+            this.group.setValue(this.agendaModel.getGroupNameOfScheduleItem(scheduleItem));
+            this.date.setValue(LocalDate.from(this.agendaModel.getDateOfScheduleItem(scheduleItem)));
             this.name.setText(this.scheduleItem.getName());
             this.teacher.setValue(this.scheduleItem.getTeacher().getName());
             this.startHour.setValue(this.scheduleItem.getStart().getHour());
@@ -172,10 +188,10 @@ public class ScheduleItemScene {
 
         scheduleItem.setId((this.scheduleItem != null) ? this.scheduleItem.getId() : -1);
         scheduleItem.setName(this.name.getText());
-        scheduleItem.setTeacher(this.agenda.getTeacherByName(this.teacher.getValue()));
+        scheduleItem.setTeacher(this.agendaModel.getTeacherByName(this.teacher.getValue()));
         scheduleItem.setStart(this.parseTime(this.startHour.getValue(), this.startMinute.getValue()));
         scheduleItem.setEnd(this.parseTime(this.endHour.getValue(), this.endMinute.getValue()));
-        scheduleItem.setClassroom(this.agenda.getClassroomByName(this.classroom.getValue()));
+        scheduleItem.setClassroom(this.agendaModel.getClassroomByName(this.classroom.getValue()));
 
         return scheduleItem;
     }
@@ -199,11 +215,6 @@ public class ScheduleItemScene {
     public void setScheduleItem(ScheduleItem scheduleItem) {
 
         this.scheduleItem = scheduleItem;
-    }
-
-    public void setAgenda(Agenda agenda) {
-
-        this.agenda = agenda;
     }
 
     // other methods

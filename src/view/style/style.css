@@ -33,6 +33,7 @@ VBox {
 
 .scheduleItem-button {
 
+    -fx-pref-width: 125;
     -fx-border-width: 2;
 }
 
@@ -58,20 +59,22 @@ VBox {
     -fx-padding: 0 !important;
 }
 
-.borderless, .button-box {
+.borderless {
 
     -fx-border-width: 0 !important;
-}
-
-.button-box {
-
-    -fx-border-insets: -40 !important;
 }
 
 .add-button {
 
     -fx-border-width: 4 3 3 3;
     -fx-font-size: 18px !important;
+}
+
+.button-box {
+
+    -fx-padding: -1;
+    -fx-border-insets: -1;
+    -fx-border-width: 0;
 }
 
 .button {

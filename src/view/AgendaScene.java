@@ -1,7 +1,9 @@
 package view;
 
 import controller.AgendaUpdate;
-import model.agendaEntity.*;
+import javafx.scene.input.MouseEvent;
+import model.AgendaModel;
+import model.entity.*;
 
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
@@ -21,35 +23,36 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgendaScene {
 
     private static final int BLOCK_WIDTH = 200;
     private static final int BLOCK_HEIGHT = 75;
 
+    private HashMap<Rectangle, ScheduleItem> canvasItemLocations;
+
+    private AgendaModel agendaModel;
+
     private AgendaUpdate observer;
     private Schedule schedule;
-    private Agenda agenda;
 
     private GridPane scheduleGrid;
-    private HBox buttonBox;
     private Canvas canvas;
     private VBox main;
 
+
     public Scene getScene(Stage primaryStage) {
+
+        this.agendaModel = new AgendaModel();
 
         this.buildSchedule();
 
-        this.buttonBox.getStyleClass().add("button-box");
-
-        VBox vBox = new VBox();
-        vBox.getStyleClass().add("borderless");
-        vBox.getChildren().addAll(this.main, this.buttonBox);
-
-        Scene scene = new Scene(new ScrollPane(vBox), this.getSceneWidth(), this.getSceneHeight());
+        Scene scene = new Scene(new ScrollPane(this.main), this.getSceneWidth(), this.getSceneHeight());
         scene.getStylesheets().add("view/style/style.css");
 
-        primaryStage.setTitle("School Agenda Manager: " + this.agenda.getName());
+        primaryStage.setTitle("School Agenda Manager: " + this.agendaModel.getAgenda().getName());
 
         return scene;
     }
@@ -60,11 +63,6 @@ public class AgendaScene {
         this.observer = observer;
     }
 
-    public void setAgenda(Agenda agenda) {
-
-        this.agenda = agenda;
-    }
-
     public void setSchedule(Schedule schedule) {
 
         this.schedule = schedule;
@@ -73,8 +71,9 @@ public class AgendaScene {
     // scene methods
     private void buildSchedule() {
 
+        this.canvasItemLocations = new HashMap<>();
+
         this.scheduleGrid = new GridPane();
-        this.buttonBox = new HBox();
         this.canvas = new Canvas();
         this.main = new VBox();
 
@@ -91,7 +90,7 @@ public class AgendaScene {
         HBox hBox = new HBox();
         hBox.getStyleClass().addAll("paddingless", "borderless");
 
-        for (LocalDateTime date : this.agenda.getScheduleDates()) {
+        for (LocalDateTime date : this.agendaModel.getAllScheduleDates()) {
 
             Button button = new Button(getParsedDate(date));
             button.getStyleClass().add("button");
@@ -106,7 +105,7 @@ public class AgendaScene {
 
     private void setScheduleClassrooms() {
 
-        ArrayList<Classroom> classrooms = this.schedule.getAllClassrooms();
+        ArrayList<Classroom> classrooms = this.agendaModel.getAllClassrooms();
 
         for (int i = 0; i < classrooms.size(); i++) {
 
@@ -142,13 +141,13 @@ public class AgendaScene {
         button.setOnMouseClicked(e -> this.observer.onAgendaScheduleItemCreate());
 
         this.canvas = new Canvas(
-            (BLOCK_WIDTH * this.schedule.getAmountOfClassrooms()),
+            (BLOCK_WIDTH * this.agendaModel.getAmountOfClassrooms()),
             (BLOCK_HEIGHT * (this.schedule.getScheduleLength() + 1))
         );
 
         GridPane.setConstraints(button, 0, 0);
         GridPane.setConstraints(this.canvas, 1, 1);
-        GridPane.setColumnSpan(this.canvas, this.schedule.getAmountOfClassrooms());
+        GridPane.setColumnSpan(this.canvas, this.agendaModel.getAmountOfClassrooms());
         GridPane.setRowSpan(this.canvas, (this.schedule.getScheduleLength() + 1));
 
         this.scheduleGrid.getChildren().addAll(button, this.canvas);
@@ -161,11 +160,10 @@ public class AgendaScene {
         this.drawBorder(graphics);
         this.drawLines(graphics);
 
-        for (int i = 0; i < this.schedule.getAmountOfScheduleItems(); i++) {
-
+        for (int i = 0; i < this.schedule.getAmountOfScheduleItems(); i++)
             this.drawScheduleItem(graphics, this.schedule.getScheduleItem(i));
-            this.drawButtons(this.schedule.getScheduleItem(i));
-        }
+
+        this.canvas.setOnMouseClicked(this::canvasOnClick);
     }
 
     private void drawBorder(FXGraphics2D graphics2D) {
@@ -178,7 +176,7 @@ public class AgendaScene {
         graphics.setColor(Color.GRAY);
         graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {2}, 0));
 
-        for (int a = 1; a < this.schedule.getAmountOfClassrooms(); a++) {
+        for (int a = 1; a < this.agendaModel.getAmountOfClassrooms(); a++) {
 
             graphics.draw(new Line2D.Double((BLOCK_WIDTH * a) + 1, 3, (BLOCK_WIDTH * a) + 1, this.canvas.getHeight() - 2));
         }
@@ -186,32 +184,26 @@ public class AgendaScene {
 
     private void drawScheduleItem(FXGraphics2D graphics, ScheduleItem scheduleItem) {
 
-        double x        = getScheduleItemX(scheduleItem);
-        double y        = getScheduleItemY(scheduleItem);
-        double height   = getScheduleItemHeight(scheduleItem);
+        int x        = getScheduleItemX(scheduleItem);
+        int y        = getScheduleItemY(scheduleItem);
+        int width    = getScheduleItemWidth();
+        int height   = getScheduleItemHeight(scheduleItem);
 
+        Rectangle rectangle = new Rectangle(x, y, width, height);
         graphics.setColor(Color.getHSBColor((float) Math.random(), 1, 1));
-        graphics.fill(new Rectangle2D.Double(x, y, BLOCK_WIDTH - 17, height));
+        graphics.fill(rectangle);
 
         graphics.setColor(Color.BLACK);
-        graphics.drawString(scheduleItem.getString(), (int) (x + 10), (int) (y + 20));
+        graphics.drawString(scheduleItem.getString(), (x + 10), (y + 20));
+
+        this.canvasItemLocations.put(rectangle, scheduleItem);
     }
 
-    private void drawButtons(ScheduleItem scheduleItem) {
+    private void canvasOnClick(MouseEvent e) {
 
-        Button edit = new Button("Edit");
-        edit.getStyleClass().addAll("button", "scheduleItem-button");
-        edit.setOnMouseClicked(e -> this.observer.onAgendaScheduleItemRead(scheduleItem));
-        edit.setTranslateX(this.getButtonX(scheduleItem));
-        edit.setTranslateY(this.getButtonY(scheduleItem));
-
-        Button delete = new Button("Delete");
-        delete.getStyleClass().addAll("button", "scheduleItem-button");
-        delete.setOnMouseClicked(e -> this.observer.onAgendaScheduleItemDelete(scheduleItem));
-        delete.setTranslateX(this.getButtonX(scheduleItem) - 45);
-        delete.setTranslateY(this.getButtonY(scheduleItem) + 31);
-
-        this.buttonBox.getChildren().addAll(edit, delete);
+        for (Map.Entry<Rectangle, ScheduleItem> entry : this.canvasItemLocations.entrySet())
+            if (entry.getKey().contains(e.getX(), e.getY()))
+                this.observer.onAgendaScheduleItemRead(entry.getValue());
     }
 
     // other methods
@@ -227,36 +219,31 @@ public class AgendaScene {
 
     private double getSceneWidth() {
 
-        return /*(this.canvas.getWidth() < 1000) ? (this.canvas.getWidth() + 68) : 1068;*/ 1000;
+        return (this.canvas.getWidth() < 1000) ? (this.canvas.getWidth() + 68) : 1068;
     }
 
     private double getSceneHeight() {
 
-        return /*(this.canvas.getHeight() < 500) ? (this.canvas.getHeight() + 99) : 599;*/ 500;
+        return (this.canvas.getHeight() < 500) ? (this.canvas.getHeight() + 99) : 599;
     }
 
-    private double getScheduleItemX(ScheduleItem item) {
+    private int getScheduleItemX(ScheduleItem item) {
 
-        return ((BLOCK_WIDTH * this.schedule.getClassRoomKey(item.getClassroom())) + 9);
+        return ((BLOCK_WIDTH * this.agendaModel.getClassRoomKey(item.getClassroom())) + 9);
     }
 
-    private double getScheduleItemY(ScheduleItem item) {
+    private int getScheduleItemY(ScheduleItem item) {
 
-        return (BLOCK_HEIGHT * (item.getStartDouble() - this.schedule.getScheduleStart().getHour())) + 2;
+        return (int) (BLOCK_HEIGHT * (item.getStartDouble() - this.schedule.getScheduleStart().getHour())) + 2;
     }
 
-    private double getScheduleItemHeight(ScheduleItem item) {
+    private int getScheduleItemWidth() {
 
-        return (item.getLessonDouble() > 1) ? (BLOCK_HEIGHT * item.getLessonDouble()) : 62;
+        return (BLOCK_WIDTH - 17);
     }
 
-    private double getButtonX(ScheduleItem item) {
+    private int getScheduleItemHeight(ScheduleItem item) {
 
-        return (this.getScheduleItemX(item) + 189) - (78 * this.schedule.getClassRoomKey(item.getClassroom()));
-    }
-
-    private double getButtonY(ScheduleItem item) {
-
-        return -((this.canvas.getHeight() - this.getScheduleItemY(item)) + 3);
+        return (item.getLessonDouble() > 1) ? (int) (BLOCK_HEIGHT * item.getLessonDouble()) : 62;
     }
 }

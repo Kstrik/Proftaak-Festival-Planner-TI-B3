@@ -1,6 +1,6 @@
 package controller;
 
-import model.agendaEntity.ScheduleItem;
+import model.entity.ScheduleItem;
 
 import java.time.LocalDateTime;
 
@@ -10,5 +10,4 @@ public interface AgendaUpdate {
 
     void onAgendaScheduleItemCreate();
     void onAgendaScheduleItemRead(ScheduleItem scheduleItem);
-    void onAgendaScheduleItemDelete(ScheduleItem scheduleItem);
 }

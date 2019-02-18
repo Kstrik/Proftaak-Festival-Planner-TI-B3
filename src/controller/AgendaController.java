@@ -3,23 +3,24 @@ package controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.JSONModel;
-import model.agendaEntity.Agenda;
-import model.agendaEntity.Group;
-import model.agendaEntity.Schedule;
-import model.agendaEntity.ScheduleItem;
+import model.AgendaModel;
+import model.entity.Agenda;
+import model.entity.Group;
+import model.entity.Schedule;
+import model.entity.ScheduleItem;
 import view.AgendaScene;
 import view.ScheduleItemScene;
 
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 
 public class AgendaController extends Application implements AgendaUpdate, ScheduleItemUpdate {
 
+    private AgendaModel agendaModel;
+
     private ScheduleItemScene scheduleItemScene;
     private AgendaScene agendaScene;
     private Stage stage;
-
-    private Agenda agenda;
 
     public void startup() {
 
@@ -30,21 +31,25 @@ public class AgendaController extends Application implements AgendaUpdate, Sched
     @Override
     public void start(Stage stage) {
 
-        JSONModel jsonModel = new JSONModel();
+        this.agendaModel = new AgendaModel();
+        this.stage = stage;
 
         this.scheduleItemScene = new ScheduleItemScene();
-        this.agendaScene = new AgendaScene();
-        this.stage = stage;
-        this.agenda = jsonModel.getAgendaWithJSONFile("testAgenda");
+        this.scheduleItemScene.setObserver(this);
 
-        this.setSceneVariables();
+        this.agendaScene = new AgendaScene();
+        this.agendaScene.setObserver(this);
+        this.agendaScene.setSchedule(this.agendaModel.getFirstSchedule());
+
         this.setAgendaScene();
     }
 
     @Override
     public void onScheduleSelectByDate(LocalDateTime date) {
 
-        this.agendaScene.setSchedule(this.agenda.getScheduleByDate(date));
+        this.agendaScene.setSchedule(this.agendaModel.getCombinedScheduleByDate(date));
+
+        System.out.println("Selected " + date.toString());
 
         this.setAgendaScene();
     }
@@ -62,28 +67,24 @@ public class AgendaController extends Application implements AgendaUpdate, Sched
 
         this.scheduleItemScene.setScheduleItem(scheduleItem);
 
+        System.out.println("Read " + scheduleItem.getName() + " with id " + scheduleItem.getId());
+
         this.setScheduleItemScene();
     }
 
     @Override
-    public void onAgendaScheduleItemDelete(ScheduleItem scheduleItem) {
+    public void onScheduleItemDelete(ScheduleItem scheduleItem) {
 
-        this.agenda.removeScheduleItem(scheduleItem);
+//        this.agenda.removeScheduleItem(scheduleItem);
+        System.out.println("Delete " + scheduleItem.getName() + " with id " + scheduleItem.getId());
 
-        this.setSceneVariables();
         this.setAgendaScene();
     }
 
     @Override
     public void onScheduleItemChange(Group group, LocalDateTime date, ScheduleItem scheduleItem) {
 
-        if (group.getScheduleByDate(date) == null)
-            group.addSchedule(new Schedule(date));
-
-        if (scheduleItem.getId() != -1)
-            this.agenda.removeScheduleItem(scheduleItem);
-
-        group.getScheduleByDate(date).addScheduleItem(scheduleItem);
+        System.out.println("Create/Update " + scheduleItem.getName() + " with id " + scheduleItem.getId());
 
         this.setAgendaScene();
     }
@@ -91,20 +92,12 @@ public class AgendaController extends Application implements AgendaUpdate, Sched
     @Override
     public void onScheduleItemCancel() {
 
+        System.out.println("Create new Schedule item");
+
         this.setAgendaScene();
     }
 
     // methods
-    public void setSceneVariables() {
-
-        this.agendaScene.setObserver(this);
-        this.agendaScene.setAgenda(this.agenda);
-        this.agendaScene.setSchedule(this.agenda.getFirstSchedule());
-
-        this.scheduleItemScene.setAgenda(this.agenda);
-        this.scheduleItemScene.setObserver(this);
-    }
-
     public void setAgendaScene() {
 
         this.setScene(this.agendaScene.getScene(this.stage));

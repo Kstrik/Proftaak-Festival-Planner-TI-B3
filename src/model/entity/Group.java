@@ -1,4 +1,4 @@
-package model.agendaEntity;
+package model.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,15 +47,6 @@ public class Group {
     public Member getPerson(int key) {
 
         return this.members.get(key);
-    }
-
-    public Schedule getScheduleByDate(LocalDateTime date) {
-
-        for (Schedule schedule : this.schedules)
-            if (schedule.getDate().equals(date))
-                return schedule;
-
-        return null;
     }
 
     public Schedule getSchedule(int key) {

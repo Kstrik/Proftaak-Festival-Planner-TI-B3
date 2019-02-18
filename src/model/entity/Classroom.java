@@ -1,4 +1,4 @@
-package model.agendaEntity;
+package model.entity;
 
 public class Classroom {
 

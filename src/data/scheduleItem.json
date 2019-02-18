@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "name": "Wiskunde",
+    "classroom": {
+      "id": 1,
+      "name": "LD103"
+    },
+    "start": "2013-12-31T11:00:00",
+    "end": "2013-12-31T14:05:00",
+    "teacher": {
+      "id": 2,
+      "isTeacher": true,
+      "name": "Pieter",
+      "gender": "male",
+      "memberNumber": 123
+    }
+  },
+  {
+    "id": 2,
+    "name": "P&OC2",
+    "classroom": {
+      "id": 4,
+      "name": "LD315"
+    },
+    "start": "2013-12-31T08:45:00",
+    "end": "2013-12-31T10:20:00",
+    "teacher": {
+      "id": 3,
+      "isTeacher": true,
+      "name": "Genevieve",
+      "gender": "female",
+      "memberNumber": 12
+    }
+  },
+  {
+    "id": 3,
+    "name": "Tutor 1.3 B3",
+    "classroom": {
+      "id": 2,
+      "name": "LD310"
+    },
+    "start": "2013-12-31T11:30:00",
+    "end": "2013-12-31T13:10:00",
+    "teacher": {
+      "id": 4,
+      "isTeacher": true,
+      "name": "Paul",
+      "gender": "male",
+      "memberNumber": 88
+    }
+  },
+  {
+    "id": 3,
+    "name": "Tutor 1.3 A6",
+    "classroom": {
+      "id": 2,
+      "name": "LD310"
+    },
+    "start": "2013-12-31T13:20:00",
+    "end": "2013-12-31T14:50:00",
+    "teacher": {
+      "id": 10,
+      "isTeacher": true,
+      "name": "Paul",
+      "gender": "male",
+      "memberNumber": 88
+    }
+  },
+  {
+    "id": 4,
+    "name": "Wiskunde",
+    "classroom": {
+      "id": 1,
+      "name": "LD103"
+    },
+    "start": "2013-12-31T11:50:00",
+    "end": "2013-12-31T14:00:00",
+    "teacher": {
+      "id": 2,
+      "isTeacher": true,
+      "name": "Pieter",
+      "gender": "male",
+      "memberNumber": 123
+    }
+  }
+]
