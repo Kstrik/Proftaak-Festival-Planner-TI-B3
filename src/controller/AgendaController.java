@@ -4,14 +4,11 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.AgendaModel;
-import model.entity.Agenda;
 import model.entity.Group;
-import model.entity.Schedule;
 import model.entity.ScheduleItem;
 import view.AgendaScene;
 import view.ScheduleItemScene;
 
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 
 public class AgendaController extends Application implements AgendaUpdate, ScheduleItemUpdate {
@@ -75,7 +72,6 @@ public class AgendaController extends Application implements AgendaUpdate, Sched
     @Override
     public void onScheduleItemDelete(ScheduleItem scheduleItem) {
 
-//        this.agenda.removeScheduleItem(scheduleItem);
         System.out.println("Delete " + scheduleItem.getName() + " with id " + scheduleItem.getId());
 
         this.setAgendaScene();
@@ -98,17 +94,17 @@ public class AgendaController extends Application implements AgendaUpdate, Sched
     }
 
     // methods
-    public void setAgendaScene() {
+    private void setAgendaScene() {
 
         this.setScene(this.agendaScene.getScene(this.stage));
     }
 
-    public void setScheduleItemScene() {
+    private void setScheduleItemScene() {
 
         this.setScene(this.scheduleItemScene.getScene(this.stage));
     }
 
-    public void setScene(Scene scene) {
+    private void setScene(Scene scene) {
 
         stage.setScene(scene);
         stage.show();
