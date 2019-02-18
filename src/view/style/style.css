@@ -1,0 +1,96 @@
+Gridpane, Canvas, VBox, .classroom-label, .button, .main {
+
+    -fx-border-width: 3;
+    -fx-border-insets: -1;
+    -fx-border-color: black;
+}
+
+ComboBox, TextField {
+
+    -fx-pref-width: 174;
+}
+
+Pane {
+
+    -fx-border-style: dashed inside;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: grey;
+    -fx-pref-height: 20;
+}
+
+HBox {
+
+    -fx-padding: 3;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color: black;
+}
+
+VBox {
+
+    -fx-pref-height: 75;
+    -fx-min-width: 40;
+}
+
+.scheduleItem-button {
+
+    -fx-pref-width: 125;
+    -fx-border-width: 2;
+}
+
+.scheduleItem-label {
+
+    -fx-padding: 5;
+    -fx-pref-width: 100;
+}
+
+.classroom-label {
+
+    -fx-pref-height: 43;
+    -fx-pref-width: 200;
+}
+
+.time-comboBox {
+
+    -fx-pref-width: 87 !important;
+}
+
+.paddingless {
+
+    -fx-padding: 0 !important;
+}
+
+.borderless {
+
+    -fx-border-width: 0 !important;
+}
+
+.add-button {
+
+    -fx-border-width: 4 3 3 3;
+    -fx-font-size: 18px !important;
+}
+
+.button-box {
+
+    -fx-padding: -1;
+    -fx-border-insets: -1;
+    -fx-border-width: 0;
+}
+
+.button {
+
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-pref-height: 30;
+    -fx-font-size: 10px;
+}
+.button:hover {
+
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+.main {
+
+    -fx-border-insets: 3;
+}
