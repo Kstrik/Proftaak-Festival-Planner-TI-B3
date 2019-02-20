@@ -5,6 +5,7 @@ import model.entity.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.time.LocalDateTime;
@@ -12,29 +13,20 @@ import java.util.ArrayList;
 
 public class JSONModel {
 
-    public JSONArray readJSONArray(String fileName) {
-
-        JSONArray file = null;
-
-        JSONParser parser = new JSONParser();
-
-        String path = "src/data/" + fileName + ".json";
-
-        try                 { file = (JSONArray) parser.parse(new FileReader(path)); }
-        catch (Exception e) { e.printStackTrace(); }
-
-        return file;
-    }
-
-    public JSONObject readJSONObject(String fileName) {
+    // TODO: delete when database connection is ready
+    public JSONObject parseJSON(String json) {
 
         JSONObject file = null;
         JSONParser parser = new JSONParser();
 
-        String path = "src/data/" + fileName + ".json";
+        try {
 
-        try                 { file = (JSONObject) parser.parse(new FileReader(path)); }
-        catch (Exception e) { e.printStackTrace(); }
+            file = (JSONObject) parser.parse(json);
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
 
         return file;
     }
@@ -49,7 +41,7 @@ public class JSONModel {
         return agenda;
     }
 
-    public ArrayList<Group> convertJSONGroups(JSONArray jsonGroups) {
+    private ArrayList<Group> convertJSONGroups(JSONArray jsonGroups) {
 
         ArrayList<Group> groups = new ArrayList<>();
 
@@ -59,7 +51,7 @@ public class JSONModel {
         return groups;
     }
 
-    public Group convertJSONGroup(JSONObject jsonGroup) {
+    private Group convertJSONGroup(JSONObject jsonGroup) {
 
         Group group = new Group();
         group.setId(Math.toIntExact((long) jsonGroup.get("id")));
@@ -71,29 +63,29 @@ public class JSONModel {
         return group;
     }
 
-    public ArrayList<Member> convertJSONMembers(JSONArray jsonMembers) {
+    private ArrayList<Person> convertJSONMembers(JSONArray jsonMembers) {
 
-        ArrayList<Member> members = new ArrayList<>();
+        ArrayList<Person> people = new ArrayList<>();
 
         for (Object objectMember : jsonMembers)
-            members.add(this.convertJSONMember((JSONObject) objectMember));
+            people.add(this.convertJSONMember((JSONObject) objectMember));
 
-        return members;
+        return people;
     }
 
-    public Member convertJSONMember(JSONObject jsonMember) {
+    private Person convertJSONMember(JSONObject jsonMember) {
 
-        Member member = new Member();
-        member.setId(Math.toIntExact((long) jsonMember.get("id")));
-        member.setName((String) jsonMember.get("name"));
-        member.setGender((String) jsonMember.get("gender"));
-        member.setMemberID((long) jsonMember.get("memberNumber"));
-        member.setIsTeacher((boolean) jsonMember.get("isTeacher"));
+        Person person = new Person();
+        person.setId(Math.toIntExact((long) jsonMember.get("id")));
+        person.setIsTeacher((boolean) jsonMember.get("isTeacher"));
+        person.setName((String) jsonMember.get("name"));
+        person.setGender((String) jsonMember.get("gender"));
+        person.setMemberID((long) jsonMember.get("personID"));
 
-        return member;
+        return person;
     }
 
-    public ArrayList<Schedule> convertJSONSchedules(JSONArray jsonSchedules) {
+    private ArrayList<Schedule> convertJSONSchedules(JSONArray jsonSchedules) {
 
         ArrayList<Schedule> schedules = new ArrayList<>();
 
@@ -103,7 +95,7 @@ public class JSONModel {
         return schedules;
     }
 
-    public Schedule convertJSONSchedule(JSONObject jsonSchedule) {
+    private Schedule convertJSONSchedule(JSONObject jsonSchedule) {
 
         Schedule schedule = new Schedule();
         schedule.setId(Math.toIntExact((long) jsonSchedule.get("id")));
@@ -113,7 +105,7 @@ public class JSONModel {
         return schedule;
     }
 
-    public ArrayList<ScheduleItem> convertJSONScheduleItems(JSONArray jsonScheduleItems) {
+    private ArrayList<ScheduleItem> convertJSONScheduleItems(JSONArray jsonScheduleItems) {
 
         ArrayList<ScheduleItem> scheduleItems = new ArrayList<>();
 
@@ -123,7 +115,7 @@ public class JSONModel {
         return scheduleItems;
     }
 
-    public ScheduleItem convertJSONScheduleItem(JSONObject jsonScheduleItem) {
+    private ScheduleItem convertJSONScheduleItem(JSONObject jsonScheduleItem) {
 
         ScheduleItem scheduleItem = new ScheduleItem();
         scheduleItem.setId(Math.toIntExact((long) jsonScheduleItem.get("id")));
@@ -136,7 +128,7 @@ public class JSONModel {
         return scheduleItem;
     }
 
-    public ArrayList<Classroom> convertJSONClassrooms(JSONArray jsonClassrooms) {
+    private ArrayList<Classroom> convertJSONClassrooms(JSONArray jsonClassrooms) {
 
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
@@ -146,7 +138,7 @@ public class JSONModel {
         return classrooms;
     }
 
-    public Classroom convertJSONClassroom(JSONObject jsonClassroom) {
+    private Classroom convertJSONClassroom(JSONObject jsonClassroom) {
 
         Classroom classroom = new Classroom();
         classroom.setId(Math.toIntExact((long) jsonClassroom.get("id")));

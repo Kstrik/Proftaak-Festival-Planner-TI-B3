@@ -1,17 +1,16 @@
 package model.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Group {
 
     private int id;
     private String name;
-    private ArrayList<Member> members;
+    private ArrayList<Person> members;
     private ArrayList<Schedule> schedules;
     private boolean isTeacherGroup = false;
 
-    public Group(int id, String name, ArrayList<Member> members, ArrayList<Schedule> schedules, boolean isTeacherGroup) {
+    public Group(int id, String name, ArrayList<Person> members, ArrayList<Schedule> schedules, boolean isTeacherGroup) {
 
         this.id = id;
         this.name = name;
@@ -34,9 +33,9 @@ public class Group {
         return false;
     }
 
-    public void addMember(Member member) {
+    public void addMember(Person person) {
 
-        this.members.add(member);
+        this.members.add(person);
     }
 
     public void addSchedule(Schedule schedule) {
@@ -44,7 +43,7 @@ public class Group {
         this.schedules.add(schedule);
     }
 
-    public Member getPerson(int key) {
+    public Person getPerson(int key) {
 
         return this.members.get(key);
     }
@@ -65,7 +64,7 @@ public class Group {
         return this.name;
     }
 
-    public ArrayList<Member> getMembers() {
+    public ArrayList<Person> getMembers() {
 
         return this.members;
     }
@@ -91,7 +90,7 @@ public class Group {
         this.name = name;
     }
 
-    public void setMembers(ArrayList<Member> members) {
+    public void setMembers(ArrayList<Person> members) {
 
         this.members = members;
     }
@@ -104,5 +103,54 @@ public class Group {
     public void setTeacherGroup(boolean teacherGroup) {
 
         isTeacherGroup = teacherGroup;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+
+        return
+            "{\n" +
+                "\"id\": \"" + this.id + "\",\n" +
+                "\"name\": \"" + this.name + "\",\n" +
+                "\"members\": \"" + this.membersToString() + "\",\n" +
+                "\"schedules\": \"" + this.schedulesToString() + "\",\n" +
+                "\"isTeacherGroup\": \"" + this.isTeacherGroup + "\"\n" +
+            "}"
+        ;
+    }
+
+    private String membersToString() {
+
+        StringBuilder members = new StringBuilder();
+
+        for (int i = 0; i < this.members.size(); i++)
+            if (i == (this.members.size() - 1))
+                members.append(this.members.get(i).toString()).append("\n");
+            else
+                members.append(this.members.get(i).toString()).append(",\n");
+
+        return
+            "[\n" +
+                members.toString() +
+            "]"
+        ;
+    }
+
+    private String schedulesToString() {
+
+        StringBuilder schedules = new StringBuilder();
+
+        for (int i = 0; i < this.schedules.size(); i++)
+            if (i == (this.schedules.size() - 1))
+                schedules.append(this.schedules.get(i).toString()).append(",\n");
+            else
+                schedules.append(this.schedules.get(i).toString()).append("\n");
+
+        return
+            "[\n" +
+                schedules.toString() +
+            "]"
+        ;
     }
 }

@@ -1,10 +1,10 @@
-import controller.AgendaController;
+import controller.Controller;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        AgendaController agendaController = new AgendaController();
-        agendaController.startup();
+        Controller controller = new Controller();
+        controller.startup();
     }
 }

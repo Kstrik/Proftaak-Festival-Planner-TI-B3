@@ -84,9 +84,9 @@ public class Schedule {
         return this.scheduleItems.size();
     }
 
-    public ArrayList<Member> getAllTeachers() {
+    public ArrayList<Person> getAllTeachers() {
 
-        ArrayList<Member> teachers = new ArrayList<>();
+        ArrayList<Person> teachers = new ArrayList<>();
 
         for (ScheduleItem scheduleItem : this.scheduleItems)
             if (!teachers.contains(scheduleItem.getTeacher()) && scheduleItem.getTeacher().isTeacher())
@@ -146,5 +146,35 @@ public class Schedule {
     public void setScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
 
         this.scheduleItems = scheduleItems;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+
+        return
+            "{\n"+
+                "\"id\": \"" + this.id + "\",\n" +
+                "\"date\": \"" + this.date.toString() + "\",\n" +
+                "\"scheduleItems\": \"" + this.scheduleItemsToString() + "\"\n" +
+            "}"
+        ;
+    }
+
+    private String scheduleItemsToString() {
+
+        StringBuilder scheduleItems = new StringBuilder();
+
+        for (int i = 0; i < this.scheduleItems.size(); i++)
+            if (i == (this.scheduleItems.size() - 1))
+                scheduleItems.append(this.scheduleItems.get(i).toString()).append("\n");
+            else
+                scheduleItems.append(this.scheduleItems.get(i).toString()).append(",\n");
+
+        return
+            "[" +
+                scheduleItems.toString() +
+            "]"
+        ;
     }
 }

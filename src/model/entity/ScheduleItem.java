@@ -6,11 +6,11 @@ public class ScheduleItem {
 
     private int id;
     private String name;
-    private Member teacher;
+    private Person teacher;
     private LocalDateTime start, end;
     private Classroom classroom;
 
-    public ScheduleItem(int id, String name, LocalDateTime start, LocalDateTime end, Member teacher, Classroom classroom) {
+    public ScheduleItem(int id, String name, LocalDateTime start, LocalDateTime end, Person teacher, Classroom classroom) {
 
         this.id = id;
         this.name = name;
@@ -80,7 +80,7 @@ public class ScheduleItem {
         return name;
     }
 
-    public Member getTeacher() {
+    public Person getTeacher() {
 
         return teacher;
     }
@@ -111,7 +111,7 @@ public class ScheduleItem {
         this.name = name;
     }
 
-    public void setTeacher(Member teacher) {
+    public void setTeacher(Person teacher) {
 
         this.teacher = teacher;
     }
@@ -129,5 +129,21 @@ public class ScheduleItem {
     public void setClassroom(Classroom classroom) {
 
         this.classroom = classroom;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+
+        return
+            "{\n" +
+                "\"id\": \"" + this.id + "\",\n" +
+                "\"name\": \"" + this.name + "\",\n" +
+                "\"classroom\": \"" + this.classroom.toString() + "\",\n" +
+                "\"start\": \"" + this.start.toString() + "\",\n" +
+                "\"end\": \"" + this.end.toString() + "\",\n" +
+                "\"teacher\": \"" + this.teacher.toString() + "\"\n" +
+            "}"
+        ;
     }
 }

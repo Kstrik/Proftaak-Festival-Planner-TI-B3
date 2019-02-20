@@ -11,7 +11,7 @@
           "isTeacher": false,
           "name": "Wessel van Zeggeren",
           "gender": "male",
-          "memberNumber": 2134717
+          "personID": 2134717
         }
       ],
       "schedules": [
@@ -33,7 +33,7 @@
                 "isTeacher": true,
                 "name": "Pieter",
                 "gender": "male",
-                "memberNumber": 123
+                "personID": 123
               }
             },
             {
@@ -50,7 +50,7 @@
                 "isTeacher": true,
                 "name": "Genevieve",
                 "gender": "female",
-                "memberNumber": 12
+                "personID": 12
               }
             },
             {
@@ -67,7 +67,7 @@
                 "isTeacher": true,
                 "name": "Paul",
                 "gender": "male",
-                "memberNumber": 88
+                "personID": 88
               }
             }
           ]
@@ -84,7 +84,7 @@
           "isTeacher": false,
           "name": "Mark Baaj",
           "gender": "male",
-          "memberNumber": 1234567
+          "personID": 1234567
         }
       ],
       "schedules": [
@@ -106,7 +106,7 @@
                 "isTeacher": true,
                 "name": "Pieter",
                 "gender": "male",
-                "memberNumber": 123
+                "personID": 123
               }
             }
           ]
@@ -129,7 +129,7 @@
                 "isTeacher": true,
                 "name": "Paul",
                 "gender": "male",
-                "memberNumber": 88
+                "personID": 88
               }
             }
           ]
