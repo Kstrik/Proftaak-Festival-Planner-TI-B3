@@ -1,10 +1,11 @@
-import controller.Controller;
+import controller.Application;
+import controller.StartApplication;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Controller controller = new Controller();
+        StartApplication controller = new Application();
         controller.startup();
     }
 }

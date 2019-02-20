@@ -31,6 +31,8 @@ public class ScheduleItemScene {
     private ComboBox<Integer> endHour,   endMinute;
     private ComboBox<String> classroom;
 
+    private Label error;
+
     // main function
     public Scene getScene(Stage primaryStage) {
 
@@ -66,6 +68,7 @@ public class ScheduleItemScene {
         this.main = new VBox();
 
         this.setInputs();
+        this.setErrorLabel();
         this.setButtons();
         this.setScheduleItemData();
     }
@@ -147,37 +150,60 @@ public class ScheduleItemScene {
         this.main.getStyleClass().addAll("main");
     }
 
+    private void setErrorLabel() {
+
+        this.error = new Label("");
+        this.error.getStyleClass().add("error");
+        this.main.getChildren().add(new HBox(this.error));
+    }
+
     private void setButtons() {
+
+        HBox buttonBox = new HBox();
+        buttonBox.getStyleClass().add("button-box");
+
+        buttonBox.getChildren().add(this.getCancelButton());
+        buttonBox.getChildren().add(this.getApplyButton());
+
+        if (this.scheduleItem != null)
+            buttonBox.getChildren().add(this.getDeleteButton());
+
+        this.main.getChildren().add(buttonBox);
+    }
+
+    private Button getCancelButton() {
 
         Button cancel = new Button("Cancel");
         cancel.getStyleClass().add("button");
         cancel.setOnMouseClicked(e -> this.observer.onScheduleItemCancel());
 
+        return cancel;
+    }
+
+    private Button getApplyButton() {
+
         Button apply = new Button("Apply");
         apply.getStyleClass().add("button");
-        apply.setOnMouseClicked(e -> this.observer.onScheduleItemChange(
+        apply.setOnMouseClicked(e -> {
 
-            this.agenda.getGroupByName(this.group.getValue()),
-            this.parseTime(0, 0),
-            this.getScheduleItem()
-        ));
+            if (this.validateInput())
+                this.observer.onScheduleItemChange(
+                    this.agenda.getGroupByName(this.group.getValue()).getId(),
+                    this.parseTime(0, 0),
+                    this.getScheduleItem()
+                );
+        });
 
-        HBox buttonBox = new HBox();
-        buttonBox.getStyleClass().add("button-box");
+        return apply;
+    }
 
-        if (this.scheduleItem != null) {
+    private Button getDeleteButton() {
 
-            Button delete = new Button("delete");
-            delete.getStyleClass().add("button");
-            delete.setOnMouseClicked(e -> this.observer.onScheduleItemDelete(this.getScheduleItem()));
+        Button delete = new Button("delete");
+        delete.getStyleClass().add("button");
+        delete.setOnMouseClicked(e -> this.observer.onScheduleItemDelete(this.scheduleItem.getId()));
 
-            buttonBox.getChildren().addAll(cancel, delete, apply);
-        } else {
-
-            buttonBox.getChildren().addAll(cancel, apply);
-        }
-
-        this.main.getChildren().add(buttonBox);
+        return delete;
     }
 
     private void setScheduleItemData() {
@@ -194,6 +220,21 @@ public class ScheduleItemScene {
             this.endMinute.setValue(this.scheduleItem.getEnd().getMinute());
             this.classroom.setValue(this.scheduleItem.getClassroom().getName());
         }
+    }
+
+    private boolean validateInput() {
+
+        if (!this.group.getValue()       .equals("")) {this.setError("group");           return false;}
+        if ( this.date.getValue()        != null)     {this.setError("date");            return false;}
+        if (!this.name.getText()         .equals("")) {this.setError("name");            return false;}
+        if (!this.teacher.getValue()     .equals("")) {this.setError("teacher");         return false;}
+        if ( this.startHour.getValue()   != null)     {this.setError("starting hour");   return false;}
+        if ( this.startMinute.getValue() != null)     {this.setError("starting minute"); return false;}
+        if ( this.endHour.getValue()     != null)     {this.setError("ending hour");     return false;}
+        if ( this.endMinute.getValue()   != null)     {this.setError("ending minute");   return false;}
+        if (!this.classroom.getValue()   .equals("")) {this.setError("classroom");       return false;}
+
+        return true;
     }
 
     private ScheduleItem getScheduleItem() {
@@ -234,5 +275,10 @@ public class ScheduleItemScene {
             number.add(i);
 
         return number;
+    }
+
+    private void setError(String keyWord) {
+
+        this.error.setText("The " + keyWord + " has not been filled in!");
     }
 }

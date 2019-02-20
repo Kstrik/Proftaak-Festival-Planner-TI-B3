@@ -1,19 +1,18 @@
 package controller;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.HTTPModel;
-import model.JSONModel;
 import model.entity.Agenda;
 import model.entity.Group;
 import model.entity.ScheduleItem;
 import view.AgendaScene;
 import view.ScheduleItemScene;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class Controller extends Application implements AgendaUpdate, ScheduleItemUpdate {
+public class Application extends javafx.application.Application implements AgendaUpdate, ScheduleItemUpdate, StartApplication {
 
     private HTTPModel httpModel;
 
@@ -23,38 +22,28 @@ public class Controller extends Application implements AgendaUpdate, ScheduleIte
     private AgendaScene agendaScene;
     private Stage stage;
 
+    // startup
+    @Override
     public void startup() {
 
-        launch(Controller.class);
+        launch(Application.class);
     }
 
-    // overrides
     @Override
     public void start(Stage stage) {
 
         this.httpModel = new HTTPModel();
 
-        try {
+        this.stage = stage;
 
-            this.agenda = this.httpModel.getAgenda();
-
-            this.stage = stage;
-
-            this.setSceneVariables();
-            this.setAgendaScene();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
+        this.setAgendaScene();
     }
 
+    // overrides
     @Override
     public void onScheduleSelectByDate(LocalDateTime date) {
 
         this.agendaScene.setSchedule(this.agenda.getCombinedScheduleByDate(date));
-
-        System.out.println("Selected " + date.toString());
 
         this.setAgendaScene();
     }
@@ -72,37 +61,51 @@ public class Controller extends Application implements AgendaUpdate, ScheduleIte
 
         this.scheduleItemScene.setScheduleItem(scheduleItem);
 
-        System.out.println("Read " + scheduleItem.getName() + " with id " + scheduleItem.getId());
-
         this.setScheduleItemScene();
     }
 
     @Override
-    public void onScheduleItemDelete(ScheduleItem scheduleItem) {
+    public void onScheduleItemDelete(int scheduleItemId) {
 
-        System.out.println("Delete " + scheduleItem.getName() + " with id " + scheduleItem.getId());
+        try {
 
-        this.setAgendaScene();
+            this.httpModel.deleteScheduleItem(scheduleItemId);
+            this.setAgendaScene();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onScheduleItemChange(Group group, LocalDateTime date, ScheduleItem scheduleItem) {
+    public void onScheduleItemChange(int groupId, LocalDateTime date, ScheduleItem scheduleItem) {
 
-        System.out.println("Create/Update " + scheduleItem.getName() + " with id " + scheduleItem.getId());
+        try {
 
-        this.setAgendaScene();
+            if (scheduleItem.getId() == -1)
+                this.httpModel.createScheduleItem(groupId, date, scheduleItem);
+            else
+                this.httpModel.updateScheduleItem(groupId, date, scheduleItem.getId(), scheduleItem);
+
+            this.setAgendaScene();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onScheduleItemCancel() {
 
-        System.out.println("Create new Schedule item");
-
         this.setAgendaScene();
     }
 
     // methods
-    private void setSceneVariables() {
+    private void updateAgenda() {
+
+        this.setAgenda();
 
         this.scheduleItemScene = new ScheduleItemScene();
         this.scheduleItemScene.setAgenda(this.agenda);
@@ -112,6 +115,18 @@ public class Controller extends Application implements AgendaUpdate, ScheduleIte
         this.agendaScene.setAgenda(this.agenda);
         this.agendaScene.setSchedule(this.agenda.getFirstSchedule());
         this.agendaScene.setObserver(this);
+    }
+
+    private void setAgenda() {
+
+        try {
+
+            this.agenda = this.httpModel.getAgenda();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     private void setAgendaScene() {
@@ -125,6 +140,8 @@ public class Controller extends Application implements AgendaUpdate, ScheduleIte
     }
 
     private void setScene(Scene scene) {
+
+        this.updateAgenda();
 
         this.stage.setScene(scene);
         this.stage.show();

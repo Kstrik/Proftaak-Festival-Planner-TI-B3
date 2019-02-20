@@ -35,10 +35,12 @@ public class HTTPModel {
         this.sendRequest(con);
     }
 
-    public void updateScheduleItem(int scheduleItemId, ScheduleItem scheduleItem) throws IOException {
+    public void updateScheduleItem(int groupId, LocalDateTime scheduleDate, int scheduleItemId, ScheduleItem scheduleItem) throws IOException {
 
         HttpURLConnection con = this.buildConnection("update-ScheduleItem", "POST");
 
+        con.setRequestProperty("groupId", Integer.toString(groupId));
+        con.setRequestProperty("date", scheduleDate.toString());
         con.setRequestProperty("scheduleItemId", Integer.toString(scheduleItemId));
         con.setRequestProperty("scheduleItem", scheduleItem.toString());
 
