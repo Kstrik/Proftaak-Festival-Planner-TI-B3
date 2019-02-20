@@ -6,6 +6,7 @@ import model.entity.ScheduleItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -29,17 +30,28 @@ public class HTTPModel {
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
-        con.setRequestProperty("schedule", scheduleItem.toString());
+        con.setRequestProperty("scheduleItem", scheduleItem.toString());
+
+        this.sendRequest(con);
     }
 
-    public void updateScheduleItem() throws IOException {
+    public void updateScheduleItem(int scheduleItemId, ScheduleItem scheduleItem) throws IOException {
 
         HttpURLConnection con = this.buildConnection("update-ScheduleItem", "POST");
+
+        con.setRequestProperty("scheduleItemId", Integer.toString(scheduleItemId));
+        con.setRequestProperty("scheduleItem", scheduleItem.toString());
+
+        this.sendRequest(con);
     }
 
-    public void deleteScheduleItem() throws IOException {
+    public void deleteScheduleItem(int scheduleItemId) throws IOException {
 
         HttpURLConnection con = this.buildConnection("delete-ScheduleItem", "POST");
+
+        con.setRequestProperty("scheduleItemId", Integer.toString(scheduleItemId));
+
+        this.sendRequest(con);
     }
 
     private HttpURLConnection buildConnection(String path, String method) throws IOException {
@@ -72,5 +84,12 @@ public class HTTPModel {
         }
 
         return response.toString();
+    }
+
+    private void sendRequest(HttpURLConnection con) throws IOException {
+
+        OutputStream output = con.getOutputStream();
+        output.flush();
+        output.close();
     }
 }

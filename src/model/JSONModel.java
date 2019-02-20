@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class JSONModel {
 
-    // TODO: delete when database connection is ready
     public JSONObject parseJSON(String json) {
 
         JSONObject file = null;
