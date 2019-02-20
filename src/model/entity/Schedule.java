@@ -7,20 +7,20 @@ public class Schedule {
 
     private int id;
     private LocalDateTime date;
-    private ArrayList<ScheduleItem> scheduleItems;
+    private ArrayList<Item> items;
 
-    public Schedule(int id, LocalDateTime date, ArrayList<ScheduleItem> scheduleItems) {
+    public Schedule(int id, LocalDateTime date, ArrayList<Item> items) {
 
         this.id = id;
         this.date = date;
-        this.scheduleItems = scheduleItems;
+        this.items = items;
     }
 
     public Schedule(int id, LocalDateTime date) {
 
         this.id = id;
         this.date = date;
-        this.scheduleItems = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     public Schedule() {
@@ -28,20 +28,20 @@ public class Schedule {
     }
 
     // methods
-    public void addScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+    public void addItems(ArrayList<Item> items) {
 
-        this.scheduleItems.addAll(scheduleItems);
+        this.items.addAll(items);
     }
 
-    public void addScheduleItem(ScheduleItem scheduleItem) {
+    public void addItem(Item item) {
 
-        this.scheduleItems.add(scheduleItem);
+        this.items.add(item);
     }
 
-    public boolean containsScheduleItem(ScheduleItem searchedScheduleItem) {
+    public boolean containsItem(Item searchedItem) {
 
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (scheduleItem.getId() == searchedScheduleItem.getId())
+        for (Item item : this.items)
+            if (item.getId() == searchedItem.getId())
                 return true;
         
         return false;
@@ -49,22 +49,22 @@ public class Schedule {
 
     public LocalDateTime getScheduleStart() {
 
-        LocalDateTime time = this.scheduleItems.get(0).getStart();
+        LocalDateTime time = this.items.get(0).getStart();
 
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (time.isAfter(scheduleItem.getStart()))
-                time = scheduleItem.getStart();
+        for (Item item : this.items)
+            if (time.isAfter(item.getStart()))
+                time = item.getStart();
 
         return time;
     }
 
     public LocalDateTime getScheduleEnd() {
 
-        LocalDateTime time = this.scheduleItems.get(0).getEnd();
+        LocalDateTime time = this.items.get(0).getEnd();
 
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (time.isBefore(scheduleItem.getEnd()))
-                time = scheduleItem.getEnd();
+        for (Item item : this.items)
+            if (time.isBefore(item.getEnd()))
+                time = item.getEnd();
 
         return time;
     }
@@ -74,23 +74,23 @@ public class Schedule {
         return (getScheduleEnd().getHour() - getScheduleStart().getHour());
     }
 
-    public ScheduleItem getScheduleItem(int key) {
+    public Item getItem(int key) {
 
-        return this.scheduleItems.get(key);
+        return this.items.get(key);
     }
 
-    public int getAmountOfScheduleItems() {
+    public int getAmountOfItems() {
 
-        return this.scheduleItems.size();
+        return this.items.size();
     }
 
     public ArrayList<Person> getAllTeachers() {
 
         ArrayList<Person> teachers = new ArrayList<>();
 
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (!teachers.contains(scheduleItem.getTeacher()) && scheduleItem.getTeacher().isTeacher())
-                teachers.add(scheduleItem.getTeacher());
+        for (Item item : this.items)
+            if (!teachers.contains(item.getTeacher()) && item.getTeacher().isTeacher())
+                teachers.add(item.getTeacher());
 
         return teachers;
     }
@@ -104,9 +104,9 @@ public class Schedule {
 
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
-        for(ScheduleItem scheduleItem : this.scheduleItems)
-            if (!classrooms.contains(scheduleItem.getClassroom()))
-                classrooms.add(scheduleItem.getClassroom());
+        for(Item item : this.items)
+            if (!classrooms.contains(item.getClassroom()))
+                classrooms.add(item.getClassroom());
 
         return classrooms;
     }
@@ -127,9 +127,9 @@ public class Schedule {
         return date;
     }
 
-    public ArrayList<ScheduleItem> getScheduleItems() {
+    public ArrayList<Item> getItems() {
 
-        return scheduleItems;
+        return items;
     }
 
     // setters
@@ -143,9 +143,9 @@ public class Schedule {
         this.date = date;
     }
 
-    public void setScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+    public void setItems(ArrayList<Item> items) {
 
-        this.scheduleItems = scheduleItems;
+        this.items = items;
     }
 
     // toString
@@ -156,24 +156,24 @@ public class Schedule {
             "{\n"+
                 "\"id\": \"" + this.id + "\",\n" +
                 "\"date\": \"" + this.date.toString() + "\",\n" +
-                "\"scheduleItems\": \"" + this.scheduleItemsToString() + "\"\n" +
+                "\"Items\": \"" + this.ItemsToString() + "\"\n" +
             "}"
         ;
     }
 
-    private String scheduleItemsToString() {
+    private String ItemsToString() {
 
-        StringBuilder scheduleItems = new StringBuilder();
+        StringBuilder Items = new StringBuilder();
 
-        for (int i = 0; i < this.scheduleItems.size(); i++)
-            if (i == (this.scheduleItems.size() - 1))
-                scheduleItems.append(this.scheduleItems.get(i).toString()).append("\n");
+        for (int i = 0; i < this.items.size(); i++)
+            if (i == (this.items.size() - 1))
+                Items.append(this.items.get(i).toString()).append("\n");
             else
-                scheduleItems.append(this.scheduleItems.get(i).toString()).append(",\n");
+                Items.append(this.items.get(i).toString()).append(",\n");
 
         return
             "[" +
-                scheduleItems.toString() +
+                Items.toString() +
             "]"
         ;
     }

@@ -3,22 +3,22 @@ package controller;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.HTTPModel;
+import model.JSONModel;
 import model.entity.Agenda;
-import model.entity.Group;
-import model.entity.ScheduleItem;
+import model.entity.Item;
 import view.AgendaScene;
-import view.ScheduleItemScene;
+import view.ItemScene;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class Application extends javafx.application.Application implements AgendaUpdate, ScheduleItemUpdate, StartApplication {
+public class Application extends javafx.application.Application implements AgendaUpdate, ItemUpdate, StartApplication {
 
     private HTTPModel httpModel;
 
     private Agenda agenda;
 
-    private ScheduleItemScene scheduleItemScene;
+    private ItemScene itemScene;
     private AgendaScene agendaScene;
     private Stage stage;
 
@@ -33,8 +33,10 @@ public class Application extends javafx.application.Application implements Agend
     public void start(Stage stage) {
 
         this.httpModel = new HTTPModel();
-
         this.stage = stage;
+
+        this.itemScene = new ItemScene();
+        this.agendaScene = new AgendaScene();
 
         this.setAgendaScene();
     }
@@ -49,27 +51,27 @@ public class Application extends javafx.application.Application implements Agend
     }
 
     @Override
-    public void onAgendaScheduleItemCreate() {
+    public void onAgendaItemCreate() {
 
-        this.scheduleItemScene.setScheduleItem(null);
+        this.itemScene.setItem(null);
 
-        this.setScheduleItemScene();
+        this.setItemScene();
     }
 
     @Override
-    public void onAgendaScheduleItemRead(ScheduleItem scheduleItem) {
+    public void onAgendaItemRead(Item item) {
 
-        this.scheduleItemScene.setScheduleItem(scheduleItem);
+        this.itemScene.setItem(item);
 
-        this.setScheduleItemScene();
+        this.setItemScene();
     }
 
     @Override
-    public void onScheduleItemDelete(int scheduleItemId) {
+    public void onItemDelete(int scheduleItemId) {
 
         try {
 
-            this.httpModel.deleteScheduleItem(scheduleItemId);
+            this.httpModel.deleteItem(scheduleItemId);
             this.setAgendaScene();
 
         } catch (IOException e) {
@@ -79,14 +81,14 @@ public class Application extends javafx.application.Application implements Agend
     }
 
     @Override
-    public void onScheduleItemChange(int groupId, LocalDateTime date, ScheduleItem scheduleItem) {
+    public void onItemChange(int groupId, LocalDateTime date, Item item) {
 
         try {
 
-            if (scheduleItem.getId() == -1)
-                this.httpModel.createScheduleItem(groupId, date, scheduleItem);
+            if (item.getId() == -1)
+                this.httpModel.createItem(groupId, date, item);
             else
-                this.httpModel.updateScheduleItem(groupId, date, scheduleItem);
+                this.httpModel.updateItem(groupId, date, item);
 
             this.setAgendaScene();
 
@@ -97,7 +99,7 @@ public class Application extends javafx.application.Application implements Agend
     }
 
     @Override
-    public void onScheduleItemCancel() {
+    public void onItemCancel() {
 
         this.setAgendaScene();
     }
@@ -107,11 +109,9 @@ public class Application extends javafx.application.Application implements Agend
 
         this.setAgenda();
 
-        this.scheduleItemScene = new ScheduleItemScene();
-        this.scheduleItemScene.setAgenda(this.agenda);
-        this.scheduleItemScene.setObserver(this);
+        this.itemScene.setAgenda(this.agenda);
+        this.itemScene.setObserver(this);
 
-        this.agendaScene = new AgendaScene();
         this.agendaScene.setAgenda(this.agenda);
         this.agendaScene.setSchedule(this.agenda.getFirstSchedule());
         this.agendaScene.setObserver(this);
@@ -119,29 +119,34 @@ public class Application extends javafx.application.Application implements Agend
 
     private void setAgenda() {
 
-        try {
+        JSONModel jsonModel = new JSONModel();
+        this.agenda = jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda"));
 
-            this.agenda = this.httpModel.getAgenda();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
+//        try {
+//
+//            this.agenda = this.httpModel.getAgenda();
+//
+//        } catch (Exception e) {
+//
+//            e.printStackTrace();
+//        }
     }
 
     private void setAgendaScene() {
 
+        this.updateAgenda();
+
         this.setScene(this.agendaScene.getScene(this.stage));
     }
 
-    private void setScheduleItemScene() {
+    private void setItemScene() {
 
-        this.setScene(this.scheduleItemScene.getScene(this.stage));
+        this.updateAgenda();
+
+        this.setScene(this.itemScene.getScene(this.stage));
     }
 
     private void setScene(Scene scene) {
-
-        this.updateAgenda();
 
         this.stage.setScene(scene);
         this.stage.show();

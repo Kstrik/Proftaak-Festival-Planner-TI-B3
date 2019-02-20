@@ -13,16 +13,17 @@ import java.util.ArrayList;
 
 public class JSONModel {
 
-    public JSONObject parseJSON(String json) {
+    // TODO: Remove on complete database connection
+    public JSONObject parseJSONFile(String fileName) {
 
         JSONObject file = null;
         JSONParser parser = new JSONParser();
 
         try {
 
-            file = (JSONObject) parser.parse(json);
+            file = (JSONObject) parser.parse(new FileReader("json/" + fileName + ".json"));
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
 
             e.printStackTrace();
         }
@@ -30,11 +31,28 @@ public class JSONModel {
         return file;
     }
 
+    public JSONObject parseJSON(String jsonString) {
+
+        JSONObject json = null;
+        JSONParser parser = new JSONParser();
+
+        try {
+
+            json = (JSONObject) parser.parse(jsonString);
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
+
+        return json;
+    }
+
     public Agenda convertJSONAgenda(JSONObject jsonAgenda) {
 
         Agenda agenda = new Agenda();
-        agenda.setId(Math.toIntExact((long) jsonAgenda.get("id")));
-        agenda.setName((String) jsonAgenda.get("name"));
+//        agenda.setId(Math.toIntExact((long) jsonAgenda.get("id")));
+//        agenda.setName((String) jsonAgenda.get("name"));
         agenda.setGroups(this.convertJSONGroups((JSONArray) jsonAgenda.get("groups")));
 
         return agenda;
@@ -99,32 +117,32 @@ public class JSONModel {
         Schedule schedule = new Schedule();
         schedule.setId(Math.toIntExact((long) jsonSchedule.get("id")));
         schedule.setDate(LocalDateTime.parse((String) jsonSchedule.get("date")));
-        schedule.setScheduleItems(this.convertJSONScheduleItems((JSONArray) jsonSchedule.get("scheduleItems")));
+        schedule.setItems(this.convertJSONItems((JSONArray) jsonSchedule.get("items")));
 
         return schedule;
     }
 
-    private ArrayList<ScheduleItem> convertJSONScheduleItems(JSONArray jsonScheduleItems) {
+    private ArrayList<Item> convertJSONItems(JSONArray jsonItems) {
 
-        ArrayList<ScheduleItem> scheduleItems = new ArrayList<>();
+        ArrayList<Item> items = new ArrayList<>();
 
-        for (Object objectScheduleItem : jsonScheduleItems)
-            scheduleItems.add(this.convertJSONScheduleItem((JSONObject) objectScheduleItem));
+        for (Object objectItem : jsonItems)
+            items.add(this.convertJSONItem((JSONObject) objectItem));
 
-        return scheduleItems;
+        return items;
     }
 
-    private ScheduleItem convertJSONScheduleItem(JSONObject jsonScheduleItem) {
+    private Item convertJSONItem(JSONObject jsonItem) {
 
-        ScheduleItem scheduleItem = new ScheduleItem();
-        scheduleItem.setId(Math.toIntExact((long) jsonScheduleItem.get("id")));
-        scheduleItem.setName((String) jsonScheduleItem.get("name"));
-        scheduleItem.setClassroom(this.convertJSONClassroom((JSONObject) jsonScheduleItem.get("classroom")));
-        scheduleItem.setStart(LocalDateTime.parse((String) jsonScheduleItem.get("start")));
-        scheduleItem.setEnd(LocalDateTime.parse((String) jsonScheduleItem.get("end")));
-        scheduleItem.setTeacher(this.convertJSONMember((JSONObject) jsonScheduleItem.get("teacher")));
+        Item item = new Item();
+        item.setId(Math.toIntExact((long) jsonItem.get("id")));
+        item.setName((String) jsonItem.get("name"));
+        item.setClassroom(this.convertJSONClassroom((JSONObject) jsonItem.get("classroom")));
+        item.setStart(LocalDateTime.parse((String) jsonItem.get("start")));
+        item.setEnd(LocalDateTime.parse((String) jsonItem.get("end")));
+        item.setTeacher(this.convertJSONMember((JSONObject) jsonItem.get("teacher")));
 
-        return scheduleItem;
+        return item;
     }
 
     private ArrayList<Classroom> convertJSONClassrooms(JSONArray jsonClassrooms) {

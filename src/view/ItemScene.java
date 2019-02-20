@@ -1,6 +1,6 @@
 package view;
 
-import controller.ScheduleItemUpdate;
+import controller.ItemUpdate;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,18 +8,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.entity.Agenda;
-import model.entity.ScheduleItem;
+import model.entity.Item;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class ScheduleItemScene {
+public class ItemScene {
 
     private Agenda agenda;
 
-    private ScheduleItemUpdate observer;
-    private ScheduleItem scheduleItem;
+    private ItemUpdate observer;
+    private Item item;
 
     private VBox main;
 
@@ -36,7 +36,7 @@ public class ScheduleItemScene {
     // main function
     public Scene getScene(Stage primaryStage) {
 
-        setScheduleItem();
+        setItem();
 
         Scene scene = new Scene(new ScrollPane(this.main), 295, 292);
         scene.getStylesheets().add("view/style/style.css");
@@ -52,25 +52,25 @@ public class ScheduleItemScene {
         this.agenda = agenda;
     }
 
-    public void setObserver(ScheduleItemUpdate observer) {
+    public void setObserver(ItemUpdate observer) {
 
         this.observer = observer;
     }
 
-    public void setScheduleItem(ScheduleItem scheduleItem) {
+    public void setItem(Item item) {
 
-        this.scheduleItem = scheduleItem;
+        this.item = item;
     }
 
     // scene functions
-    private void setScheduleItem() {
+    private void setItem() {
 
         this.main = new VBox();
 
         this.setInputs();
         this.setErrorLabel();
         this.setButtons();
-        this.setScheduleItemData();
+        this.setItemData();
     }
 
     private void setInputs() {
@@ -165,7 +165,7 @@ public class ScheduleItemScene {
         buttonBox.getChildren().add(this.getCancelButton());
         buttonBox.getChildren().add(this.getApplyButton());
 
-        if (this.scheduleItem != null)
+        if (this.item != null)
             buttonBox.getChildren().add(this.getDeleteButton());
 
         this.main.getChildren().add(buttonBox);
@@ -175,7 +175,7 @@ public class ScheduleItemScene {
 
         Button cancel = new Button("Cancel");
         cancel.getStyleClass().add("button");
-        cancel.setOnMouseClicked(e -> this.observer.onScheduleItemCancel());
+        cancel.setOnMouseClicked(e -> this.observer.onItemCancel());
 
         return cancel;
     }
@@ -187,10 +187,10 @@ public class ScheduleItemScene {
         apply.setOnMouseClicked(e -> {
 
             if (this.validateInput())
-                this.observer.onScheduleItemChange(
+                this.observer.onItemChange(
                     this.agenda.getGroupByName(this.group.getValue()).getId(),
                     this.parseTime(0, 0),
-                    this.getScheduleItem()
+                    this.getItem()
                 );
         });
 
@@ -201,24 +201,24 @@ public class ScheduleItemScene {
 
         Button delete = new Button("delete");
         delete.getStyleClass().add("button");
-        delete.setOnMouseClicked(e -> this.observer.onScheduleItemDelete(this.scheduleItem.getId()));
+        delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.item.getId()));
 
         return delete;
     }
 
-    private void setScheduleItemData() {
+    private void setItemData() {
 
-        if (this.scheduleItem != null) {
+        if (this.item != null) {
 
-            this.group.setValue(this.agenda.getGroupNameOfScheduleItem(scheduleItem));
-            this.date.setValue(LocalDate.from(this.agenda.getDateOfScheduleItem(scheduleItem)));
-            this.name.setText(this.scheduleItem.getName());
-            this.teacher.setValue(this.scheduleItem.getTeacher().getName());
-            this.startHour.setValue(this.scheduleItem.getStart().getHour());
-            this.startMinute.setValue(this.scheduleItem.getStart().getMinute());
-            this.endHour.setValue(this.scheduleItem.getEnd().getHour());
-            this.endMinute.setValue(this.scheduleItem.getEnd().getMinute());
-            this.classroom.setValue(this.scheduleItem.getClassroom().getName());
+            this.group.setValue(this.agenda.getGroupNameOfItem(item));
+            this.date.setValue(LocalDate.from(this.agenda.getDateOfItem(item)));
+            this.name.setText(this.item.getName());
+            this.teacher.setValue(this.item.getTeacher().getName());
+            this.startHour.setValue(this.item.getStart().getHour());
+            this.startMinute.setValue(this.item.getStart().getMinute());
+            this.endHour.setValue(this.item.getEnd().getHour());
+            this.endMinute.setValue(this.item.getEnd().getMinute());
+            this.classroom.setValue(this.item.getClassroom().getName());
         }
     }
 
@@ -237,18 +237,18 @@ public class ScheduleItemScene {
         return true;
     }
 
-    private ScheduleItem getScheduleItem() {
+    private Item getItem() {
 
-        ScheduleItem scheduleItem = new ScheduleItem();
+        Item item = new Item();
 
-        scheduleItem.setId((this.scheduleItem != null) ? this.scheduleItem.getId() : -1);
-        scheduleItem.setName(this.name.getText());
-        scheduleItem.setTeacher(this.agenda.getTeacherByName(this.teacher.getValue()));
-        scheduleItem.setStart(this.parseTime(this.startHour.getValue(), this.startMinute.getValue()));
-        scheduleItem.setEnd(this.parseTime(this.endHour.getValue(), this.endMinute.getValue()));
-        scheduleItem.setClassroom(this.agenda.getClassroomByName(this.classroom.getValue()));
+        item.setId((this.item != null) ? this.item.getId() : -1);
+        item.setName(this.name.getText());
+        item.setTeacher(this.agenda.getTeacherByName(this.teacher.getValue()));
+        item.setStart(this.parseTime(this.startHour.getValue(), this.startMinute.getValue()));
+        item.setEnd(this.parseTime(this.endHour.getValue(), this.endMinute.getValue()));
+        item.setClassroom(this.agenda.getClassroomByName(this.classroom.getValue()));
 
-        return scheduleItem;
+        return item;
     }
 
     private LocalDateTime parseTime(int hour, int minute) {
@@ -264,7 +264,7 @@ public class ScheduleItemScene {
     // other methods
     private String getTitle() {
 
-        return (this.scheduleItem != null) ? "Update: " + this.scheduleItem.getName() : "Create Schedule Item";
+        return (this.item != null) ? "Update: " + this.item.getName() : "Create Schedule Item";
     }
 
     private ArrayList<Integer> getNumbers(int amount) {

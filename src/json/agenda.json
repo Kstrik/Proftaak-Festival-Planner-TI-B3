@@ -18,7 +18,7 @@
         {
           "id": 1,
           "date": "2013-12-31T00:00:00",
-          "scheduleItems": [
+          "items": [
             {
               "id": 1,
               "name": "Wiskunde",
@@ -91,7 +91,7 @@
         {
           "id": 2,
           "date": "2014-01-01T00:00:00",
-          "scheduleItems": [
+          "items": [
             {
               "id": 4,
               "name": "Wiskunde",
@@ -114,7 +114,7 @@
         {
           "id": 8,
           "date": "2013-12-31T00:00:00",
-          "scheduleItems": [
+          "items": [
             {
               "id": 3,
               "name": "Tutor 1.3 A6",

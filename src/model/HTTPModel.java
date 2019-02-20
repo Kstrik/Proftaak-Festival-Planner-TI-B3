@@ -1,7 +1,7 @@
 package model;
 
 import model.entity.Agenda;
-import model.entity.ScheduleItem;
+import model.entity.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,35 +18,36 @@ public class HTTPModel {
         HttpURLConnection con = this.buildConnection("agenda", "GET");
 
         String response = this.getResponse(con);
+        System.out.println(response);
 
         JSONModel jsonModel = new JSONModel();
 
         return jsonModel.convertJSONAgenda(jsonModel.parseJSON(response));
     }
 
-    public void createScheduleItem(int groupId, LocalDateTime scheduleDate, ScheduleItem scheduleItem) throws IOException {
+    public void createItem(int groupId, LocalDateTime scheduleDate, Item item) throws IOException {
 
         HttpURLConnection con = this.buildConnection("schedule/item/create", "POST");
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
-        con.setRequestProperty("scheduleItem", scheduleItem.toString());
+        con.setRequestProperty("scheduleItem", item.toString());
 
         this.sendRequest(con);
     }
 
-    public void updateScheduleItem(int groupId, LocalDateTime scheduleDate, ScheduleItem scheduleItem) throws IOException {
+    public void updateItem(int groupId, LocalDateTime scheduleDate, Item item) throws IOException {
 
-        HttpURLConnection con = this.buildConnection("schedule/item/update/" + scheduleItem.getId(), "POST");
+        HttpURLConnection con = this.buildConnection("schedule/item/update/" + item.getId(), "POST");
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
-        con.setRequestProperty("scheduleItem", scheduleItem.toString());
+        con.setRequestProperty("scheduleItem", item.toString());
 
         this.sendRequest(con);
     }
 
-    public void deleteScheduleItem(int scheduleItemId) throws IOException {
+    public void deleteItem(int scheduleItemId) throws IOException {
 
         HttpURLConnection con = this.buildConnection("schedule/item/delete/" + scheduleItemId, "POST");
 

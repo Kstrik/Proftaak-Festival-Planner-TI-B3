@@ -54,7 +54,7 @@ public class Agenda {
 
         for (Schedule schedule : this.getAllSchedules())
             if (schedule.getDate().equals(date))
-                combinedSchedule.addScheduleItems(schedule.getScheduleItems());
+                combinedSchedule.addItems(schedule.getItems());
 
         return combinedSchedule;
     }
@@ -96,40 +96,40 @@ public class Agenda {
     }
 
     // scheduleItem
-    public ArrayList<ScheduleItem> getAllScheduleItems() {
+    public ArrayList<Item> getAllItems() {
 
-        HashMap<Integer, ScheduleItem> scheduleItems = new HashMap<>();
+        HashMap<Integer, Item> scheduleItems = new HashMap<>();
 
         for (Schedule schedule : this.getAllSchedules())
-            for (ScheduleItem scheduleItem : schedule.getScheduleItems())
-                    scheduleItems.put(scheduleItem.getId(), scheduleItem);
+            for (Item item : schedule.getItems())
+                    scheduleItems.put(item.getId(), item);
 
-        return new ArrayList<ScheduleItem>() {{ addAll(scheduleItems.values()); }};
+        return new ArrayList<Item>() {{ addAll(scheduleItems.values()); }};
     }
 
-    public String getGroupNameOfScheduleItem(ScheduleItem scheduleItem) {
+    public String getGroupNameOfItem(Item item) {
 
         for (Group group : this.getAllGroups())
-            if (group.containsScheduleItem(scheduleItem))
+            if (group.containsItem(item))
                 return group.getName();
 
         return null;
     }
 
-    public LocalDateTime getDateOfScheduleItem(ScheduleItem scheduleItem) {
+    public LocalDateTime getDateOfItem(Item item) {
 
         for (Schedule schedule : this.getAllSchedules())
-            if (schedule.containsScheduleItem(scheduleItem))
+            if (schedule.containsItem(item))
                 return schedule.getDate();
 
         return null;
     }
 
-    public ScheduleItem getScheduleItemById(int id) {
+    public Item getItemById(int id) {
 
-        for (ScheduleItem scheduleItem : this.getAllScheduleItems())
-            if (scheduleItem.getId() == id)
-                return scheduleItem;
+        for (Item item : this.getAllItems())
+            if (item.getId() == id)
+                return item;
 
         return null;
     }
@@ -139,8 +139,8 @@ public class Agenda {
 
         HashMap<Integer, Classroom> classrooms = new HashMap<>();
 
-        for (ScheduleItem scheduleItem : this.getAllScheduleItems())
-            classrooms.put(scheduleItem.getClassroom().getId(), scheduleItem.getClassroom());
+        for (Item item : this.getAllItems())
+            classrooms.put(item.getClassroom().getId(), item.getClassroom());
 
         return new ArrayList<Classroom>() {{ addAll(classrooms.values()); }};
     }
@@ -190,8 +190,8 @@ public class Agenda {
             for (Person person : group.getMembers())
                     persons.put(person.getId(), person);
 
-        for (ScheduleItem scheduleItem : this.getAllScheduleItems())
-            persons.put(scheduleItem.getTeacher().getId(), scheduleItem.getTeacher());
+        for (Item item : this.getAllItems())
+            persons.put(item.getTeacher().getId(), item.getTeacher());
 
         return new ArrayList<Person>() {{ addAll(persons.values()); }};
     }

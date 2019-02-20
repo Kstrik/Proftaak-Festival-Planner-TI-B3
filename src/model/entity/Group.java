@@ -24,10 +24,10 @@ public class Group {
     }
 
     // methods
-    public boolean containsScheduleItem(ScheduleItem scheduleItem) {
+    public boolean containsItem(Item item) {
 
         for (Schedule schedule : this.schedules)
-            if (schedule.containsScheduleItem(scheduleItem))
+            if (schedule.containsItem(item))
                 return true;
 
         return false;

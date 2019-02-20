@@ -2,7 +2,7 @@ package model.entity;
 
 import java.time.LocalDateTime;
 
-public class ScheduleItem {
+public class Item {
 
     private int id;
     private String name;
@@ -10,7 +10,7 @@ public class ScheduleItem {
     private LocalDateTime start, end;
     private Classroom classroom;
 
-    public ScheduleItem(int id, String name, LocalDateTime start, LocalDateTime end, Person teacher, Classroom classroom) {
+    public Item(int id, String name, LocalDateTime start, LocalDateTime end, Person teacher, Classroom classroom) {
 
         this.id = id;
         this.name = name;
@@ -20,7 +20,7 @@ public class ScheduleItem {
         this.classroom = classroom;
     }
 
-    public ScheduleItem() {
+    public Item() {
 
     }
 

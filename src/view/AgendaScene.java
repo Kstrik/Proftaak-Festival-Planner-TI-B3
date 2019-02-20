@@ -31,7 +31,7 @@ public class AgendaScene {
     private static final int BLOCK_WIDTH = 200;
     private static final int BLOCK_HEIGHT = 75;
 
-    private HashMap<Rectangle, ScheduleItem> canvasItemLocations;
+    private HashMap<Rectangle, Item> canvasItemLocations;
 
     private Agenda agenda;
 
@@ -141,7 +141,7 @@ public class AgendaScene {
 
         Button button = new Button("+");
         button.getStyleClass().addAll("button", "add-button");
-        button.setOnMouseClicked(e -> this.observer.onAgendaScheduleItemCreate());
+        button.setOnMouseClicked(e -> this.observer.onAgendaItemCreate());
 
         this.canvas = new Canvas(
             (BLOCK_WIDTH * this.agenda.getAmountOfClassrooms()),
@@ -163,8 +163,8 @@ public class AgendaScene {
         this.drawBorder(graphics);
         this.drawLines(graphics);
 
-        for (int i = 0; i < this.schedule.getAmountOfScheduleItems(); i++)
-            this.drawScheduleItem(graphics, this.schedule.getScheduleItem(i));
+        for (int i = 0; i < this.schedule.getAmountOfItems(); i++)
+            this.drawItem(graphics, this.schedule.getItem(i));
 
         this.canvas.setOnMouseClicked(this::canvasOnClick);
     }
@@ -185,28 +185,28 @@ public class AgendaScene {
         }
     }
 
-    private void drawScheduleItem(FXGraphics2D graphics, ScheduleItem scheduleItem) {
+    private void drawItem(FXGraphics2D graphics, Item item) {
 
-        int x        = getScheduleItemX(scheduleItem);
-        int y        = getScheduleItemY(scheduleItem);
-        int width    = getScheduleItemWidth();
-        int height   = getScheduleItemHeight(scheduleItem);
+        int x        = getItemX(item);
+        int y        = getItemY(item);
+        int width    = getItemWidth();
+        int height   = getItemHeight(item);
 
         Rectangle rectangle = new Rectangle(x, y, width, height);
         graphics.setColor(Color.getHSBColor((float) Math.random(), 1, 1));
         graphics.fill(rectangle);
 
         graphics.setColor(Color.BLACK);
-        graphics.drawString(scheduleItem.getString(), (x + 10), (y + 20));
+        graphics.drawString(item.getString(), (x + 10), (y + 20));
 
-        this.canvasItemLocations.put(rectangle, scheduleItem);
+        this.canvasItemLocations.put(rectangle, item);
     }
 
     private void canvasOnClick(MouseEvent e) {
 
-        for (Map.Entry<Rectangle, ScheduleItem> entry : this.canvasItemLocations.entrySet())
+        for (Map.Entry<Rectangle, Item> entry : this.canvasItemLocations.entrySet())
             if (entry.getKey().contains(e.getX(), e.getY()))
-                this.observer.onAgendaScheduleItemRead(entry.getValue());
+                this.observer.onAgendaItemRead(entry.getValue());
     }
 
     // other methods
@@ -230,22 +230,22 @@ public class AgendaScene {
         return (this.canvas.getHeight() < 500) ? (this.canvas.getHeight() + 99) : 599;
     }
 
-    private int getScheduleItemX(ScheduleItem item) {
+    private int getItemX(Item item) {
 
         return ((BLOCK_WIDTH * this.agenda.getClassRoomKey(item.getClassroom())) + 9);
     }
 
-    private int getScheduleItemY(ScheduleItem item) {
+    private int getItemY(Item item) {
 
         return (int) (BLOCK_HEIGHT * (item.getStartDouble() - this.schedule.getScheduleStart().getHour())) + 2;
     }
 
-    private int getScheduleItemWidth() {
+    private int getItemWidth() {
 
         return (BLOCK_WIDTH - 17);
     }
 
-    private int getScheduleItemHeight(ScheduleItem item) {
+    private int getItemHeight(Item item) {
 
         return (item.getLessonDouble() > 1) ? (int) (BLOCK_HEIGHT * item.getLessonDouble()) : 62;
     }
