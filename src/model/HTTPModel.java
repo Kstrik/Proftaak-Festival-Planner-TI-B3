@@ -26,7 +26,7 @@ public class HTTPModel {
 
     public void createScheduleItem(int groupId, LocalDateTime scheduleDate, ScheduleItem scheduleItem) throws IOException {
 
-        HttpURLConnection con = this.buildConnection("create-ScheduleItem", "POST");
+        HttpURLConnection con = this.buildConnection("schedule/item/create", "POST");
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
@@ -35,13 +35,12 @@ public class HTTPModel {
         this.sendRequest(con);
     }
 
-    public void updateScheduleItem(int groupId, LocalDateTime scheduleDate, int scheduleItemId, ScheduleItem scheduleItem) throws IOException {
+    public void updateScheduleItem(int groupId, LocalDateTime scheduleDate, ScheduleItem scheduleItem) throws IOException {
 
-        HttpURLConnection con = this.buildConnection("update-ScheduleItem", "POST");
+        HttpURLConnection con = this.buildConnection("schedule/item/update/" + scheduleItem.getId(), "POST");
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
-        con.setRequestProperty("scheduleItemId", Integer.toString(scheduleItemId));
         con.setRequestProperty("scheduleItem", scheduleItem.toString());
 
         this.sendRequest(con);
@@ -49,9 +48,7 @@ public class HTTPModel {
 
     public void deleteScheduleItem(int scheduleItemId) throws IOException {
 
-        HttpURLConnection con = this.buildConnection("delete-ScheduleItem", "POST");
-
-        con.setRequestProperty("scheduleItemId", Integer.toString(scheduleItemId));
+        HttpURLConnection con = this.buildConnection("schedule/item/delete/" + scheduleItemId, "POST");
 
         this.sendRequest(con);
     }

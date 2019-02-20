@@ -86,7 +86,7 @@ public class Application extends javafx.application.Application implements Agend
             if (scheduleItem.getId() == -1)
                 this.httpModel.createScheduleItem(groupId, date, scheduleItem);
             else
-                this.httpModel.updateScheduleItem(groupId, date, scheduleItem.getId(), scheduleItem);
+                this.httpModel.updateScheduleItem(groupId, date, scheduleItem);
 
             this.setAgendaScene();
 
