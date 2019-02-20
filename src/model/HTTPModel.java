@@ -3,10 +3,7 @@ package model;
 import model.entity.Agenda;
 import model.entity.Item;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -39,13 +36,11 @@ public class HTTPModel {
 
         HttpURLConnection con = this.buildConnection("schedule/item/update/" + item.getId(), "POST");
 
-        con.setRequestProperty("groupId", Integer.toString(groupId));
-        con.setRequestProperty("date", scheduleDate.toString());
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Host", "[::1]:8080");
 
         // TODO: lees! hier had ik een foto van gemaakt en doorgestuurd luuk xD.
-        System.out.println("groupId: " + Integer.toString(groupId));
-        System.out.println("date:" + scheduleDate.toString());
-        System.out.println(item.toString());
+        System.out.println(con.getURL());
 
         this.sendRequest(con, item.toString());
     }
@@ -58,8 +53,7 @@ public class HTTPModel {
     }
 
     private HttpURLConnection buildConnection(String path, String method) throws IOException {
-
-        URL url = new URL("http://api.jijbentzacht.nl:1337/" + path);
+        URL url = new URL("http://[::1]:8080/" + path);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(method);
 
@@ -97,11 +91,25 @@ public class HTTPModel {
     }
 
     private void sendRequest(HttpURLConnection con, String param) throws IOException {
-
+        System.out.println(param);
         con.setDoOutput(true);
-        OutputStream output = con.getOutputStream();
-        output.write(param.getBytes());
-        output.flush();
-        output.close();
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(con.getOutputStream());
+        outputStreamWriter.write(param);
+        outputStreamWriter.flush();
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'POST' request to URL : " + con.getURL());
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        System.out.println(response.toString());
     }
 }
