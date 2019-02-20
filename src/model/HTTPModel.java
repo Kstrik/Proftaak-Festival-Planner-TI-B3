@@ -31,9 +31,8 @@ public class HTTPModel {
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
-        con.setRequestProperty("scheduleItem", item.toString());
 
-        this.sendRequest(con);
+        this.sendRequest(con, item.toString());
     }
 
     public void updateItem(int groupId, LocalDateTime scheduleDate, Item item) throws IOException {
@@ -42,9 +41,13 @@ public class HTTPModel {
 
         con.setRequestProperty("groupId", Integer.toString(groupId));
         con.setRequestProperty("date", scheduleDate.toString());
-        con.setRequestProperty("scheduleItem", item.toString());
 
-        this.sendRequest(con);
+        // TODO: lees! hier had ik een foto van gemaakt en doorgestuurd luuk xD.
+        System.out.println("groupId: " + Integer.toString(groupId));
+        System.out.println("date:" + scheduleDate.toString());
+        System.out.println(item.toString());
+
+        this.sendRequest(con, item.toString());
     }
 
     public void deleteItem(int scheduleItemId) throws IOException {
@@ -89,6 +92,15 @@ public class HTTPModel {
     private void sendRequest(HttpURLConnection con) throws IOException {
 
         OutputStream output = con.getOutputStream();
+        output.flush();
+        output.close();
+    }
+
+    private void sendRequest(HttpURLConnection con, String param) throws IOException {
+
+        con.setDoOutput(true);
+        OutputStream output = con.getOutputStream();
+        output.write(param.getBytes());
         output.flush();
         output.close();
     }

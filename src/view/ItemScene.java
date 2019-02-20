@@ -224,15 +224,15 @@ public class ItemScene {
 
     private boolean validateInput() {
 
-        if (!this.group.getValue()       .equals("")) {this.setError("group");           return false;}
-        if ( this.date.getValue()        != null)     {this.setError("date");            return false;}
-        if (!this.name.getText()         .equals("")) {this.setError("name");            return false;}
-        if (!this.teacher.getValue()     .equals("")) {this.setError("teacher");         return false;}
-        if ( this.startHour.getValue()   != null)     {this.setError("starting hour");   return false;}
-        if ( this.startMinute.getValue() != null)     {this.setError("starting minute"); return false;}
-        if ( this.endHour.getValue()     != null)     {this.setError("ending hour");     return false;}
-        if ( this.endMinute.getValue()   != null)     {this.setError("ending minute");   return false;}
-        if (!this.classroom.getValue()   .equals("")) {this.setError("classroom");       return false;}
+        if (this.group.getValue()     .equals("")) {this.setError("group");           return false;}
+        if (this.date.getValue()          == null) {this.setError("date");            return false;}
+        if (this.name.getText()       .equals("")) {this.setError("name");            return false;}
+        if (this.teacher.getValue()   .equals("")) {this.setError("teacher");         return false;}
+        if (this.startHour.getValue()     == null) {this.setError("starting hour");   return false;}
+        if (this.startMinute.getValue()   == null) {this.setError("starting minute"); return false;}
+        if (this.endHour.getValue()       == null) {this.setError("ending hour");     return false;}
+        if (this.endMinute.getValue()     == null) {this.setError("ending minute");   return false;}
+        if (this.classroom.getValue() .equals("")) {this.setError("classroom");       return false;}
 
         return true;
     }

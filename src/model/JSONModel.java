@@ -21,7 +21,7 @@ public class JSONModel {
 
         try {
 
-            file = (JSONObject) parser.parse(new FileReader("json/" + fileName + ".json"));
+            file = (JSONObject) parser.parse(new FileReader("src/json/" + fileName + ".json"));
 
         } catch (Exception e) {
 
