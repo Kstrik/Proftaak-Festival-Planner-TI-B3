@@ -31,18 +31,6 @@ VBox {
     -fx-min-width: 40;
 }
 
-.scheduleItem-button {
-
-    -fx-pref-width: 125;
-    -fx-border-width: 2;
-}
-
-.scheduleItem-label {
-
-    -fx-padding: 5;
-    -fx-pref-width: 100;
-}
-
 .classroom-label {
 
     -fx-pref-height: 43;
@@ -57,6 +45,18 @@ VBox {
 .paddingless {
 
     -fx-padding: 0 !important;
+}
+
+.item-button {
+
+    -fx-pref-width: 94;
+    -fx-border-width: 2;
+}
+
+.item-label {
+
+    -fx-padding: 5;
+    -fx-pref-width: 100;
 }
 
 .borderless {
@@ -92,6 +92,7 @@ VBox {
 
 .error {
 
+    -fx-padding: 5 5;
     -fx-text-fill: darkred;
 }
 

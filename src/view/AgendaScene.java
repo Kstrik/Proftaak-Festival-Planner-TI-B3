@@ -2,6 +2,7 @@ package view;
 
 import controller.AgendaUpdate;
 import javafx.scene.input.MouseEvent;
+import model.ConfigModel;
 import model.entity.Agenda;
 import model.entity.*;
 
@@ -27,9 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AgendaScene {
-
-    private static final int BLOCK_WIDTH = 200;
-    private static final int BLOCK_HEIGHT = 75;
 
     private HashMap<Rectangle, Item> canvasItemLocations;
 
@@ -69,6 +67,9 @@ public class AgendaScene {
     public void setAgenda(Agenda agenda) {
 
         this.agenda = agenda;
+
+        if (this.schedule == null)
+            this.schedule = agenda.getFirstSchedule();
     }
 
     // scene methods
@@ -144,8 +145,8 @@ public class AgendaScene {
         button.setOnMouseClicked(e -> this.observer.onAgendaItemCreate());
 
         this.canvas = new Canvas(
-            (BLOCK_WIDTH * this.agenda.getAmountOfClassrooms()),
-            (BLOCK_HEIGHT * (this.schedule.getScheduleLength() + 1))
+            (ConfigModel.BLOCK_WIDTH * this.agenda.getAmountOfClassrooms()),
+            (ConfigModel.BLOCK_HEIGHT * (this.schedule.getScheduleLength() + 1))
         );
 
         GridPane.setConstraints(button, 0, 0);
@@ -181,7 +182,7 @@ public class AgendaScene {
 
         for (int a = 1; a < this.agenda.getAmountOfClassrooms(); a++) {
 
-            graphics.draw(new Line2D.Double((BLOCK_WIDTH * a) + 1, 3, (BLOCK_WIDTH * a) + 1, this.canvas.getHeight() - 2));
+            graphics.draw(new Line2D.Double((ConfigModel.BLOCK_WIDTH * a) + 1, 3, (ConfigModel.BLOCK_WIDTH * a) + 1, this.canvas.getHeight() - 2));
         }
     }
 
@@ -232,21 +233,21 @@ public class AgendaScene {
 
     private int getItemX(Item item) {
 
-        return ((BLOCK_WIDTH * this.agenda.getClassRoomKey(item.getClassroom())) + 9);
+        return ((ConfigModel.BLOCK_WIDTH * this.agenda.getClassRoomKey(item.getClassroom())) + 9);
     }
 
     private int getItemY(Item item) {
 
-        return (int) (BLOCK_HEIGHT * (item.getStartDouble() - this.schedule.getScheduleStart().getHour())) + 2;
+        return (int) (ConfigModel.BLOCK_HEIGHT * (item.getStartDouble() - this.schedule.getScheduleStart().getHour())) + 2;
     }
 
     private int getItemWidth() {
 
-        return (BLOCK_WIDTH - 17);
+        return (ConfigModel.BLOCK_WIDTH - 17);
     }
 
     private int getItemHeight(Item item) {
 
-        return (item.getLessonDouble() > 1) ? (int) (BLOCK_HEIGHT * item.getLessonDouble()) : 62;
+        return (item.getLessonDouble() > 1) ? (int) (ConfigModel.BLOCK_HEIGHT * item.getLessonDouble()) : 62;
     }
 }

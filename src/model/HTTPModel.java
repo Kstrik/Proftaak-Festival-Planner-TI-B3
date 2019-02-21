@@ -14,8 +14,9 @@ public class HTTPModel {
 
         HttpURLConnection con = this.buildConnection("agenda", "GET");
 
+        this.log(con);
+
         String response = this.getResponse(con);
-        System.out.println(response);
 
         JSONModel jsonModel = new JSONModel();
 
@@ -26,8 +27,8 @@ public class HTTPModel {
 
         HttpURLConnection con = this.buildConnection("schedule/item/create", "POST");
 
-        con.setRequestProperty("groupId", Integer.toString(groupId));
-        con.setRequestProperty("date", scheduleDate.toString());
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Host", ConfigModel.HOST);
 
         this.sendRequest(con, item.toString());
     }
@@ -37,10 +38,7 @@ public class HTTPModel {
         HttpURLConnection con = this.buildConnection("schedule/item/update/" + item.getId(), "POST");
 
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Host", "[::1]:8080");
-
-        // TODO: lees! hier had ik een foto van gemaakt en doorgestuurd luuk xD.
-        System.out.println(con.getURL());
+        con.setRequestProperty("Host", ConfigModel.HOST);
 
         this.sendRequest(con, item.toString());
     }
@@ -49,11 +47,12 @@ public class HTTPModel {
 
         HttpURLConnection con = this.buildConnection("schedule/item/delete/" + scheduleItemId, "POST");
 
-        this.sendRequest(con);
+        this.sendRequest(con, Integer.toString(scheduleItemId));
     }
 
     private HttpURLConnection buildConnection(String path, String method) throws IOException {
-        URL url = new URL("http://[::1]:8080/" + path);
+
+        URL url = new URL("http://" + ConfigModel.HOST + "/" + path);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(method);
 
@@ -83,35 +82,23 @@ public class HTTPModel {
         return response.toString();
     }
 
-    private void sendRequest(HttpURLConnection con) throws IOException {
-
-        OutputStream output = con.getOutputStream();
-        output.flush();
-        output.close();
-    }
-
     private void sendRequest(HttpURLConnection con, String param) throws IOException {
 
-        System.out.println(param);
         con.setDoOutput(true);
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(con.getOutputStream());
         outputStreamWriter.write(param);
         outputStreamWriter.flush();
 
-        int responseCode = con.getResponseCode();
+        this.log(con);
+
+        outputStreamWriter.close();
+    }
+
+    private void log(HttpURLConnection con) throws IOException {
+
         System.out.println("\nSending 'POST' request to URL : " + con.getURL());
-        System.out.println("Response Code : " + responseCode);
+        System.out.println("Response Code : " + con.getResponseCode());
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-
-            response.append(inputLine);
-        }
-
-        in.close();
-        System.out.println(response.toString());
+        System.out.println(this.getResponse(con));
     }
 }

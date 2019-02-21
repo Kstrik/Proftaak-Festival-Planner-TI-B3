@@ -36,7 +36,10 @@ public class Application extends javafx.application.Application implements Agend
         this.stage = stage;
 
         this.itemScene = new ItemScene();
+        this.itemScene.setObserver(this);
+
         this.agendaScene = new AgendaScene();
+        this.agendaScene.setObserver(this);
 
         this.setAgendaScene();
     }
@@ -105,43 +108,35 @@ public class Application extends javafx.application.Application implements Agend
     }
 
     // methods
-    private void updateAgenda() {
-
-        this.setAgenda();
-
-        this.itemScene.setAgenda(this.agenda);
-        this.itemScene.setObserver(this);
-
-        this.agendaScene.setAgenda(this.agenda);
-        this.agendaScene.setSchedule(this.agenda.getFirstSchedule());
-        this.agendaScene.setObserver(this);
-    }
-
     private void setAgenda() {
 
+        // TODO: delete get from json file when database is complete
         JSONModel jsonModel = new JSONModel();
         this.agenda = jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda"));
 
-//        try {
-//
-//            this.agenda = this.httpModel.getAgenda();
-//
-//        } catch (Exception e) {
-//
-//            e.printStackTrace();
-//        }
+        try {
+
+            this.agenda = this.httpModel.getAgenda();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        this.itemScene.setAgenda(this.agenda);
+        this.agendaScene.setAgenda(this.agenda);
     }
 
     private void setAgendaScene() {
 
-        this.updateAgenda();
+        this.setAgenda();
 
         this.setScene(this.agendaScene.getScene(this.stage));
     }
 
     private void setItemScene() {
 
-        this.updateAgenda();
+        this.setAgenda();
 
         this.setScene(this.itemScene.getScene(this.stage));
     }

@@ -38,7 +38,7 @@ public class ItemScene {
 
         setItem();
 
-        Scene scene = new Scene(new ScrollPane(this.main), 295, 292);
+        Scene scene = new Scene(new ScrollPane(this.main), 295, 328);
         scene.getStylesheets().add("view/style/style.css");
 
         primaryStage.setTitle(getTitle());
@@ -80,7 +80,7 @@ public class ItemScene {
         this.group.setItems(FXCollections.observableArrayList(this.agenda.getAllGroupNames()));
 
         Label groupLabel = new Label("Group: ");
-        groupLabel.getStyleClass().add("scheduleItem-label");
+        groupLabel.getStyleClass().add("item-label");
         HBox groupBox = new HBox();
         groupBox.getChildren().addAll(groupLabel, this.group);
 
@@ -88,7 +88,7 @@ public class ItemScene {
         this.date = new DatePicker();
 
         Label dateLabel = new Label("Date: ");
-        dateLabel.getStyleClass().add("scheduleItem-label");
+        dateLabel.getStyleClass().add("item-label");
         HBox dateBox = new HBox();
         dateBox.getChildren().addAll(dateLabel, this.date);
 
@@ -96,7 +96,7 @@ public class ItemScene {
         this.name = new TextField("Test");
 
         Label nameLabel = new Label("Name: ");
-        nameLabel.getStyleClass().add("scheduleItem-label");
+        nameLabel.getStyleClass().add("item-label");
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, this.name);
 
@@ -105,7 +105,7 @@ public class ItemScene {
         this.teacher.setItems(FXCollections.observableArrayList(this.agenda.getAllTeacherNames()));
 
         Label teacherLabel = new Label("Teacher: ");
-        teacherLabel.getStyleClass().add("scheduleItem-label");
+        teacherLabel.getStyleClass().add("item-label");
         HBox teacherBox = new HBox();
         teacherBox.getChildren().addAll(teacherLabel, this.teacher);
 
@@ -119,7 +119,7 @@ public class ItemScene {
         this.startMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
 
         Label startTimeLabel = new Label("Start time: ");
-        startTimeLabel.getStyleClass().add("scheduleItem-label");
+        startTimeLabel.getStyleClass().add("item-label");
         HBox startTimeBox = new HBox();
         startTimeBox.getChildren().addAll(startTimeLabel, this.startHour, this.startMinute);
 
@@ -133,7 +133,7 @@ public class ItemScene {
         this.endMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
 
         Label endTimeLabel = new Label("Start time: ");
-        endTimeLabel.getStyleClass().add("scheduleItem-label");
+        endTimeLabel.getStyleClass().add("item-label");
         HBox endTimeBox = new HBox();
         endTimeBox.getChildren().addAll(endTimeLabel, this.endHour, this.endMinute);
 
@@ -142,7 +142,7 @@ public class ItemScene {
         this.classroom.setItems(FXCollections.observableArrayList(this.agenda.getAllClassroomNames()));
 
         Label classroomLabel = new Label("Classroom: ");
-        classroomLabel.getStyleClass().add("scheduleItem-label");
+        classroomLabel.getStyleClass().add("item-label");
         HBox classroomBox = new HBox();
         classroomBox.getChildren().addAll(classroomLabel, this.classroom);
 
@@ -174,7 +174,7 @@ public class ItemScene {
     private Button getCancelButton() {
 
         Button cancel = new Button("Cancel");
-        cancel.getStyleClass().add("button");
+        cancel.getStyleClass().addAll("button", "item-button");
         cancel.setOnMouseClicked(e -> this.observer.onItemCancel());
 
         return cancel;
@@ -183,7 +183,7 @@ public class ItemScene {
     private Button getApplyButton() {
 
         Button apply = new Button("Apply");
-        apply.getStyleClass().add("button");
+        apply.getStyleClass().addAll("button", "item-button");
         apply.setOnMouseClicked(e -> {
 
             if (this.validateInput())
@@ -200,7 +200,7 @@ public class ItemScene {
     private Button getDeleteButton() {
 
         Button delete = new Button("delete");
-        delete.getStyleClass().add("button");
+        delete.getStyleClass().addAll("button", "item-button");
         delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.item.getId()));
 
         return delete;
@@ -224,15 +224,15 @@ public class ItemScene {
 
     private boolean validateInput() {
 
-        if (this.group.getValue()     .equals("")) {this.setError("group");           return false;}
-        if (this.date.getValue()          == null) {this.setError("date");            return false;}
-        if (this.name.getText()       .equals("")) {this.setError("name");            return false;}
-        if (this.teacher.getValue()   .equals("")) {this.setError("teacher");         return false;}
-        if (this.startHour.getValue()     == null) {this.setError("starting hour");   return false;}
-        if (this.startMinute.getValue()   == null) {this.setError("starting minute"); return false;}
-        if (this.endHour.getValue()       == null) {this.setError("ending hour");     return false;}
-        if (this.endMinute.getValue()     == null) {this.setError("ending minute");   return false;}
-        if (this.classroom.getValue() .equals("")) {this.setError("classroom");       return false;}
+        if (this.group.getValue()       == null) {this.setError("group");           return false;}
+        if (this.date.getValue()        == null) {this.setError("date");            return false;}
+        if (this.name.getText()      .isEmpty()) {this.setError("name");            return false;}
+        if (this.teacher.getValue()     == null) {this.setError("teacher");         return false;}
+        if (this.startHour.getValue()   == null) {this.setError("starting hour");   return false;}
+        if (this.startMinute.getValue() == null) {this.setError("starting minute"); return false;}
+        if (this.endHour.getValue()     == null) {this.setError("ending hour");     return false;}
+        if (this.endMinute.getValue()   == null) {this.setError("ending minute");   return false;}
+        if (this.classroom.getValue()   == null) {this.setError("classroom");       return false;}
 
         return true;
     }
