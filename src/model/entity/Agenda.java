@@ -285,18 +285,22 @@ public class Agenda {
     @Override
     public String toString() {
 
-        return
-            "{\n" +
-                "\"id\": \"" + this.id + "\",\n" +
-                "\"name\": \"" + this.name + "\",\n" +
-                "\"groups\": \"" + this.groupsToString() + "\"\n" +
-            "}"
-        ;
+        StringBuilder agenda = new StringBuilder();
+
+        agenda.append("{\n");
+        agenda.append("\"id\": \"")   .append(this.id)               .append("\",\n");
+        agenda.append("\"name\": \"") .append(this.name)             .append("\",\n");
+        agenda.append("\"groups\": ") .append(this.groupsToString()) .append("\n");
+        agenda.append("}");
+
+        return agenda.toString();
     }
 
     private String groupsToString() {
 
         StringBuilder groups = new StringBuilder();
+
+        groups.append("[\n");
 
         for (int i = 0; i < this.groups.size(); i++)
             if (i == (this.groups.size() - 1))
@@ -304,10 +308,8 @@ public class Agenda {
             else
                 groups.append(this.groups.get(i).toString()).append(",\n");
 
-        return
-            "[\n" +
-                groups.toString() +
-            "]"
-        ;
+        groups.append("]");
+
+        return groups.toString();
     }
 }

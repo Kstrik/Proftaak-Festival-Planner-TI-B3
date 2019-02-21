@@ -91,6 +91,7 @@ public class HTTPModel {
     }
 
     private void sendRequest(HttpURLConnection con, String param) throws IOException {
+
         System.out.println(param);
         con.setDoOutput(true);
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(con.getOutputStream());
@@ -106,10 +107,11 @@ public class HTTPModel {
         StringBuffer response = new StringBuffer();
 
         while ((inputLine = in.readLine()) != null) {
+
             response.append(inputLine);
         }
-        in.close();
 
+        in.close();
         System.out.println(response.toString());
     }
 }

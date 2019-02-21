@@ -109,20 +109,24 @@ public class Group {
     @Override
     public String toString() {
 
-        return
-            "{\n" +
-                "\"id\": \"" + this.id + "\",\n" +
-                "\"name\": \"" + this.name + "\",\n" +
-                "\"members\": \"" + this.membersToString() + "\",\n" +
-                "\"schedules\": \"" + this.schedulesToString() + "\",\n" +
-                "\"isTeacherGroup\": \"" + this.isTeacherGroup + "\"\n" +
-            "}"
-        ;
+        StringBuilder group = new StringBuilder();
+
+        group.append("{\n");
+        group.append("\"id\": \"")             .append(this.id)                  .append("\",\n");
+        group.append("\"name\": \"")           .append(this.name)                .append("\",\n");
+        group.append("\"members\": ")          .append(this.membersToString())   .append(",\n");
+        group.append("\"schedules\": ")        .append(this.schedulesToString()) .append(",\n");
+        group.append("\"isTeacherGroup\": \"") .append(this.isTeacherGroup)      .append("\"\n");
+        group.append("}");
+
+        return group.toString();
     }
 
     private String membersToString() {
 
         StringBuilder members = new StringBuilder();
+
+        members.append("[\n");
 
         for (int i = 0; i < this.members.size(); i++)
             if (i == (this.members.size() - 1))
@@ -130,16 +134,16 @@ public class Group {
             else
                 members.append(this.members.get(i).toString()).append(",\n");
 
-        return
-            "[\n" +
-                members.toString() +
-            "]"
-        ;
+        members.append("]");
+
+        return members.toString();
     }
 
     private String schedulesToString() {
 
         StringBuilder schedules = new StringBuilder();
+
+        schedules.append("[\n");
 
         for (int i = 0; i < this.schedules.size(); i++)
             if (i == (this.schedules.size() - 1))
@@ -147,10 +151,8 @@ public class Group {
             else
                 schedules.append(this.schedules.get(i).toString()).append("\n");
 
-        return
-            "[\n" +
-                schedules.toString() +
-            "]"
-        ;
+        schedules.append("]");
+
+        return schedules.toString();
     }
 }

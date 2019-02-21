@@ -39,11 +39,13 @@ public class Classroom {
     @Override
     public String toString() {
 
-        return
-            "{\n" +
-                "\"id\": \"" + this.id + "\",\n" +
-                "\"name\": \"" + this.name + "\"\n" +
-            "}"
-        ;
+        StringBuilder classroom = new StringBuilder();
+
+        classroom.append("{\n");
+        classroom.append("\"id\": \"")   .append(this.id)   .append("\",\n");
+        classroom.append("\"name\": \"") .append(this.name) .append("\"\n");
+        classroom.append("}");
+
+        return classroom.toString();
     }
 }

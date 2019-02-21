@@ -77,14 +77,16 @@ public class Person {
     @Override
     public String toString() {
 
-        return
-            "{\n" +
-                "\"id\": \"" + this.id + "\",\n" +
-                "\"isTeacher\": \"" + this.isTeacher + "\",\n" +
-                "\"name\": \"" + this.name + "\",\n" +
-                "\"gender\": \"" + this.gender + "\",\n" +
-                "\"personID\": \"" + this.personID + "\"\n" +
-            "}"
-        ;
+        StringBuilder person = new StringBuilder();
+
+        person.append("{\n");
+        person.append("\"id\": \"")        .append(this.id)        .append("\",\n");
+        person.append("\"isTeacher\": \"") .append(this.isTeacher) .append("\",\n");
+        person.append("\"name\": \"")      .append(this.name)      .append("\",\n");
+        person.append("\"gender\": \"")    .append(this.gender)    .append("\",\n");
+        person.append("\"personID\": \"")  .append(this.personID)  .append("\"\n");
+        person.append("}");
+
+        return person.toString();
     }
 }

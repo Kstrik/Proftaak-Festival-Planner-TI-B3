@@ -10,7 +10,7 @@ public class Item {
     private Person teacher;
     private LocalDateTime start, end;
     private Classroom classroom;
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Item(int id, String name, LocalDateTime start, LocalDateTime end, Person teacher, Classroom classroom) {
 
@@ -138,13 +138,14 @@ public class Item {
     public String toString() {
 
         StringBuilder sb = new StringBuilder();
+
         sb.append("{\n");
-            sb.append("\"id\":" + this.id + ",\n");
-            sb.append("\"name\": \"" + this.name + "\",\n");
-            sb.append("\"classroom\":" + this.classroom.toString() + ",\n");
-            sb.append("\"start\":\"" + this.start.format(this.dtf) + "\",\n");
-            sb.append("\"end\":\"" + this.end.format(this.dtf) + "\",\n");
-            sb.append("\"teacher\":" + this.teacher.getId() + "\n");
+        sb.append("\"id\":")        .append(this.id)                                   .append(",\n");
+        sb.append("\"name\": \"")   .append(this.name)                                 .append("\",\n");
+        sb.append("\"classroom\":") .append(this.classroom.toString())                 .append(",\n");
+        sb.append("\"start\":\"")   .append(this.start.format(this.dateTimeFormatter)) .append("\",\n");
+        sb.append("\"end\":\"")     .append(this.end.format(this.dateTimeFormatter))   .append("\",\n");
+        sb.append("\"teacher\":")   .append(this.teacher.getId())                      .append("\n");
         sb.append("}");
 
         return sb.toString();

@@ -152,29 +152,31 @@ public class Schedule {
     @Override
     public String toString() {
 
-        return
-            "{\n"+
-                "\"id\": \"" + this.id + "\",\n" +
-                "\"date\": \"" + this.date.toString() + "\",\n" +
-                "\"Items\": \"" + this.ItemsToString() + "\"\n" +
-            "}"
-        ;
+        StringBuilder schedule = new StringBuilder();
+
+        schedule.append("{\n");
+        schedule.append("\"id\": \"")    .append(this.id)              .append("\",\n");
+        schedule.append("\"date\": \"")  .append(this.date.toString()) .append("\",\n");
+        schedule.append("\"Items\": \"") .append(this.ItemsToString()) .append("\"\n");
+        schedule.append("}");
+
+        return schedule.toString();
     }
 
     private String ItemsToString() {
 
-        StringBuilder Items = new StringBuilder();
+        StringBuilder items = new StringBuilder();
+
+        items.append("[\n");
 
         for (int i = 0; i < this.items.size(); i++)
             if (i == (this.items.size() - 1))
-                Items.append(this.items.get(i).toString()).append("\n");
+                items.append(this.items.get(i).toString()).append("\n");
             else
-                Items.append(this.items.get(i).toString()).append(",\n");
+                items.append(this.items.get(i).toString()).append(",\n");
 
-        return
-            "[" +
-                Items.toString() +
-            "]"
-        ;
+        items.append("]");
+
+        return items.toString();
     }
 }
