@@ -16,15 +16,11 @@ public class Schedule {
         this.items = items;
     }
 
-    public Schedule(int id, LocalDateTime date) {
-
-        this.id = id;
-        this.date = date;
-        this.items = new ArrayList<>();
-    }
-
     public Schedule() {
 
+        this.id = -1;
+        this.date = LocalDateTime.now();
+        this.items = new ArrayList<>();
     }
 
     // methods
@@ -49,6 +45,9 @@ public class Schedule {
 
     public LocalDateTime getScheduleStart() {
 
+        if (this.items.size() == 0)
+            return LocalDateTime.now();
+
         LocalDateTime time = this.items.get(0).getStart();
 
         for (Item item : this.items)
@@ -59,6 +58,9 @@ public class Schedule {
     }
 
     public LocalDateTime getScheduleEnd() {
+
+        if (this.items.size() == 0)
+            return LocalDateTime.now().plusSeconds(1);
 
         LocalDateTime time = this.items.get(0).getEnd();
 
@@ -93,27 +95,6 @@ public class Schedule {
                 teachers.add(item.getTeacher());
 
         return teachers;
-    }
-
-    public int getAmountOfClassrooms() {
-
-        return getAllClassrooms().size();
-    }
-
-    public ArrayList<Classroom> getAllClassrooms() {
-
-        ArrayList<Classroom> classrooms = new ArrayList<>();
-
-        for(Item item : this.items)
-            if (!classrooms.contains(item.getClassroom()))
-                classrooms.add(item.getClassroom());
-
-        return classrooms;
-    }
-
-    public int getClassRoomKey(Classroom classroom) {
-
-        return this.getAllClassrooms().indexOf(classroom);
     }
 
     // getters

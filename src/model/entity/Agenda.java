@@ -10,6 +10,20 @@ public class Agenda {
     private String name;
     private ArrayList<Group> groups;
 
+    public Agenda (int id, String name, ArrayList<Group> groups) {
+
+        this.id = id;
+        this.name = name;
+        this.groups = groups;
+    }
+
+    public Agenda () {
+
+        this.id = -1;
+        this.name = "";
+        this.groups = new ArrayList<>();
+    }
+
     // group
     public ArrayList<Group> getAllGroups() {
 
@@ -27,13 +41,40 @@ public class Agenda {
         return names;
     }
 
+    public Group getGroupBySchedule(Schedule schedule) {
+
+        for (Group group : this.getAllGroups())
+            if (group.getSchedules().contains(schedule))
+                return group;
+
+        return new Group();
+    }
+
+    public Group getGroupByPerson(Person person) {
+
+        for (Group group : this.getAllGroups())
+            if (group.getMembers().contains(person))
+                return group;
+
+        return new Group();
+    }
+
+    public Group getGroupByItem(Item item) {
+
+        for (Group group : this.getAllGroups())
+            if (group.containsItem(item))
+                return group;
+
+        return new Group();
+    }
+
     public Group getGroupByName(String name) {
 
         for (Group group : this.getAllGroups())
             if (group.getName().equals(name))
                 return group;
 
-        return null;
+        return new Group();
     }
 
     // schedule
@@ -50,22 +91,13 @@ public class Agenda {
 
     public Schedule getCombinedScheduleByDate(LocalDateTime date) {
 
-        Schedule combinedSchedule = new Schedule(-1, date);
+        Schedule combinedSchedule = new Schedule(-1, date, new ArrayList<>());
 
         for (Schedule schedule : this.getAllSchedules())
             if (schedule.getDate().equals(date))
                 combinedSchedule.addItems(schedule.getItems());
 
         return combinedSchedule;
-    }
-
-    public Schedule getScheduleByDateFromGroup(Group group, LocalDateTime date) {
-
-        for (Schedule schedule : group.getSchedules())
-            if (schedule.getDate().equals(date))
-                return schedule;
-
-        return null;
     }
 
     public ArrayList<LocalDateTime> getAllScheduleDates() {
@@ -95,25 +127,16 @@ public class Agenda {
         return this.getCombinedScheduleByDate(this.getFirstScheduleDate());
     }
 
-    // scheduleItem
+    // Item
     public ArrayList<Item> getAllItems() {
 
-        HashMap<Integer, Item> scheduleItems = new HashMap<>();
+        HashMap<Integer, Item> items = new HashMap<>();
 
         for (Schedule schedule : this.getAllSchedules())
             for (Item item : schedule.getItems())
-                    scheduleItems.put(item.getId(), item);
+                    items.put(item.getId(), item);
 
-        return new ArrayList<Item>() {{ addAll(scheduleItems.values()); }};
-    }
-
-    public String getGroupNameOfItem(Item item) {
-
-        for (Group group : this.getAllGroups())
-            if (group.containsItem(item))
-                return group.getName();
-
-        return null;
+        return new ArrayList<Item>() {{ addAll(items.values()); }};
     }
 
     public LocalDateTime getDateOfItem(Item item) {
@@ -122,7 +145,7 @@ public class Agenda {
             if (schedule.containsItem(item))
                 return schedule.getDate();
 
-        return null;
+        return LocalDateTime.now();
     }
 
     public Item getItemById(int id) {
@@ -131,7 +154,7 @@ public class Agenda {
             if (item.getId() == id)
                 return item;
 
-        return null;
+        return new Item();
     }
 
     // classroom
@@ -162,7 +185,7 @@ public class Agenda {
             if (classroom.getName().equals(name))
                 return classroom;
 
-        return null;
+        return new Classroom();
     }
 
     public int getAmountOfClassrooms() {
@@ -214,7 +237,7 @@ public class Agenda {
             if (student.getName().equals(name))
                 return student;
 
-        return null;
+        return new Person();
     }
 
     // teachers
@@ -246,7 +269,7 @@ public class Agenda {
             if (teacher.getName().equals(name))
                 return teacher;
 
-        return null;
+        return new Person();
     }
 
     // setters

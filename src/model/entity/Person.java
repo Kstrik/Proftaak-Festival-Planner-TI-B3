@@ -19,6 +19,11 @@ public class Person {
 
     public Person() {
 
+        this.id = -1;
+        this.name = "";
+        this.gender = "other";
+        this.personID = -1;
+        this.isTeacher = false;
     }
 
     // getters

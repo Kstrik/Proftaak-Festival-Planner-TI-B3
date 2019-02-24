@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Group {
@@ -21,6 +22,11 @@ public class Group {
 
     public Group() {
 
+        this.id = -1;
+        this.name = "";
+        this.members = new ArrayList<>();
+        this.schedules = new ArrayList<>();
+        this.isTeacherGroup = false;
     }
 
     // methods
@@ -31,6 +37,35 @@ public class Group {
                 return true;
 
         return false;
+    }
+
+    public Schedule getScheduleByItem(Item item) {
+
+        for (Schedule schedule : this.schedules)
+            if (schedule.getItems().contains(item))
+                return schedule;
+
+        return new Schedule();
+    }
+
+    public Schedule getScheduleByDate(LocalDateTime date) {
+
+        for (Schedule schedule : this.schedules)
+            if (schedule.getDate() == date)
+                return schedule;
+
+        return new Schedule();
+    }
+
+    public ArrayList<LocalDateTime> getScheduleDates() {
+
+        ArrayList<LocalDateTime> dates = new ArrayList<>();
+
+        for (Schedule schedule : this.schedules)
+            if (!dates.contains(schedule.getDate()))
+                dates.add(schedule.getDate());
+
+        return dates;
     }
 
     public void addMember(Person person) {

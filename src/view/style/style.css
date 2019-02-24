@@ -1,4 +1,4 @@
-Gridpane, Canvas, VBox, .classroom-label, .button, .main {
+Gridpane, Canvas, VBox, .createMenu-button, .classroom-label, .button-column, .column, .button, .main, .row {
 
     -fx-border-width: 3;
     -fx-border-insets: -1;
@@ -31,10 +31,53 @@ VBox {
     -fx-min-width: 40;
 }
 
+.createMenu-reset, .createMenu-apply {
+
+    -fx-pref-width: 165 !important;
+    /*-fx-border-insets: -2;*/
+}
+
+.button-column, .column, .row {
+
+    -fx-padding: 3;
+}
+
+.borderless-bottom {
+
+    -fx-border-insets: 0 0 -2 0 !important;
+    -fx-border-width: 0 0 5 0 !important;
+}
+
+.createMenu-reset {
+
+    /*-fx-border-width: 0 4 2 0;*/
+}
+
+.createMenu-apply {
+
+    /*-fx-border-width: 0 0 2 4;*/
+}
+
+.item-button-box {
+
+    -fx-border-insets: -1 -1 -1 -1;
+}
+
 .classroom-label {
 
     -fx-pref-height: 43;
     -fx-pref-width: 200;
+}
+
+.schedule-button {
+
+    -fx-border-insets: -1 -1 -3 -1 !important;
+    -fx-pref-width: 150;
+}
+
+.button-column {
+
+    -fx-pref-width: 100;
 }
 
 .time-comboBox {
@@ -42,9 +85,20 @@ VBox {
     -fx-pref-width: 87 !important;
 }
 
+.table-button {
+
+    -fx-pref-width: 50 !important;
+}
+
 .paddingless {
 
     -fx-padding: 0 !important;
+}
+
+.base-button {
+
+    -fx-border-insets: -1 -1 -3 -1 !important;
+    -fx-pref-width: 100;
 }
 
 .item-button {
@@ -56,7 +110,13 @@ VBox {
 .item-label {
 
     -fx-padding: 5;
-    -fx-pref-width: 100;
+    -fx-pref-width: 150;
+}
+
+.createMenu {
+
+    -fx-border-width: 3 3 0 3;
+    -fx-border-insets: -1 -1 -3 -1;
 }
 
 .borderless {
@@ -90,6 +150,11 @@ VBox {
     -fx-text-fill: white;
 }
 
+.column {
+
+    -fx-pref-width: 125;
+}
+
 .error {
 
     -fx-padding: 5 5;
@@ -99,4 +164,10 @@ VBox {
 .main {
 
     -fx-border-insets: 3;
+}
+
+.row {
+
+    -fx-pref-width: 125;
+    -fx-pref-height: 30;
 }

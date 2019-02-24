@@ -1,6 +1,5 @@
-package view;
+package view.scenes;
 
-import controller.ItemUpdate;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,7 +7,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.entity.Agenda;
+import model.entity.Group;
 import model.entity.Item;
+import controller.interfaces.ItemUpdate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,16 +20,18 @@ public class ItemScene {
     private Agenda agenda;
 
     private ItemUpdate observer;
-    private Item item;
+    private Item selected;
 
     private VBox main;
 
     private ComboBox<String> group;
-    private DatePicker date;
+    private ComboBox<LocalDateTime> schedule;
     private TextField name;
     private ComboBox<String> teacher;
-    private ComboBox<Integer> startHour, startMinute;
-    private ComboBox<Integer> endHour,   endMinute;
+    private ComboBox<Integer> startHour;
+    private ComboBox<Integer> startMinute;
+    private ComboBox<Integer> endHour;
+    private ComboBox<Integer> endMinute;
     private ComboBox<String> classroom;
 
     private Label error;
@@ -36,9 +39,14 @@ public class ItemScene {
     // main function
     public Scene getScene(Stage primaryStage) {
 
-        setItem();
+        this.main = new VBox();
 
-        Scene scene = new Scene(new ScrollPane(this.main), 295, 328);
+        this.setInputs();
+        this.setErrorLabel();
+        this.setButtons();
+        this.setItemData();
+
+        Scene scene = new Scene(new ScrollPane(this.main), 345, 328);
         scene.getStylesheets().add("view/style/style.css");
 
         primaryStage.setTitle(getTitle());
@@ -57,44 +65,35 @@ public class ItemScene {
         this.observer = observer;
     }
 
-    public void setItem(Item item) {
+    public void setItem(Item selected) {
 
-        this.item = item;
+        this.selected = selected;
     }
 
     // scene functions
-    private void setItem() {
-
-        this.main = new VBox();
-
-        this.setInputs();
-        this.setErrorLabel();
-        this.setButtons();
-        this.setItemData();
-    }
-
     private void setInputs() {
 
         // group
         this.group = new ComboBox<>();
         this.group.setItems(FXCollections.observableArrayList(this.agenda.getAllGroupNames()));
-
+        this.group.setOnAction(e -> {
+            Group group = this.agenda.getGroupByName(this.group.getValue());
+            this.schedule.setItems(FXCollections.observableArrayList(group.getScheduleDates()));
+        });
         Label groupLabel = new Label("Group: ");
         groupLabel.getStyleClass().add("item-label");
         HBox groupBox = new HBox();
         groupBox.getChildren().addAll(groupLabel, this.group);
 
         // date
-        this.date = new DatePicker();
-
+        this.schedule = new ComboBox<>();
         Label dateLabel = new Label("Date: ");
         dateLabel.getStyleClass().add("item-label");
         HBox dateBox = new HBox();
-        dateBox.getChildren().addAll(dateLabel, this.date);
+        dateBox.getChildren().addAll(dateLabel, this.schedule);
 
         // name
-        this.name = new TextField("Test");
-
+        this.name = new TextField();
         Label nameLabel = new Label("Name: ");
         nameLabel.getStyleClass().add("item-label");
         HBox nameBox = new HBox();
@@ -103,7 +102,6 @@ public class ItemScene {
         // teacher
         this.teacher = new ComboBox<>();
         this.teacher.setItems(FXCollections.observableArrayList(this.agenda.getAllTeacherNames()));
-
         Label teacherLabel = new Label("Teacher: ");
         teacherLabel.getStyleClass().add("item-label");
         HBox teacherBox = new HBox();
@@ -113,11 +111,9 @@ public class ItemScene {
         this.startHour = new ComboBox<>();
         this.startHour.getStyleClass().add("time-comboBox");
         this.startHour.setItems(FXCollections.observableArrayList(this.getNumbers(24)));
-
         this.startMinute = new ComboBox<>();
         this.startMinute.getStyleClass().add("time-comboBox");
         this.startMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
-
         Label startTimeLabel = new Label("Start time: ");
         startTimeLabel.getStyleClass().add("item-label");
         HBox startTimeBox = new HBox();
@@ -127,11 +123,9 @@ public class ItemScene {
         this.endHour = new ComboBox<>();
         this.endHour.getStyleClass().add("time-comboBox");
         this.endHour.setItems(FXCollections.observableArrayList(this.getNumbers(24)));
-
         this.endMinute = new ComboBox<>();
         this.endMinute.getStyleClass().add("time-comboBox");
         this.endMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
-
         Label endTimeLabel = new Label("Start time: ");
         endTimeLabel.getStyleClass().add("item-label");
         HBox endTimeBox = new HBox();
@@ -140,7 +134,6 @@ public class ItemScene {
         // classroom
         this.classroom = new ComboBox<>();
         this.classroom.setItems(FXCollections.observableArrayList(this.agenda.getAllClassroomNames()));
-
         Label classroomLabel = new Label("Classroom: ");
         classroomLabel.getStyleClass().add("item-label");
         HBox classroomBox = new HBox();
@@ -165,7 +158,7 @@ public class ItemScene {
         buttonBox.getChildren().add(this.getCancelButton());
         buttonBox.getChildren().add(this.getApplyButton());
 
-        if (this.item != null)
+        if (this.selected != null)
             buttonBox.getChildren().add(this.getDeleteButton());
 
         this.main.getChildren().add(buttonBox);
@@ -184,15 +177,7 @@ public class ItemScene {
 
         Button apply = new Button("Apply");
         apply.getStyleClass().addAll("button", "item-button");
-        apply.setOnMouseClicked(e -> {
-
-            if (this.validateInput())
-                this.observer.onItemChange(
-                    this.agenda.getGroupByName(this.group.getValue()).getId(),
-                    this.parseTime(0, 0),
-                    this.getItem()
-                );
-        });
+        apply.setOnMouseClicked(e -> this.validateInput());
 
         return apply;
     }
@@ -201,70 +186,80 @@ public class ItemScene {
 
         Button delete = new Button("delete");
         delete.getStyleClass().addAll("button", "item-button");
-        delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.item.getId()));
+        delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.selected.getId()));
 
         return delete;
     }
 
-    private void setItemData() {
+    private void validateInput() {
 
-        if (this.item != null) {
+        boolean valid = true;
 
-            this.group.setValue(this.agenda.getGroupNameOfItem(item));
-            this.date.setValue(LocalDate.from(this.agenda.getDateOfItem(item)));
-            this.name.setText(this.item.getName());
-            this.teacher.setValue(this.item.getTeacher().getName());
-            this.startHour.setValue(this.item.getStart().getHour());
-            this.startMinute.setValue(this.item.getStart().getMinute());
-            this.endHour.setValue(this.item.getEnd().getHour());
-            this.endMinute.setValue(this.item.getEnd().getMinute());
-            this.classroom.setValue(this.item.getClassroom().getName());
-        }
+        if (this.classroom.getValue()   == null) {this.setError("classroom");       valid = false;}
+        if (this.endMinute.getValue()   == null) {this.setError("ending minute");   valid = false;}
+        if (this.endHour.getValue()     == null) {this.setError("ending hour");     valid = false;}
+        if (this.startMinute.getValue() == null) {this.setError("starting minute"); valid = false;}
+        if (this.startHour.getValue()   == null) {this.setError("starting hour");   valid = false;}
+        if (this.teacher.getValue()     == null) {this.setError("teacher");         valid = false;}
+        if (this.name.getText()      .isEmpty()) {this.setError("name");            valid = false;}
+        if (this.schedule.getValue()    == null) {this.setError("date");            valid = false;}
+        if (this.group.getValue()       == null) {this.setError("group");           valid = false;}
+
+        if (!valid)
+            return;
+
+        Group group = this.agenda.getGroupByName(this.group.getValue());
+
+        this.observer.onItemChange(
+            group,
+            group.getScheduleByDate(this.schedule.getValue()),
+            this.getItem()
+        );
     }
 
-    private boolean validateInput() {
+    private void setItemData() {
 
-        if (this.group.getValue()       == null) {this.setError("group");           return false;}
-        if (this.date.getValue()        == null) {this.setError("date");            return false;}
-        if (this.name.getText()      .isEmpty()) {this.setError("name");            return false;}
-        if (this.teacher.getValue()     == null) {this.setError("teacher");         return false;}
-        if (this.startHour.getValue()   == null) {this.setError("starting hour");   return false;}
-        if (this.startMinute.getValue() == null) {this.setError("starting minute"); return false;}
-        if (this.endHour.getValue()     == null) {this.setError("ending hour");     return false;}
-        if (this.endMinute.getValue()   == null) {this.setError("ending minute");   return false;}
-        if (this.classroom.getValue()   == null) {this.setError("classroom");       return false;}
+        if (this.selected.getId() != -1) {
 
-        return true;
+            Group group = this.agenda.getGroupByItem(this.selected);
+
+            this.group.setValue(group.getName());
+            this.schedule.setValue(group.getScheduleByItem(this.selected).getDate());
+            this.name.setText(this.selected.getName());
+            this.teacher.setValue(this.selected.getTeacher().getName());
+            this.startHour.setValue(this.selected.getStart().getHour());
+            this.startMinute.setValue(this.selected.getStart().getMinute());
+            this.endHour.setValue(this.selected.getEnd().getHour());
+            this.endMinute.setValue(this.selected.getEnd().getMinute());
+            this.classroom.setValue(this.selected.getClassroom().getName());
+        }
     }
 
     private Item getItem() {
 
-        Item item = new Item();
+        this.selected.setName(this.name.getText());
+        this.selected.setTeacher(this.agenda.getTeacherByName(this.teacher.getValue()));
+        this.selected.setStart(this.parseTime(this.startHour.getValue(), this.startMinute.getValue()));
+        this.selected.setEnd(this.parseTime(this.endHour.getValue(), this.endMinute.getValue()));
+        this.selected.setClassroom(this.agenda.getClassroomByName(this.classroom.getValue()));
 
-        item.setId((this.item != null) ? this.item.getId() : -1);
-        item.setName(this.name.getText());
-        item.setTeacher(this.agenda.getTeacherByName(this.teacher.getValue()));
-        item.setStart(this.parseTime(this.startHour.getValue(), this.startMinute.getValue()));
-        item.setEnd(this.parseTime(this.endHour.getValue(), this.endMinute.getValue()));
-        item.setClassroom(this.agenda.getClassroomByName(this.classroom.getValue()));
-
-        return item;
+        return this.selected;
     }
 
     private LocalDateTime parseTime(int hour, int minute) {
 
-        LocalDate date = this.date.getValue();
+        LocalDate date = LocalDate.from(this.schedule.getValue());
 
         return LocalDateTime.parse(date + "T" +
-                ((Integer.toString(hour).length() == 1) ? "0" + hour : hour) + ":" +
-                ((Integer.toString(minute).length() == 1) ? "0" + minute : minute) + ":00"
+            ((Integer.toString(hour).length() == 1) ? "0" + hour : hour) + ":" +
+            ((Integer.toString(minute).length() == 1) ? "0" + minute : minute) + ":00"
         );
     }
 
     // other methods
     private String getTitle() {
 
-        return (this.item != null) ? "Update: " + this.item.getName() : "Create Schedule Item";
+        return (this.selected.getId() != -1) ? "Update: " + this.selected.getName() : "Create Schedule Item";
     }
 
     private ArrayList<Integer> getNumbers(int amount) {

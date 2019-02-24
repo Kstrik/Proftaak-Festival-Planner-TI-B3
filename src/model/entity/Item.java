@@ -24,6 +24,12 @@ public class Item {
 
     public Item() {
 
+        this.id = -1;
+        this.name = "";
+        this.start = LocalDateTime.now();
+        this.end = LocalDateTime.now().plusSeconds(1);
+        this.teacher = new Person();
+        this.classroom = new Classroom();
     }
 
     // methods

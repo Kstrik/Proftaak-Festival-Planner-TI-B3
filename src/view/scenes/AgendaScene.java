@@ -1,6 +1,5 @@
-package view;
+package view.scenes;
 
-import controller.AgendaUpdate;
 import javafx.scene.input.MouseEvent;
 import model.ConfigModel;
 import model.entity.Agenda;
@@ -18,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import org.jfree.fx.FXGraphics2D;
+import controller.interfaces.AgendaUpdate;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AgendaScene {
+public class AgendaScene extends BaseScene {
 
     private HashMap<Rectangle, Item> canvasItemLocations;
 
@@ -41,14 +41,24 @@ public class AgendaScene {
     private VBox main;
 
     // main function
+    @Override
     public Scene getScene(Stage stage) {
 
-        this.buildSchedule();
+        this.canvasItemLocations = new HashMap<>();
+        this.scheduleGrid = new GridPane();
+        this.canvas = new Canvas();
+
+        this.main = this.getMain();
+
+        this.setScheduleDateButtons();
+        this.setScheduleClassrooms();
+        this.setScheduleTime();
+        this.setScheduleGrid();
+
+        this.draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
 
         Scene scene = new Scene(new ScrollPane(this.main), this.getSceneWidth(), this.getSceneHeight());
         scene.getStylesheets().add("view/style/style.css");
-
-        stage.setTitle("School Agenda Manager: " + this.agenda.getName());
 
         return scene;
     }
@@ -57,6 +67,7 @@ public class AgendaScene {
     public void setObserver(AgendaUpdate observer) {
 
         this.observer = observer;
+        this.setBaseObserver(observer);
     }
 
     public void setSchedule(Schedule schedule) {
@@ -73,38 +84,21 @@ public class AgendaScene {
     }
 
     // scene methods
-    private void buildSchedule() {
-
-        this.canvasItemLocations = new HashMap<>();
-
-        this.scheduleGrid = new GridPane();
-        this.canvas = new Canvas();
-        this.main = new VBox();
-
-        this.setScheduleDateButtons();
-        this.setScheduleClassrooms();
-        this.setScheduleTime();
-        this.setScheduleGrid();
-
-        this.draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
-    }
-
     private void setScheduleDateButtons() {
 
         HBox hBox = new HBox();
-        hBox.getStyleClass().addAll("paddingless", "borderless");
+        hBox.getStyleClass().addAll("paddingless", "borderless-bottom");
 
         for (LocalDateTime date : this.agenda.getAllScheduleDates()) {
 
             Button button = new Button(getParsedDate(date));
-            button.getStyleClass().add("button");
-            button.setOnMouseClicked(e -> this.observer.onScheduleSelectByDate(date));
+            button.getStyleClass().addAll("button", "schedule-button");
+            button.setOnMouseClicked(e -> this.observer.onAgendaSelectByDate(date));
 
             hBox.getChildren().add(button);
         }
 
         main.getChildren().add(hBox);
-        main.getStyleClass().add("main");
     }
 
     private void setScheduleClassrooms() {
@@ -207,7 +201,7 @@ public class AgendaScene {
 
         for (Map.Entry<Rectangle, Item> entry : this.canvasItemLocations.entrySet())
             if (entry.getKey().contains(e.getX(), e.getY()))
-                this.observer.onAgendaItemRead(entry.getValue());
+                this.observer.onAgendaItemSelect(entry.getValue());
     }
 
     // other methods
@@ -228,7 +222,7 @@ public class AgendaScene {
 
     private double getSceneHeight() {
 
-        return (this.canvas.getHeight() < 500) ? (this.canvas.getHeight() + 99) : 599;
+        return (this.canvas.getHeight() < 500) ? (this.canvas.getHeight() + 114) : 613;
     }
 
     private int getItemX(Item item) {

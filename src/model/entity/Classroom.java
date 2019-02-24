@@ -13,8 +13,11 @@ public class Classroom {
 
     public Classroom () {
 
+        this.id = -1;
+        this.name = "";
     }
 
+    // setters
     public void setId(int id) {
 
         this.id = id;
@@ -25,6 +28,7 @@ public class Classroom {
         this.name = name;
     }
 
+    // getters
     public int getId() {
 
         return id;
