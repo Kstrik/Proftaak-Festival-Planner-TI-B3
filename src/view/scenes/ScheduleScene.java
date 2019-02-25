@@ -192,13 +192,11 @@ public class ScheduleScene extends BaseScene {
 
         boolean valid = true;
 
-        if (this.group.getValue() == null) {this.setErrorMessage("group"); valid = false;}
         if (this.date.getValue()  == null) {this.setErrorMessage("date");  valid = false;}
+        if (this.group.getValue() == null) {this.setErrorMessage("group"); valid = false;}
 
-        if (!valid)
-            return;
-
-        this.observer.onScheduleChange(this.agenda.getGroupByName(this.group.getValue()), this.getSchedule());
+        if (valid)
+            this.observer.onScheduleChange(this.agenda.getGroupByName(this.group.getValue()), this.getSchedule());
     }
 
     private Schedule getSchedule() {

@@ -246,16 +246,14 @@ public class PersonScene extends BaseScene {
 
         boolean valid = true;
 
-        if (this.group.getValue()     == null) {this.setErrorMessage("group");          valid = false;}
-        if (this.name.getText()    .isEmpty()) {this.setErrorMessage("name");           valid = false;}
-        if (this.gender.getValue()    == null) {this.setErrorMessage("gender");         valid = false;}
-        if (this.personID.getText().isEmpty()) {this.setErrorMessage("personID");       valid = false;}
         if (this.isTeacher.getValue() == null) {this.setErrorMessage("\"Is teacher\""); valid = false;}
+        if (this.personID.getText().isEmpty()) {this.setErrorMessage("personID");       valid = false;}
+        if (this.gender.getValue()    == null) {this.setErrorMessage("gender");         valid = false;}
+        if (this.name.getText()    .isEmpty()) {this.setErrorMessage("name");           valid = false;}
+        if (this.group.getValue()     == null) {this.setErrorMessage("group");          valid = false;}
 
-        if (!valid)
-            return;
-
-        this.observer.onPersonChange(this.agenda.getGroupByName(this.group.getValue()), this.getPerson());
+        if (valid)
+            this.observer.onPersonChange(this.agenda.getGroupByName(this.group.getValue()), this.getPerson());
     }
 
     private Person getPerson() {

@@ -10,6 +10,7 @@ import model.entity.Agenda;
 import model.entity.Group;
 import model.entity.Item;
 import controller.interfaces.ItemUpdate;
+import model.entity.Schedule;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -158,7 +159,7 @@ public class ItemScene {
         buttonBox.getChildren().add(this.getCancelButton());
         buttonBox.getChildren().add(this.getApplyButton());
 
-        if (this.selected != null)
+        if (this.selected.getId() != -1)
             buttonBox.getChildren().add(this.getDeleteButton());
 
         this.main.getChildren().add(buttonBox);
@@ -195,26 +196,28 @@ public class ItemScene {
 
         boolean valid = true;
 
-        if (this.classroom.getValue()   == null) {this.setError("classroom");       valid = false;}
-        if (this.endMinute.getValue()   == null) {this.setError("ending minute");   valid = false;}
-        if (this.endHour.getValue()     == null) {this.setError("ending hour");     valid = false;}
-        if (this.startMinute.getValue() == null) {this.setError("starting minute"); valid = false;}
-        if (this.startHour.getValue()   == null) {this.setError("starting hour");   valid = false;}
-        if (this.teacher.getValue()     == null) {this.setError("teacher");         valid = false;}
-        if (this.name.getText()      .isEmpty()) {this.setError("name");            valid = false;}
-        if (this.schedule.getValue()    == null) {this.setError("date");            valid = false;}
-        if (this.group.getValue()       == null) {this.setError("group");           valid = false;}
+        if (this.classroom.getValue()   == null) {this.setErrorMessage("classroom");       valid = false;}
+        if (this.endMinute.getValue()   == null) {this.setErrorMessage("ending minute");   valid = false;}
+        if (this.endHour.getValue()     == null) {this.setErrorMessage("ending hour");     valid = false;}
+        if (this.startMinute.getValue() == null) {this.setErrorMessage("starting minute"); valid = false;}
+        if (this.startHour.getValue()   == null) {this.setErrorMessage("starting hour");   valid = false;}
+        if (this.teacher.getValue()     == null) {this.setErrorMessage("teacher");         valid = false;}
+        if (this.name.getText()      .isEmpty()) {this.setErrorMessage("name");            valid = false;}
+        if (this.schedule.getValue()    == null) {this.setErrorMessage("date");            valid = false;}
+        if (this.group.getValue()       == null) {this.setErrorMessage("group");           valid = false;}
 
-        if (!valid)
-            return;
+        if (valid) {
 
-        Group group = this.agenda.getGroupByName(this.group.getValue());
+            Group group = this.agenda.getGroupByName(this.group.getValue());
+            Schedule schedule = group.getScheduleByDate(this.schedule.getValue());
+            Item item = this.getItem();
 
-        this.observer.onItemChange(
-            group,
-            group.getScheduleByDate(this.schedule.getValue()),
-            this.getItem()
-        );
+            if (item.getStart().isAfter(item.getEnd())) {this.setCustomErrorMessage("Start time is after End time");   valid = false;}
+            if (schedule.overlaps(item))                {this.setCustomErrorMessage("Time overlaps with other Items"); valid = false;}
+
+            if (valid)
+                this.observer.onItemChange(group, schedule, item);
+        }
     }
 
     private void setItemData() {
@@ -272,8 +275,13 @@ public class ItemScene {
         return number;
     }
 
-    private void setError(String keyWord) {
+    private void setCustomErrorMessage(String message)  {
 
-        this.error.setText("The " + keyWord + " has not been filled in!");
+        this.error.setText(message);
+    }
+
+    private void setErrorMessage(String keyWord) {
+
+        this.setCustomErrorMessage("The " + keyWord + " has not been filled in!");
     }
 }

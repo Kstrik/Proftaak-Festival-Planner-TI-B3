@@ -24,14 +24,18 @@ public class Schedule {
     }
 
     // methods
-    public void addItems(ArrayList<Item> items) {
+    public boolean overlaps(Item overlappedItem) {
 
-        this.items.addAll(items);
-    }
+        for (Item item : this.items)
+            if (item.getClassroom().getId() == overlappedItem.getClassroom().getId())
+                if (overlappedItem.getStart().isAfter(item.getStart()) &&
+                    overlappedItem.getStart().isBefore(item.getEnd()) ||
+                    overlappedItem.getEnd().isAfter(item.getStart()) &&
+                    overlappedItem.getEnd().isBefore(item.getEnd()))
+                        return true;
 
-    public void addItem(Item item) {
 
-        this.items.add(item);
+        return false;
     }
 
     public boolean containsItem(Item searchedItem) {

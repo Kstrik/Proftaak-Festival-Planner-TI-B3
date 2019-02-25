@@ -190,13 +190,11 @@ public class GroupScene extends BaseScene {
 
         boolean valid = true;
 
-        if (this.name.getText()         .isEmpty()) {this.setErrorMessage("name");                 valid = false;}
         if (this.isTeacherGroup.getValue() == null) {this.setErrorMessage("\"Is teacher group\""); valid = false;}
+        if (this.name.getText()         .isEmpty()) {this.setErrorMessage("name");                 valid = false;}
 
-        if (!valid)
-            return;
-
-        this.observer.onGroupChange(this.getGroup());
+        if (valid)
+            this.observer.onGroupChange(this.getGroup());
     }
 
     private Group getGroup() {

@@ -174,10 +174,8 @@ public class ClassroomScene extends BaseScene {
 
         if (this.name.getText().isEmpty()) {this.setErrorMessage("name"); valid = false;}
 
-        if (!valid)
-            return;
-
-        this.observer.onClassroomChange(this.getClassroom());
+        if (valid)
+            this.observer.onClassroomChange(this.getClassroom());
     }
 
     private Classroom getClassroom() {
