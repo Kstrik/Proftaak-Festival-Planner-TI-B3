@@ -3,16 +3,22 @@ package view;
 import entity.AgendaEntity;
 import entity.LessonEntity;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.AgendaModel;
+import model.map.MapModel;
+import model.map.TileMap;
+import model.map.TileMapLoader;
 import org.jfree.fx.FXGraphics2D;
+import org.jfree.fx.ResizableCanvas;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -25,7 +31,9 @@ public class AgendaView extends Application {
 
     private AgendaEntity agenda;
     private GridPane gridPane = new GridPane();
-    private Canvas canvas = new Canvas();
+    private Canvas canvas = new Canvas(1024, 1024);
+
+    private TileMap tileMap;
 
     public void startup() {
 
@@ -35,15 +43,23 @@ public class AgendaView extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        AgendaModel agendaModel = new AgendaModel();
-        this.agenda = agendaModel.getAgendaWithJSONFile("testAgenda");
+//        AgendaModel agendaModel = new AgendaModel();
+//        this.agenda = agendaModel.getAgendaWithJSONFile("testAgenda");
+//
+//        setTime();
+//        setClassRooms();
+//
+//
+//        primaryStage.setTitle("School Agenda Manager: " + this.agenda.getName());
+//        primaryStage.setScene(setScene());
 
-        setTime();
-        setClassRooms();
-
-
-        primaryStage.setTitle("School Agenda Manager: " + this.agenda.getName());
-        primaryStage.setScene(setScene());
+        //this.tileMap = new TileMapLoader("src/files/testmap/Test.json").loadTileMap();
+        //this.tileMap = new TileMapLoader("src/files/testmap2/Map.json").loadTileMap();
+        //this.tileMap = new TileMapLoader("src/files/testmapcollision/Map.json").loadTileMap();
+        this.tileMap = new TileMapLoader("src/files/lasttest/Map.json").loadTileMap();
+        Scene scene = new Scene(new Group(this.canvas), 1024, 1024);
+        primaryStage.setTitle("Simulatie");
+        primaryStage.setScene(scene);
         primaryStage.show();
 
         draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
@@ -51,24 +67,32 @@ public class AgendaView extends Application {
 
     private void draw(FXGraphics2D graphics) {
 
-        for (int i = 0; i < this.agenda.getAmountOfLessons(); i++) {
+//        this.mapModel.tileMap.draw(new FXGraphics2D(canvas.getGraphicsContext2D()));
+//        graphics.setColor(Color.BLACK);
+//        graphics.setBackground(Color.BLUE);
+//        graphics.drawRect(0, 0, 100, 100);
+        this.tileMap.draw(graphics);
+        this.tileMap.toggleCollisionVisibility();
+        this.tileMap.drawCollisionLayer(graphics);
 
-            LessonEntity lesson = this.agenda.getLesson(i);
-
-            double x = (BLOCK_WIDTH * this.agenda.getClassRoomKey(lesson.getClassRoom()));
-            double y = (BLOCK_HEIGHT * (lesson.getStartTime() - this.agenda.getAgendaStartTime()));
-            double height = (lesson.getLessonLength() > 0.5) ? (BLOCK_HEIGHT * lesson.getLessonLength()) : 40;
-
-            graphics.setColor(Color.RED);
-            graphics.draw(new Rectangle2D.Double(x, y, BLOCK_WIDTH, height));
-            graphics.setColor(Color.BLACK);
-            graphics.drawString(
-                lesson.getName() + " - " + lesson.getTeacher() + "\n" +
-                lesson.getClassRoom() + " - " + lesson.getGroup() + "\n" +
-                lesson.getParsedStartTime() + " - " + lesson.getParsedEndTime(),
-                (int) x + 10, (int) y + 20
-            );
-        }
+//        for (int i = 0; i < this.agenda.getAmountOfLessons(); i++) {
+//
+//            LessonEntity lesson = this.agenda.getLesson(i);
+//
+//            double x = (BLOCK_WIDTH * this.agenda.getClassRoomKey(lesson.getClassRoom()));
+//            double y = (BLOCK_HEIGHT * (lesson.getStartTime() - this.agenda.getAgendaStartTime()));
+//            double height = (lesson.getLessonLength() > 0.5) ? (BLOCK_HEIGHT * lesson.getLessonLength()) : 40;
+//
+//            graphics.setColor(Color.RED);
+//            graphics.draw(new Rectangle2D.Double(x, y, BLOCK_WIDTH, height));
+//            graphics.setColor(Color.BLACK);
+//            graphics.drawString(
+//                lesson.getName() + " - " + lesson.getTeacher() + "\n" +
+//                lesson.getClassRoom() + " - " + lesson.getGroup() + "\n" +
+//                lesson.getParsedStartTime() + " - " + lesson.getParsedEndTime(),
+//                (int) x + 10, (int) y + 20
+//            );
+//        }
     }
 
     private void setTime() {

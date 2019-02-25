@@ -1,0 +1,14 @@
+{ "columns":28,
+ "image":"..\/src\/files\/testmapcollision\/2dpixx_ccart_indoor_tiles.png",
+ "imageheight":1152,
+ "imagewidth":896,
+ "margin":0,
+ "name":"Interiour",
+ "spacing":0,
+ "tilecount":1008,
+ "tiledversion":"1.2.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":1.2
+}
