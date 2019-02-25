@@ -231,11 +231,13 @@ public class Controller extends javafx.application.Application implements Agenda
     // methods
     private Agenda getAgenda() {
 
-        JSONModel jsonModel = new JSONModel();
-        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda"));
+//        JSONModel jsonModel = new JSONModel();
+//        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda"));
 
-//        try                 {return this.httpModel.getAgenda();}
-//        catch (Exception e) {e.printStackTrace();}
+        try                 {return this.httpModel.getAgenda();}
+        catch (Exception e) {e.printStackTrace();}
+
+        return new Agenda();
     }
 
     private void prepareScenes() {

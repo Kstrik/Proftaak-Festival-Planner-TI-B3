@@ -15,8 +15,6 @@ public class HTTPModel {
 
         HttpURLConnection con = this.buildConnection("agenda", "GET");
 
-        this.log(con);
-
         String response = this.getResponse(con);
 
         JSONModel jsonModel = new JSONModel();
@@ -160,14 +158,15 @@ public class HTTPModel {
 
         if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-            BufferedReader input = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            InputStreamReader input = new InputStreamReader(con.getInputStream());
+            BufferedReader reader = new BufferedReader(input);
 
-            while ((line = input.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
 
                 response.append(line);
             }
 
-            input.close();
+//            input.close();
         } else {
 
             throw new IOException();

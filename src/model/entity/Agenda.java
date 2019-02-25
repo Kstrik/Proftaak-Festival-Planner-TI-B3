@@ -95,7 +95,7 @@ public class Agenda {
 
         for (Schedule schedule : this.getAllSchedules())
             if (schedule.getDate().equals(date))
-                combinedSchedule.addItems(schedule.getItems());
+                combinedSchedule.setItems(schedule.getItems());
 
         return combinedSchedule;
     }

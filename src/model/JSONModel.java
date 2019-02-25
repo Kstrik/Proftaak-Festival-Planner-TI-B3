@@ -8,7 +8,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class JSONModel {
@@ -32,6 +34,8 @@ public class JSONModel {
     }
 
     public JSONObject parseJSON(String jsonString) {
+
+        System.out.println(jsonString);
 
         JSONObject json = null;
         JSONParser parser = new JSONParser();
@@ -62,6 +66,9 @@ public class JSONModel {
 
         ArrayList<Group> groups = new ArrayList<>();
 
+        if (jsonGroups == null)
+            return groups;
+
         for (Object objectGroup : jsonGroups)
             groups.add(this.convertJSONGroup((JSONObject) objectGroup));
 
@@ -73,31 +80,36 @@ public class JSONModel {
         Group group = new Group();
         group.setId(Math.toIntExact((long) jsonGroup.get("id")));
         group.setName((String) jsonGroup.get("name"));
-        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members")));
+        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members"), (boolean) jsonGroup.get("isTeacherGroup")));
         group.setSchedules(this.convertJSONSchedules((JSONArray) jsonGroup.get("schedules")));
         group.setTeacherGroup((boolean) jsonGroup.get("isTeacherGroup"));
 
         return group;
     }
 
-    private ArrayList<Person> convertJSONMembers(JSONArray jsonMembers) {
+    private ArrayList<Person> convertJSONMembers(JSONArray jsonMembers, boolean isTeacher) {
 
         ArrayList<Person> people = new ArrayList<>();
 
+        if (jsonMembers == null)
+            return people;
+
         for (Object objectMember : jsonMembers)
-            people.add(this.convertJSONMember((JSONObject) objectMember));
+            people.add(this.convertJSONMember((JSONObject) objectMember, isTeacher));
 
         return people;
     }
 
-    private Person convertJSONMember(JSONObject jsonMember) {
+    private Person convertJSONMember(JSONObject jsonMember, boolean isTeacher) {
 
         Person person = new Person();
         person.setId(Math.toIntExact((long) jsonMember.get("id")));
-        person.setIsTeacher((boolean) jsonMember.get("isTeacher"));
         person.setName((String) jsonMember.get("name"));
         person.setGender((String) jsonMember.get("gender"));
         person.setMemberID((long) jsonMember.get("personID"));
+
+        if (isTeacher)
+            person.setIsTeacher(true);
 
         return person;
     }
@@ -116,7 +128,7 @@ public class JSONModel {
 
         Schedule schedule = new Schedule();
         schedule.setId(Math.toIntExact((long) jsonSchedule.get("id")));
-        schedule.setDate(LocalDateTime.parse((String) jsonSchedule.get("date")));
+        schedule.setDate(LocalDateTime.parse(((String) jsonSchedule.get("date")).replace(" ", "T")));
         schedule.setItems(this.convertJSONItems((JSONArray) jsonSchedule.get("items")));
 
         return schedule;
@@ -125,6 +137,9 @@ public class JSONModel {
     private ArrayList<Item> convertJSONItems(JSONArray jsonItems) {
 
         ArrayList<Item> items = new ArrayList<>();
+
+        if (jsonItems == null)
+            return items;
 
         for (Object objectItem : jsonItems)
             items.add(this.convertJSONItem((JSONObject) objectItem));
@@ -138,9 +153,9 @@ public class JSONModel {
         item.setId(Math.toIntExact((long) jsonItem.get("id")));
         item.setName((String) jsonItem.get("name"));
         item.setClassroom(this.convertJSONClassroom((JSONObject) jsonItem.get("classroom")));
-        item.setStart(LocalDateTime.parse((String) jsonItem.get("start")));
-        item.setEnd(LocalDateTime.parse((String) jsonItem.get("end")));
-        item.setTeacher(this.convertJSONMember((JSONObject) jsonItem.get("teacher")));
+        item.setStart(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("start"))));
+        item.setEnd(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("end"))));
+        item.setTeacher(this.convertJSONMember((JSONObject) jsonItem.get("teacher"), true));
 
         return item;
     }
@@ -148,6 +163,9 @@ public class JSONModel {
     private ArrayList<Classroom> convertJSONClassrooms(JSONArray jsonClassrooms) {
 
         ArrayList<Classroom> classrooms = new ArrayList<>();
+
+        if (jsonClassrooms == null)
+            return classrooms;
 
         for (Object objectClassroom : jsonClassrooms)
             classrooms.add(this.convertJSONClassroom((JSONObject) objectClassroom));
