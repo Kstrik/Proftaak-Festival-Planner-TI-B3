@@ -4,7 +4,6 @@ import controller.interfaces.*;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.HTTPModel;
-import model.JSONModel;
 import model.entity.*;
 import view.scenes.*;
 
@@ -37,23 +36,19 @@ public class Controller extends javafx.application.Application implements Agenda
         this.stage = stage;
 
         this.prepareScenes();
-
+        this.setAgenda();
         this.setAgendaScene();
     }
 
     // baseUpdate
     @Override
     public void onSelectAgenda()    { this.setAgendaScene(); }
-
     @Override
     public void onSelectClassroom() { this.setClassroomScene(); }
-
     @Override
     public void onSelectGroup()     { this.setGroupScene(); }
-
     @Override
     public void onSelectPerson()    { this.setPersonScene(); }
-
     @Override
     public void onSelectSchedule()  { this.setScheduleScene(); }
 
@@ -93,6 +88,7 @@ public class Controller extends javafx.application.Application implements Agenda
             else
                 this.httpModel.changeClassroom(classroom, "update");
 
+            this.setAgenda();
             this.setClassroomScene();
 
         } catch (IOException e) {
@@ -107,6 +103,7 @@ public class Controller extends javafx.application.Application implements Agenda
         try                   {this.httpModel.deleteClassroom(classroomID);}
         catch (IOException e) {e.printStackTrace();}
 
+        this.setAgenda();
         this.setClassroomScene();
     }
 
@@ -121,6 +118,7 @@ public class Controller extends javafx.application.Application implements Agenda
             else
                 this.httpModel.changeGroup(group, "update");
 
+            this.setAgenda();
             this.setGroupScene();
 
         } catch (IOException e) {
@@ -135,6 +133,7 @@ public class Controller extends javafx.application.Application implements Agenda
         try                   {this.httpModel.deleteGroup(groupId);}
         catch (IOException e) {e.printStackTrace();}
 
+        this.setAgenda();
         this.setGroupScene();
     }
 
@@ -145,6 +144,7 @@ public class Controller extends javafx.application.Application implements Agenda
         try                   {this.httpModel.deleteItem(itemId);}
         catch (IOException e) {e.printStackTrace();}
 
+        this.setAgenda();
         this.setAgendaScene();
     }
 
@@ -158,6 +158,7 @@ public class Controller extends javafx.application.Application implements Agenda
             else
                 this.httpModel.changeItem(group, schedule, item, "update");
 
+            this.setAgenda();
             this.setAgendaScene();
 
         } catch (IOException e) {
@@ -183,6 +184,7 @@ public class Controller extends javafx.application.Application implements Agenda
             else
                 this.httpModel.changePerson(group, person, "update");
 
+            this.setAgenda();
             this.setPersonScene();
 
         } catch (IOException e) {
@@ -197,6 +199,7 @@ public class Controller extends javafx.application.Application implements Agenda
         try                   {this.httpModel.deletePerson(personId);}
         catch (IOException e) {e.printStackTrace();}
 
+        this.setAgenda();
         this.setPersonScene();
     }
 
@@ -211,6 +214,7 @@ public class Controller extends javafx.application.Application implements Agenda
             else
                 this.httpModel.changeSchedule(group, schedule, "update");
 
+            this.setAgenda();
             this.setScheduleScene();
 
         } catch (IOException e) {
@@ -225,19 +229,29 @@ public class Controller extends javafx.application.Application implements Agenda
         try                   {this.httpModel.deleteSchedule(scheduleId);}
         catch (IOException e) {e.printStackTrace();}
 
+        this.setAgenda();
         this.setScheduleScene();
     }
 
     // methods
     private Agenda getAgenda() {
 
-//        JSONModel jsonModel = new JSONModel();
-//        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda"));
-
         try                 {return this.httpModel.getAgenda();}
         catch (Exception e) {e.printStackTrace();}
 
         return new Agenda();
+    }
+
+    private void setAgenda() {
+
+        Agenda agenda = this.getAgenda();
+
+        this.agendaScene.setAgenda(agenda);
+        this.classroomScene.setAgenda(agenda);
+        this.groupScene.setAgenda(agenda);
+        this.itemScene.setAgenda(agenda);
+        this.personScene.setAgenda(agenda);
+        this.scheduleScene.setAgenda(agenda);
     }
 
     private void prepareScenes() {
@@ -261,41 +275,12 @@ public class Controller extends javafx.application.Application implements Agenda
         this.scheduleScene.setObserver(this);
     }
 
-    private void setAgendaScene() {
-
-        this.agendaScene.setAgenda(this.getAgenda());
-        this.setScene(this.agendaScene.getScene(this.stage));
-    }
-
-    private void setClassroomScene() {
-
-        this.classroomScene.setAgenda(this.getAgenda());
-        this.setScene(this.classroomScene.getScene(this.stage));
-    }
-
-    private void setGroupScene() {
-
-        this.groupScene.setAgenda(this.getAgenda());
-        this.setScene(this.groupScene.getScene(this.stage));
-    }
-
-    private void setItemScene() {
-
-        this.itemScene.setAgenda(this.getAgenda());
-        this.setScene(this.itemScene.getScene(this.stage));
-    }
-
-    private void setPersonScene() {
-
-        this.personScene.setAgenda(this.getAgenda());
-        this.setScene(this.personScene.getScene(this.stage));
-    }
-
-    private void setScheduleScene() {
-
-        this.scheduleScene.setAgenda(this.getAgenda());
-        this.setScene(this.scheduleScene.getScene(this.stage));
-    }
+    private void setAgendaScene()    {this.setScene(this.agendaScene.getScene(this.stage));}
+    private void setClassroomScene() {this.setScene(this.classroomScene.getScene(this.stage));}
+    private void setGroupScene()     {this.setScene(this.groupScene.getScene(this.stage));}
+    private void setItemScene()      {this.setScene(this.itemScene.getScene(this.stage));}
+    private void setPersonScene()    {this.setScene(this.personScene.getScene(this.stage));}
+    private void setScheduleScene()  {this.setScene(this.scheduleScene.getScene(this.stage));}
 
     private void setScene(Scene scene) {
 
