@@ -14,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.AgendaModel;
-import model.map.MapModel;
 import model.map.TileMap;
 import model.map.TileMapLoader;
 import org.jfree.fx.FXGraphics2D;
@@ -53,10 +52,10 @@ public class AgendaView extends Application {
 //        primaryStage.setTitle("School Agenda Manager: " + this.agenda.getName());
 //        primaryStage.setScene(setScene());
 
-        //this.tileMap = new TileMapLoader("src/files/testmap/Test.json").loadTileMap();
+        this.tileMap = new TileMapLoader("src/files/testmap/Test.json").loadTileMap();
         //this.tileMap = new TileMapLoader("src/files/testmap2/Map.json").loadTileMap();
         //this.tileMap = new TileMapLoader("src/files/testmapcollision/Map.json").loadTileMap();
-        this.tileMap = new TileMapLoader("src/files/lasttest/Map.json").loadTileMap();
+        //this.tileMap = new TileMapLoader("src/files/lasttest/Map.json").loadTileMap();
         Scene scene = new Scene(new Group(this.canvas), 1024, 1024);
         primaryStage.setTitle("Simulatie");
         primaryStage.setScene(scene);

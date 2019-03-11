@@ -24,15 +24,17 @@ public class TileMap {
                 tileLayer.draw(graphics);
             }
         }
+        drawCollisionLayer(graphics);
     }
 
     public void drawCollisionLayer(FXGraphics2D graphics){
         if(this.collisionLayer != null) {
-            for(Tile[] tiles : this.collisionLayer.getTiles()) {
-                for(Tile tile : tiles){
-                    tile.draw(graphics);
-                }
-            }
+            this.collisionLayer.draw(graphics);
+//            for(Tile[] tiles : this.collisionLayer.getTiles()) {
+//                for(Tile tile : tiles){
+//                    tile.draw(graphics);
+//                }
+//            }
         }
     }
 

@@ -36,78 +36,72 @@ public class TileMapLoader {
         tileMap.setLayers(this.tileLayers);
         tileMap.setCollisionLayerLayer(this.collisionLayer);
 
+        if(this.tileLayers.isEmpty()){
+            tileMap = null;
+        }
+
         return tileMap;
     }
 
     private void loadTileSets(JSONObject jsonMap){
         JSONArray tileSets = (JSONArray)jsonMap.get("tilesets");
 
-        for (Object tileSet : tileSets) {
-            JSONObject jsonTileSet = getJsonObject(formatFilePath(((JSONObject)tileSet).get("source").toString()));
-            BufferedImage image = loadImage(jsonTileSet.get("image").toString());
-            int firstGlobalId = Math.toIntExact((long)((JSONObject)tileSet).get("firstgid"));
-            int columnCount = Math.toIntExact((long)jsonTileSet.get("columns"));
-            int tileWidth = Math.toIntExact((long)jsonTileSet.get("tilewidth"));
+        if(tileSets != null) {
+            for (Object tileSet : tileSets) {
+                JSONObject jsonTileSet = getJsonObject(formatFilePath(((JSONObject)tileSet).get("source").toString()));
+                BufferedImage image = loadImage(jsonTileSet.get("image").toString());
+                int firstGlobalId = Math.toIntExact((long)((JSONObject)tileSet).get("firstgid"));
+                int columnCount = Math.toIntExact((long)jsonTileSet.get("columns"));
+                int tileWidth = Math.toIntExact((long)jsonTileSet.get("tilewidth"));
 
-            this.tileSets.add(new TileSet(image, firstGlobalId, columnCount, tileWidth));
+                this.tileSets.add(new TileSet(image, firstGlobalId, columnCount, tileWidth));
+            }
         }
     }
 
     private void loadTileLayers(JSONObject jsonMap) {
         JSONArray tileLayers = (JSONArray)jsonMap.get("layers");
 
-        int tileCountY = Math.toIntExact((long)jsonMap.get("height"));
-        int tileWidth =  Math.toIntExact((long)jsonMap.get("tilewidth"));
+        if(tileLayers != null){
+            int tileCountY = Math.toIntExact((long)jsonMap.get("height"));
+            int tileWidth =  Math.toIntExact((long)jsonMap.get("tilewidth"));
 
-        for (Object tileLayer : tileLayers) {
-            JSONObject jsonTileLayer = (JSONObject)tileLayer;
+            for (Object tileLayer : tileLayers) {
+                JSONObject jsonTileLayer = (JSONObject)tileLayer;
 
-            int tileCountX = Math.toIntExact((long)jsonTileLayer.get("width"));
-            String layerName = jsonTileLayer.get("name").toString();
-            boolean isVisible = (boolean)jsonTileLayer.get("visible");
+                int tileCountX = Math.toIntExact((long)jsonTileLayer.get("width"));
+                String layerName = jsonTileLayer.get("name").toString();
+                boolean isVisible = (boolean)jsonTileLayer.get("visible");
 
-            Tile[][] tiles = new Tile[tileCountY][tileCountX];
-            JSONArray jsonArray =  (JSONArray)jsonTileLayer.get("data");
-            ArrayList<Integer> tileIds = new ArrayList<Integer>();
+                Tile[][] tiles = new Tile[tileCountY][tileCountX];
+                JSONArray jsonArray =  (JSONArray)jsonTileLayer.get("data");
+                ArrayList<Integer> tileIds = new ArrayList<Integer>();
 
-            for(Object value : jsonArray) {
-                tileIds.add(Math.toIntExact((long)value));
-            }
-
-            for(int y = 0; y < tileCountY; y++) {
-                for(int x = 0; x < tileCountX; x++) {
-                    int id = tileIds.get(((y * tileCountY)) + x);
-                    TileSet tileSet = getTileSetContainingGlobalId(id);
-                    int columns = tileSet.getColumnCount();
-//                    int imageX = ((id % columns) - 1) * tileWidth;
-//                    int imageY = ((id - (id % columns)) / columns) * tileWidth;
-                    //int tempId = (id > 1) ? (id - tileSet.getFirstGlobalId()) : id;
-                    int tempId = id - tileSet.getFirstGlobalId();
-                    int imageX = (tempId % columns) * tileWidth;
-                    int imageY = ((tempId - (tempId % columns)) / columns) * tileWidth;
-
-                    //BufferedImage image = tileSet.getImage().getSubimage(imageX, imageY, tileWidth, tileWidth);
-
-                    BufferedImage image = null;
-                    if(id != 0) {
-                        image = tileSet.getImage().getSubimage(imageX, imageY, tileWidth, tileWidth);
-                    }
-//                    BufferedImage image = null;
-//
-//                    try{
-//                        image = tileSet.getImage().getSubimage(imageX, imageY, tileWidth, tileWidth);
-//                    }catch (Exception e){
-//                        System.out.println(imageX + " : " + imageY);
-//                    }
-
-                    //tiles[y][x] = new Tile(image, x * tileWidth, y * tileWidth, tileWidth, false, (id != 0));
-                    tiles[y][x] = new Tile(image, x * tileWidth, y * tileWidth, tileWidth, layerName.toLowerCase().equals("collisionlayer"), ((id != 0) && isVisible));
+                for(Object value : jsonArray) {
+                    tileIds.add(Math.toIntExact((long)value));
                 }
-            }
-            if(!layerName.toLowerCase().equals("collisionlayer")){
-                this.tileLayers.add(new TileLayer(tiles, tileWidth));
-            }else{
-                this.collisionLayer = new TileLayer(tiles, tileWidth);
+
+                for(int y = 0; y < tileCountY; y++) {
+                    for(int x = 0; x < tileCountX; x++) {
+                        int id = tileIds.get(((y * tileCountY)) + x);
+                        TileSet tileSet = getTileSetContainingGlobalId(id);
+                        int columns = tileSet.getColumnCount();
+                        int tempId = id - tileSet.getFirstGlobalId();
+                        int imageX = (tempId % columns) * tileWidth;
+                        int imageY = ((tempId - (tempId % columns)) / columns) * tileWidth;
+                        BufferedImage image = null;
+                        if(id != 0) {
+                            image = tileSet.getImage().getSubimage(imageX, imageY, tileWidth, tileWidth);
+                        }
+
+                        tiles[y][x] = new Tile(image, x * tileWidth, y * tileWidth, tileWidth, layerName.toLowerCase().equals("collisionlayer") && id != 0, ((id != 0) && isVisible));
+                    }
+                }
+                if(!layerName.toLowerCase().equals("collisionlayer")){
+                    this.tileLayers.add(new TileLayer(tiles, tileWidth));
+                }else{
+                    this.collisionLayer = new TileLayer(tiles, tileWidth);
+                }
             }
         }
     }
@@ -144,7 +138,7 @@ public class TileMapLoader {
         try {
             return (JSONObject)jsonParser.parse(new FileReader(path.toFile()));
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }

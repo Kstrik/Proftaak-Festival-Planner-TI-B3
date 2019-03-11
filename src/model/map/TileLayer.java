@@ -1,8 +1,8 @@
 package model.map;
 
-import javafx.geometry.Point2D;
 import org.jfree.fx.FXGraphics2D;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class TileLayer {
