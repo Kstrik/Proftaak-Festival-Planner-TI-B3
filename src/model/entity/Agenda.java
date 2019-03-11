@@ -8,6 +8,7 @@ public class Agenda {
 
     private int id;
     private String name;
+    private ArrayList<Classroom> classrooms;
     private ArrayList<Group> groups;
 
     public Agenda (int id, String name, ArrayList<Group> groups) {
@@ -34,7 +35,7 @@ public class Agenda {
 
         ArrayList<String> names = new ArrayList<>();
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             if (!names.contains(group.getName()))
                 names.add(group.getName());
 
@@ -43,7 +44,7 @@ public class Agenda {
 
     public Group getGroupBySchedule(Schedule schedule) {
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             if (group.getSchedules().contains(schedule))
                 return group;
 
@@ -52,7 +53,7 @@ public class Agenda {
 
     public Group getGroupByPerson(Person person) {
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             if (group.getMembers().contains(person))
                 return group;
 
@@ -61,7 +62,7 @@ public class Agenda {
 
     public Group getGroupByItem(Item item) {
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             if (group.containsItem(item))
                 return group;
 
@@ -70,11 +71,42 @@ public class Agenda {
 
     public Group getGroupByName(String name) {
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             if (group.getName().equals(name))
                 return group;
 
         return new Group();
+    }
+
+    public void setGroup(Group setGroup) {
+
+        for (Group group : this.groups)
+            if (group.getId() == setGroup.getId()) {
+
+                setGroup.setMembers(group.getMembers());
+                setGroup.setSchedules(group.getSchedules());
+                this.groups.remove(group);
+            }
+
+        this.groups.add(setGroup);
+    }
+
+    public void deleteGroup(int groupId) {
+
+        for (Group group : this.groups)
+            if (group.getMembers().size() == 0 && group.getSchedules().size() == 0 && group.getId() == groupId)
+                this.groups.remove(group);
+    }
+
+    public int getNewGroupId() {
+
+        int highestId = 0;
+
+        for (Group group : this.groups)
+            if (group.getId() > highestId)
+                highestId = group.getId();
+
+        return highestId + 1;
     }
 
     // schedule
@@ -82,7 +114,7 @@ public class Agenda {
 
         HashMap<Integer, Schedule> schedules = new HashMap<>();
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             for (Schedule schedule : group.getSchedules())
                 schedules.put(schedule.getId(), schedule);
 
@@ -127,6 +159,40 @@ public class Agenda {
         return this.getCombinedScheduleByDate(this.getFirstScheduleDate());
     }
 
+    public void setSchedule(Group setGroup, Schedule setSchedule) {
+
+        for (Group group : this.groups)
+            for (Schedule schedule : group.getSchedules())
+                if (schedule.getId() == setSchedule.getId()) {
+
+                    setSchedule.setItems(schedule.getItems());
+                    group.getSchedules().remove(schedule);
+                }
+
+        for (Group group : this.groups)
+            if (group.getId() == setGroup.getId())
+                group.getSchedules().add(setSchedule);
+    }
+
+    public void deleteSchedule(int scheduleId) {
+
+        for (Group group : this.groups)
+            for (Schedule schedule : group.getSchedules())
+                if (schedule.getItems().size() == 0 && schedule.getId() == scheduleId)
+                    group.getSchedules().remove(schedule);
+    }
+
+    public int getNewScheduleId() {
+
+        int highest = 0;
+
+        for (Schedule schedule : this.getAllSchedules())
+            if (schedule.getId() > highest)
+                highest = schedule.getId();
+
+        return highest + 1;
+    }
+
     // Item
     public ArrayList<Item> getAllItems() {
 
@@ -139,40 +205,50 @@ public class Agenda {
         return new ArrayList<Item>() {{ addAll(items.values()); }};
     }
 
-    public LocalDateTime getDateOfItem(Item item) {
+    public void setItem(Group setGroup, Schedule setSchedule, Item setItem) {
 
         for (Schedule schedule : this.getAllSchedules())
-            if (schedule.containsItem(item))
-                return schedule.getDate();
+            for (Item item : schedule.getItems())
+                if (item.getId() == setItem.getId())
+                    schedule.getItems().remove(item);
 
-        return LocalDateTime.now();
+        for (Group group : this.groups)
+            if (group.getId() == setGroup.getId())
+                for (Schedule schedule : group.getSchedules())
+                    if (schedule.getId() == setSchedule.getId())
+                        schedule.getItems().add(setItem);
     }
 
-    public Item getItemById(int id) {
+    public void deleteItem(int itemId) {
+
+        for (Schedule schedules : this.getAllSchedules())
+            for (Item item : schedules.getItems())
+                if (item.getId() == itemId)
+                    schedules.getItems().remove(item);
+    }
+
+    public int getNewItemId() {
+
+        int highest = 0;
 
         for (Item item : this.getAllItems())
-            if (item.getId() == id)
-                return item;
+            if (item.getId() > highest)
+                highest = item.getId();
 
-        return new Item();
+        return highest + 1;
     }
 
     // classroom
     public ArrayList<Classroom> getAllClassrooms() {
 
-        HashMap<Integer, Classroom> classrooms = new HashMap<>();
-
-        for (Item item : this.getAllItems())
-            classrooms.put(item.getClassroom().getId(), item.getClassroom());
-
-        return new ArrayList<Classroom>() {{ addAll(classrooms.values()); }};
+        return this.classrooms;
     }
 
     public ArrayList<String> getAllClassroomNames() {
 
         ArrayList<String> names = new ArrayList<>();
 
-        for (Classroom classroom : this.getAllClassrooms())
+        for (Classroom classroom : this.classrooms)
             if (!names.contains(classroom.getName()))
                 names.add(classroom.getName());
 
@@ -181,7 +257,7 @@ public class Agenda {
 
     public Classroom getClassroomByName(String name) {
 
-        for (Classroom classroom : this.getAllClassrooms())
+        for (Classroom classroom : this.classrooms)
             if (classroom.getName().equals(name))
                 return classroom;
 
@@ -190,18 +266,61 @@ public class Agenda {
 
     public int getAmountOfClassrooms() {
 
-        return this.getAllClassrooms().size();
+        return this.classrooms.size();
     }
 
-    public int getClassRoomKey(Classroom searchedClassroom) {
+    public int getClassRoomKey(int classroomId) {
 
-        ArrayList<Classroom> classrooms = this.getAllClassrooms();
+        ArrayList<Classroom> classrooms = this.classrooms;
 
         for (Classroom room : classrooms)
-            if (room.getId() == searchedClassroom.getId())
+            if (room.getId() == classroomId)
                 return classrooms.indexOf(room);
 
         return -1;
+    }
+
+    public Classroom getClassroomById(int classroomId) {
+
+        for (Classroom classroom : this.getAllClassrooms())
+            if (classroom.getId() == classroomId)
+                return classroom;
+
+        return new Classroom();
+    }
+
+    public void setClassroom(Classroom setClassroom) {
+
+        for (Classroom classroom : this.classrooms)
+            if (classroom.getId() == setClassroom.getId())
+                this.classrooms.remove(classroom);
+
+        this.classrooms.add(setClassroom);
+    }
+
+    public void deleteClassroom(int classroomId) {
+
+        boolean contains = false;
+
+        for (Item item : this.getAllItems())
+            if (item.getClassroomId() == classroomId)
+                contains = true;
+
+        if (!contains)
+            for (Classroom classroom : this.classrooms)
+                if (classroom.getId() == classroomId)
+                    this.classrooms.remove(classroom);
+    }
+
+    public int getNewClassroomId() {
+
+        int highest = 0;
+
+        for (Classroom classroom : this.classrooms)
+            if (classroom.getId() > highest)
+                highest = classroom.getId();
+
+        return highest + 1;
     }
 
     // person
@@ -209,35 +328,47 @@ public class Agenda {
 
         HashMap<Integer, Person> persons = new HashMap<>();
 
-        for (Group group : this.getAllGroups())
+        for (Group group : this.groups)
             for (Person person : group.getMembers())
                     persons.put(person.getId(), person);
-
-        for (Item item : this.getAllItems())
-            persons.put(item.getTeacher().getId(), item.getTeacher());
 
         return new ArrayList<Person>() {{ addAll(persons.values()); }};
     }
 
-    // student
-    public ArrayList<Person> getAllStudents() {
+    public void setPerson(Group setGroup, Person setPerson) {
 
-        ArrayList<Person> students = new ArrayList<>();
+        for (Group group : this.groups)
+            for (Person person : group.getMembers())
+                if (person.getId() == setPerson.getId())
+                    group.getMembers().remove(person);
 
-        for (Person student : this.getAllPersons())
-            if (!student.isTeacher())
-                students.add(student);
-
-        return students;
+        this.getGroupByName(setGroup.getName()).getMembers().add(setPerson);
     }
 
-    public Person getStudentByName(String name) {
+    public void deletePerson(int personId) {
 
-        for (Person student : this.getAllTeachers())
-            if (student.getName().equals(name))
-                return student;
+        boolean contains = false;
 
-        return new Person();
+        for (Item item : this.getAllItems())
+            if (item.getId() == personId)
+                contains = true;
+
+        if (!contains)
+            for (Group group : this.groups)
+                for (Person person : group.getMembers())
+                    if (person.getId() == personId)
+                        group.getMembers().remove(person);
+    }
+
+    public int getNewPersonId() {
+
+        int highest = 0;
+
+        for (Person person : this.getAllPersons())
+            if (person.getId() > highest)
+                highest = person.getId();
+
+        return highest + 1;
     }
 
     // teachers
@@ -272,6 +403,15 @@ public class Agenda {
         return new Person();
     }
 
+    public Person getTeacherById(int teacherId) {
+
+        for (Person teacher : this.getAllTeachers())
+            if (teacher.getId() == teacherId)
+                return teacher;
+
+        return new Person();
+    }
+
     // setters
     public void setId(int id) {
 
@@ -281,6 +421,11 @@ public class Agenda {
     public void setName(String name) {
 
         this.name = name;
+    }
+
+    public void setClassrooms(ArrayList<Classroom> classrooms) {
+
+        this.classrooms = classrooms;
     }
 
     public void setGroups(ArrayList<Group> groups) {
@@ -299,11 +444,6 @@ public class Agenda {
         return this.name;
     }
 
-    public ArrayList<Group> getGroups() {
-
-        return this.groups;
-    }
-
     // toString
     @Override
     public String toString() {
@@ -311,12 +451,30 @@ public class Agenda {
         StringBuilder agenda = new StringBuilder();
 
         agenda.append("{\n");
-        agenda.append("\"id\": \"")   .append(this.id)               .append("\",\n");
-        agenda.append("\"name\": \"") .append(this.name)             .append("\",\n");
-        agenda.append("\"groups\": ") .append(this.groupsToString()) .append("\n");
+        agenda.append("\"id\": \"")       .append(this.id)                   .append("\",\n");
+        agenda.append("\"name\": \"")     .append(this.name)                 .append("\",\n");
+        agenda.append("\"classrooms\": ") .append(this.classroomsToString()) .append("\",\n");
+        agenda.append("\"groups\": ")     .append(this.groupsToString())     .append("\n");
         agenda.append("}");
 
         return agenda.toString();
+    }
+
+    private String classroomsToString() {
+
+        StringBuilder classrooms = new StringBuilder();
+
+        classrooms.append("[\n");
+
+        for (int i = 0; i < this.classrooms.size(); i++)
+            if (i == (this.classrooms.size() - 1))
+                classrooms.append(this.classrooms.get(i).toString()).append("\n");
+            else
+                classrooms.append(this.classrooms.get(i).toString()).append(",\n");
+
+        classrooms.append("]");
+
+        return classrooms.toString();
     }
 
     private String groupsToString() {

@@ -41,6 +41,8 @@ public class ScheduleScene extends BaseScene {
 
         main.getChildren().add(this.container);
 
+        this.selected = new Schedule();
+
         Scene scene = new Scene(new ScrollPane(main), 698, 289);
         scene.getStylesheets().add("view/style/style.css");
 
@@ -200,6 +202,9 @@ public class ScheduleScene extends BaseScene {
     }
 
     private Schedule getSchedule() {
+
+        if (this.selected.getId() == -1)
+            this.selected.setId(this.agenda.getNewScheduleId());
 
         this.selected.setDate(LocalDateTime.from(this.date.getValue()));
 

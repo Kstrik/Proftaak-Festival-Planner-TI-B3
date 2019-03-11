@@ -23,7 +23,7 @@ public class JSONModel {
 
         try {
 
-            file = (JSONObject) parser.parse(new FileReader("src/json/" + fileName + ".json"));
+            file = (JSONObject) parser.parse(new FileReader(ConfigModel.FILE_PATH + fileName));
 
         } catch (Exception e) {
 
@@ -31,6 +31,11 @@ public class JSONModel {
         }
 
         return file;
+    }
+
+    public void saveJSONFile(Agenda agenda) {
+
+
     }
 
     public JSONObject parseJSON(String jsonString) {
@@ -55,8 +60,9 @@ public class JSONModel {
     public Agenda convertJSONAgenda(JSONObject jsonAgenda) {
 
         Agenda agenda = new Agenda();
-//        agenda.setId(Math.toIntExact((long) jsonAgenda.get("id")));
-//        agenda.setName((String) jsonAgenda.get("name"));
+        agenda.setId(Math.toIntExact((long) jsonAgenda.get("id")));
+        agenda.setName((String) jsonAgenda.get("name"));
+        agenda.setClassrooms(this.convertJSONClassrooms((JSONArray) jsonAgenda.get("classrooms")));
         agenda.setGroups(this.convertJSONGroups((JSONArray) jsonAgenda.get("groups")));
 
         return agenda;
@@ -152,10 +158,10 @@ public class JSONModel {
         Item item = new Item();
         item.setId(Math.toIntExact((long) jsonItem.get("id")));
         item.setName((String) jsonItem.get("name"));
-        item.setClassroom(this.convertJSONClassroom((JSONObject) jsonItem.get("classroom")));
+        item.setClassroomId(Math.toIntExact((long) jsonItem.get("classroom_id")));
         item.setStart(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("start"))));
         item.setEnd(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("end"))));
-        item.setTeacher(this.convertJSONMember((JSONObject) jsonItem.get("teacher"), true));
+        item.setTeacherId(Math.toIntExact((long) jsonItem.get("teacher_id")));
 
         return item;
     }

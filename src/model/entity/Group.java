@@ -9,7 +9,7 @@ public class Group {
     private String name;
     private ArrayList<Person> members;
     private ArrayList<Schedule> schedules;
-    private boolean isTeacherGroup = false;
+    private boolean isTeacherGroup;
 
     public Group(int id, String name, ArrayList<Person> members, ArrayList<Schedule> schedules, boolean isTeacherGroup) {
 

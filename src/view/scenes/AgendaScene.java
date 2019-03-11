@@ -145,7 +145,7 @@ public class AgendaScene extends BaseScene {
 
         GridPane.setConstraints(button, 0, 0);
         GridPane.setConstraints(this.canvas, 1, 1);
-        GridPane.setColumnSpan(this.canvas, this.agenda.getAmountOfClassrooms());
+        GridPane.setColumnSpan(this.canvas, (this.agenda.getAmountOfClassrooms() == 0) ? 1 : this.agenda.getAmountOfClassrooms());
         GridPane.setRowSpan(this.canvas, (this.schedule.getScheduleLength() + 1));
 
         this.scheduleGrid.getChildren().addAll(button, this.canvas);
@@ -192,9 +192,27 @@ public class AgendaScene extends BaseScene {
         graphics.fill(rectangle);
 
         graphics.setColor(Color.BLACK);
-        graphics.drawString(item.getString(), (x + 10), (y + 20));
+        graphics.drawString(this.getItemString(item), (x + 10), (y + 20));
 
         this.canvasItemLocations.put(rectangle, item);
+    }
+
+    private String getItemString(Item item) {
+
+        StringBuilder itemString = new StringBuilder();
+
+        itemString.append(item.getName());
+        itemString.append(" in ");
+        itemString.append(this.agenda.getTeacherById(item.getTeacherId()).getName());
+        itemString.append("\n");
+        itemString.append("Teacher: ");
+        itemString.append(this.agenda.getClassroomById(item.getClassroomId()).getName());
+        itemString.append("\n");
+        itemString.append(item.getParsedStart());
+        itemString.append(" - ");
+        itemString.append(item.getParsedEnd());
+
+        return itemString.toString();
     }
 
     private void canvasOnClick(MouseEvent e) {
@@ -227,7 +245,7 @@ public class AgendaScene extends BaseScene {
 
     private int getItemX(Item item) {
 
-        return ((ConfigModel.BLOCK_WIDTH * this.agenda.getClassRoomKey(item.getClassroom())) + 9);
+        return ((ConfigModel.BLOCK_WIDTH * this.agenda.getClassRoomKey(item.getClassroomId())) + 9);
     }
 
     private int getItemY(Item item) {

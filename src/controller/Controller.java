@@ -1,18 +1,23 @@
 package controller;
 
 import controller.interfaces.*;
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.ConfigModel;
 import model.HTTPModel;
+import model.JSONModel;
 import model.entity.*;
 import view.scenes.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class Controller extends javafx.application.Application implements AgendaUpdate, ClassroomUpdate, GroupUpdate, ItemUpdate, PersonUpdate, ScheduleUpdate {
+public class Controller extends Application implements AgendaUpdate, ClassroomUpdate, GroupUpdate, ItemUpdate, PersonUpdate, ScheduleUpdate {
 
     private HTTPModel httpModel;
+
+    private Agenda agenda;
 
     private AgendaScene agendaScene;
     private ClassroomScene classroomScene;
@@ -34,6 +39,7 @@ public class Controller extends javafx.application.Application implements Agenda
 
         this.httpModel = new HTTPModel();
         this.stage = stage;
+        this.agenda = this.getAgenda();
 
         this.prepareScenes();
         this.setAgenda();
@@ -41,6 +47,9 @@ public class Controller extends javafx.application.Application implements Agenda
     }
 
     // baseUpdate
+    @Override
+    public void onSaveAgenda() {}
+
     @Override
     public void onSelectAgenda()    { this.setAgendaScene(); }
     @Override
@@ -81,29 +90,14 @@ public class Controller extends javafx.application.Application implements Agenda
     @Override
     public void onClassroomChange(Classroom classroom) {
 
-        try {
-
-            if (classroom.getId() == -1)
-                this.httpModel.changeClassroom(classroom, "create");
-            else
-                this.httpModel.changeClassroom(classroom, "update");
-
-            this.setAgenda();
-            this.setClassroomScene();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        this.agenda.setClassroom(classroom);
+        this.setClassroomScene();
     }
 
     @Override
     public void onClassroomDelete(int classroomID) {
 
-        try                   {this.httpModel.deleteClassroom(classroomID);}
-        catch (IOException e) {e.printStackTrace();}
-
-        this.setAgenda();
+        this.agenda.deleteClassroom(classroomID);
         this.setClassroomScene();
     }
 
@@ -111,29 +105,14 @@ public class Controller extends javafx.application.Application implements Agenda
     @Override
     public void onGroupChange(Group group) {
 
-        try {
-
-            if (group.getId() == -1)
-                this.httpModel.changeGroup(group, "create");
-            else
-                this.httpModel.changeGroup(group, "update");
-
-            this.setAgenda();
-            this.setGroupScene();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        this.agenda.setGroup(group);
+        this.setGroupScene();
     }
 
     @Override
     public void onGroupDelete(int groupId) {
 
-        try                   {this.httpModel.deleteGroup(groupId);}
-        catch (IOException e) {e.printStackTrace();}
-
-        this.setAgenda();
+        this.agenda.deleteGroup(groupId);
         this.setGroupScene();
     }
 
@@ -141,30 +120,15 @@ public class Controller extends javafx.application.Application implements Agenda
     @Override
     public void onItemDelete(int itemId) {
 
-        try                   {this.httpModel.deleteItem(itemId);}
-        catch (IOException e) {e.printStackTrace();}
-
-        this.setAgenda();
+        this.agenda.deleteItem(itemId);
         this.setAgendaScene();
     }
 
     @Override
     public void onItemChange(Group group, Schedule schedule, Item item) {
 
-        try {
-
-            if (item.getId() == -1)
-                this.httpModel.changeItem(group, schedule, item, "create");
-            else
-                this.httpModel.changeItem(group, schedule, item, "update");
-
-            this.setAgenda();
-            this.setAgendaScene();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        this.agenda.setItem(group, schedule, item);
+        this.setAgendaScene();
     }
 
     @Override
@@ -177,29 +141,14 @@ public class Controller extends javafx.application.Application implements Agenda
     @Override
     public void onPersonChange(Group group, Person person) {
 
-        try {
-
-            if (person.getId() == -1)
-                this.httpModel.changePerson(group, person, "create");
-            else
-                this.httpModel.changePerson(group, person, "update");
-
-            this.setAgenda();
-            this.setPersonScene();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        this.agenda.setPerson(group, person);
+        this.setPersonScene();
     }
 
     @Override
     public void onPersonDelete(int personId) {
 
-        try                   {this.httpModel.deletePerson(personId);}
-        catch (IOException e) {e.printStackTrace();}
-
-        this.setAgenda();
+        this.agenda.deletePerson(personId);
         this.setPersonScene();
     }
 
@@ -207,44 +156,25 @@ public class Controller extends javafx.application.Application implements Agenda
     @Override
     public void onScheduleChange(Group group, Schedule schedule) {
 
-        try {
-
-            if (schedule.getId() == -1)
-                this.httpModel.changeSchedule(group, schedule, "create");
-            else
-                this.httpModel.changeSchedule(group, schedule, "update");
-
-            this.setAgenda();
-            this.setScheduleScene();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        this.agenda.setSchedule(group, schedule);
+        this.setScheduleScene();
     }
 
     @Override
     public void onScheduleDelete(int scheduleId) {
 
-        try                   {this.httpModel.deleteSchedule(scheduleId);}
-        catch (IOException e) {e.printStackTrace();}
-
-        this.setAgenda();
+        this.agenda.deleteSchedule(scheduleId);
         this.setScheduleScene();
     }
 
     // methods
     private Agenda getAgenda() {
 
-        try                 {return this.httpModel.getAgenda();}
-        catch (Exception e) {e.printStackTrace();}
-
-        return new Agenda();
+        JSONModel jsonModel = new JSONModel();
+        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda.old.json"));
     }
 
     private void setAgenda() {
-
-        Agenda agenda = this.getAgenda();
 
         this.agendaScene.setAgenda(agenda);
         this.classroomScene.setAgenda(agenda);

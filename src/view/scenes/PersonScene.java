@@ -42,6 +42,8 @@ public class PersonScene extends BaseScene {
 
         main.getChildren().add(this.container);
 
+        this.selected = new Person();
+
         Scene scene = new Scene(new ScrollPane(main), 1073, 289);
         scene.getStylesheets().add("view/style/style.css");
 
@@ -257,6 +259,9 @@ public class PersonScene extends BaseScene {
     }
 
     private Person getPerson() {
+
+        if (this.selected.getId() == -1)
+            this.selected.setId(this.agenda.getNewPersonId());
 
         this.selected.setName(this.name.getText());
         this.selected.setGender(this.gender.getValue());

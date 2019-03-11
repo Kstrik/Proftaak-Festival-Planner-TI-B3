@@ -8,4 +8,7 @@ public class ConfigModel {
 
     // HTTPModel
     public static final String HOST = "api.jijbentzacht.nl:1337";
+
+    // FileModel
+    public static final String FILE_PATH = "src/json/";
 }

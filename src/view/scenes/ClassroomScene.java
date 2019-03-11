@@ -41,6 +41,8 @@ public class ClassroomScene extends BaseScene {
         VBox main = this.getMain();
         main.getChildren().add(this.container);
 
+        this.selected = new Classroom();
+
         Scene scene = new Scene(new ScrollPane(main), 573, 289);
         scene.getStylesheets().add("view/style/style.css");
 
@@ -163,22 +165,25 @@ public class ClassroomScene extends BaseScene {
         this.name.setText(classroom.getName());
     }
 
-    private void setErrorMessage(String keyWord) {
+    private void setErrorMessage() {
 
-        this.error.setText("The " + keyWord + " has not been filled in!");
+        this.error.setText("The " + "name" + " has not been filled in!");
     }
 
     private void validateInput() {
 
         boolean valid = true;
 
-        if (this.name.getText().isEmpty()) {this.setErrorMessage("name"); valid = false;}
+        if (this.name.getText().isEmpty()) {this.setErrorMessage(); valid = false;}
 
         if (valid)
             this.observer.onClassroomChange(this.getClassroom());
     }
 
     private Classroom getClassroom() {
+
+        if (this.selected.getId() == -1)
+            this.selected.setId(this.agenda.getNewClassroomId());
 
         this.selected.setName(this.name.getText());
 

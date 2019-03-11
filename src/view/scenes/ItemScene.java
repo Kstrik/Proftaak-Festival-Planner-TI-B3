@@ -229,22 +229,25 @@ public class ItemScene {
             this.group.setValue(group.getName());
             this.schedule.setValue(group.getScheduleByItem(this.selected).getDate());
             this.name.setText(this.selected.getName());
-            this.teacher.setValue(this.selected.getTeacher().getName());
+            this.teacher.setValue(this.agenda.getTeacherById(this.selected.getTeacherId()).getName());
             this.startHour.setValue(this.selected.getStart().getHour());
             this.startMinute.setValue(this.selected.getStart().getMinute());
             this.endHour.setValue(this.selected.getEnd().getHour());
             this.endMinute.setValue(this.selected.getEnd().getMinute());
-            this.classroom.setValue(this.selected.getClassroom().getName());
+            this.classroom.setValue(this.agenda.getClassroomById(this.selected.getClassroomId()).getName());
         }
     }
 
     private Item getItem() {
 
+        if (this.selected.getId() == -1)
+            this.selected.setId(this.agenda.getNewItemId());
+        
         this.selected.setName(this.name.getText());
-        this.selected.setTeacher(this.agenda.getTeacherByName(this.teacher.getValue()));
+        this.selected.setTeacherId(this.agenda.getTeacherByName(this.teacher.getValue()).getId());
         this.selected.setStart(this.parseTime(this.startHour.getValue(), this.startMinute.getValue()));
         this.selected.setEnd(this.parseTime(this.endHour.getValue(), this.endMinute.getValue()));
-        this.selected.setClassroom(this.agenda.getClassroomByName(this.classroom.getValue()));
+        this.selected.setClassroomId(this.agenda.getClassroomByName(this.classroom.getValue()).getId());
 
         return this.selected;
     }

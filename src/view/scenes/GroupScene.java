@@ -39,6 +39,8 @@ public class GroupScene extends BaseScene {
 
         main.getChildren().add(this.container);
 
+        this.selected = new Group();
+
         Scene scene = new Scene(new ScrollPane(main), 698, 289);
         scene.getStylesheets().add("view/style/style.css");
 
@@ -198,6 +200,9 @@ public class GroupScene extends BaseScene {
     }
 
     private Group getGroup() {
+
+        if (this.selected.getId() == -1)
+            this.selected.setId(this.agenda.getNewGroupId());
 
         this.selected.setName(this.name.getText());
         this.selected.setTeacherGroup(this.isTeacherGroup.getValue());
