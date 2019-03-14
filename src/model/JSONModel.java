@@ -86,7 +86,7 @@ public class JSONModel {
         Group group = new Group();
         group.setId(Math.toIntExact((long) jsonGroup.get("id")));
         group.setName((String) jsonGroup.get("name"));
-        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members"), (long) jsonGroup.get("isTeacherGroup") > 0));
+        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members"), (boolean) jsonGroup.get("isTeacherGroup")));
         group.setSchedules(this.convertJSONSchedules((JSONArray) jsonGroup.get("schedules")));
         group.setTeacherGroup((long) jsonGroup.get("isTeacherGroup") > 0);
 
@@ -112,7 +112,7 @@ public class JSONModel {
         person.setId(Math.toIntExact((long) jsonMember.get("id")));
         person.setName((String) jsonMember.get("name"));
         person.setGender((String) jsonMember.get("gender"));
-        person.setMemberID((long) jsonMember.get("person_id"));
+        person.setMemberID(Math.toIntExact((long) jsonMember.get("person_id")));
 
         if (isTeacher)
             person.setIsTeacher(true);

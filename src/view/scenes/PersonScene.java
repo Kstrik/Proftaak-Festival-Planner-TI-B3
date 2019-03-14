@@ -265,7 +265,7 @@ public class PersonScene extends BaseScene {
 
         this.selected.setName(this.name.getText());
         this.selected.setGender(this.gender.getValue());
-        this.selected.setMemberID(Long.valueOf(this.personID.getText()));
+        this.selected.setMemberID(Integer.parseInt(this.personID.getText()));
         this.selected.setIsTeacher(this.isTeacher.getValue());
 
         return selected;

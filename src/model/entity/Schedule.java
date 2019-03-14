@@ -27,7 +27,7 @@ public class Schedule {
     public boolean overlaps(Item overlappedItem) {
 
         for (Item item : this.items)
-            if (item.getClassroom().getId() == overlappedItem.getClassroom().getId())
+            if (item.getClassroomId() == overlappedItem.getClassroomId())
                 if (overlappedItem.getStart().isAfter(item.getStart()) &&
                     overlappedItem.getStart().isBefore(item.getEnd()) ||
                     overlappedItem.getEnd().isAfter(item.getStart()) &&
@@ -88,17 +88,6 @@ public class Schedule {
     public int getAmountOfItems() {
 
         return this.items.size();
-    }
-
-    public ArrayList<Person> getAllTeachers() {
-
-        ArrayList<Person> teachers = new ArrayList<>();
-
-        for (Item item : this.items)
-            if (!teachers.contains(item.getTeacher()) && item.getTeacher().isTeacher())
-                teachers.add(item.getTeacher());
-
-        return teachers;
     }
 
     // getters

@@ -5,7 +5,7 @@ public class Person {
     private int id;
     private String name;
     private String gender;
-    private long personID;
+    private int personID;
     private boolean isTeacher;
 
     public Person(int id, String name, String gender, int personID, boolean isTeacher) {
@@ -32,7 +32,7 @@ public class Person {
         return this.id;
     }
 
-    public long getPersonID() {
+    public int getPersonID() {
 
         return this.personID;
     }
@@ -68,7 +68,7 @@ public class Person {
         this.gender = gender;
     }
 
-    public void setMemberID(long personID) {
+    public void setMemberID(int personID) {
 
         this.personID = personID;
     }
