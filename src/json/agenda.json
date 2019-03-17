@@ -16,7 +16,7 @@
           "id": 0,
           "name": "Paul",
           "gender": "Male",
-          "person_id": 1234567,
+          "personId": 1234567,
           "isTeacher": true
         }
       ],
@@ -31,7 +31,7 @@
           "id": 1,
           "name": "Wessel",
           "gender": "Male",
-          "person_id": 2143717,
+          "personId": 2143717,
           "isTeacher": false
         }
       ],
@@ -43,10 +43,10 @@
             {
               "id": 0,
               "name": "Wiskunde",
-              "classroom_id": 0,
-              "start": "2013-12-31T11:00:00",
-              "end": "2013-12-31T14:05:00",
-              "teacher_id": 0
+              "classroomId": 0,
+              "start": "11:00:00",
+              "end": "14:05:00",
+              "teacherId": 0
             }
           ]
         }

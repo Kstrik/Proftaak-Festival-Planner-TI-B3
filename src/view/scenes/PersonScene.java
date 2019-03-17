@@ -97,7 +97,7 @@ public class PersonScene extends BaseScene {
             Label group = new Label(this.agenda.getGroupByPerson(persons.get(i)).getName());
             Label name = new Label(persons.get(i).getName());
             Label gender = new Label(persons.get(i).getGender());
-            Label personID = new Label(Long.toString(persons.get(i).getPersonID()));
+            Label personID = new Label(Long.toString(persons.get(i).getPersonId()));
             Label isTeacher = new Label(Boolean.toString(persons.get(i).isTeacher()));
 
             group.getStyleClass().add("row");
@@ -229,7 +229,7 @@ public class PersonScene extends BaseScene {
         if (person.getId() != -1) {
 
             this.gender.setValue(person.getGender());
-            this.personID.setText(Long.toString(person.getPersonID()));
+            this.personID.setText(Long.toString(person.getPersonId()));
             this.isTeacher.setValue(person.isTeacher());
         } else {
 
@@ -265,7 +265,7 @@ public class PersonScene extends BaseScene {
 
         this.selected.setName(this.name.getText());
         this.selected.setGender(this.gender.getValue());
-        this.selected.setMemberID(Integer.parseInt(this.personID.getText()));
+        this.selected.setMemberId(Integer.parseInt(this.personID.getText()));
         this.selected.setIsTeacher(this.isTeacher.getValue());
 
         return selected;

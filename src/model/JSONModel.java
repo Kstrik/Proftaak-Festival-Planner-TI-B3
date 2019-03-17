@@ -88,7 +88,7 @@ public class JSONModel {
         group.setName((String) jsonGroup.get("name"));
         group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members"), (boolean) jsonGroup.get("isTeacherGroup")));
         group.setSchedules(this.convertJSONSchedules((JSONArray) jsonGroup.get("schedules")));
-        group.setTeacherGroup((long) jsonGroup.get("isTeacherGroup") > 0);
+        group.setTeacherGroup((boolean) jsonGroup.get("isTeacherGroup"));
 
         return group;
     }
@@ -108,11 +108,13 @@ public class JSONModel {
 
     private Person convertJSONMember(JSONObject jsonMember, boolean isTeacher) {
 
+        System.out.println("test");
+
         Person person = new Person();
         person.setId(Math.toIntExact((long) jsonMember.get("id")));
         person.setName((String) jsonMember.get("name"));
         person.setGender((String) jsonMember.get("gender"));
-        person.setMemberID(Math.toIntExact((long) jsonMember.get("person_id")));
+        person.setMemberId(Math.toIntExact((long) jsonMember.get("personId")));
 
         if (isTeacher)
             person.setIsTeacher(true);
@@ -158,10 +160,10 @@ public class JSONModel {
         Item item = new Item();
         item.setId(Math.toIntExact((long) jsonItem.get("id")));
         item.setName((String) jsonItem.get("name"));
-        item.setClassroomId(Math.toIntExact((long) jsonItem.get("classroom_id")));
+        item.setClassroomId(Math.toIntExact((long) jsonItem.get("classroomId")));
         item.setStart(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("start"))));
         item.setEnd(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("end"))));
-        item.setTeacherId(Math.toIntExact((long) jsonItem.get("teacher_id")));
+        item.setTeacherId(Math.toIntExact((long) jsonItem.get("teacherId")));
 
         return item;
     }

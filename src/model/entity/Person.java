@@ -5,15 +5,15 @@ public class Person {
     private int id;
     private String name;
     private String gender;
-    private int personID;
+    private int personId;
     private boolean isTeacher;
 
-    public Person(int id, String name, String gender, int personID, boolean isTeacher) {
+    public Person(int id, String name, String gender, int personId, boolean isTeacher) {
 
         this.id = id;
         this.name = name;
         this.gender = gender;
-        this.personID = personID;
+        this.personId = personId;
         this.isTeacher = isTeacher;
     }
 
@@ -22,7 +22,7 @@ public class Person {
         this.id = -1;
         this.name = "";
         this.gender = "other";
-        this.personID = -1;
+        this.personId = -1;
         this.isTeacher = false;
     }
 
@@ -32,9 +32,9 @@ public class Person {
         return this.id;
     }
 
-    public int getPersonID() {
+    public int getPersonId() {
 
-        return this.personID;
+        return this.personId;
     }
 
     public String getName() {
@@ -68,9 +68,9 @@ public class Person {
         this.gender = gender;
     }
 
-    public void setMemberID(int personID) {
+    public void setMemberId(int personId) {
 
-        this.personID = personID;
+        this.personId = personId;
     }
 
     public void setIsTeacher(boolean isTeacher) {
@@ -89,7 +89,7 @@ public class Person {
         person.append("\"isTeacher\": \"") .append(this.isTeacher) .append("\",\n");
         person.append("\"name\": \"")      .append(this.name)      .append("\",\n");
         person.append("\"gender\": \"")    .append(this.gender)    .append("\",\n");
-        person.append("\"personID\": \"")  .append(this.personID)  .append("\"\n");
+        person.append("\"personId\": \"")  .append(this.personId)  .append("\"\n");
         person.append("}");
 
         return person.toString();

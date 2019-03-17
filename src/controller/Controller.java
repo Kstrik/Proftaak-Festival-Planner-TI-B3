@@ -171,7 +171,7 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     private Agenda getAgenda() {
 
         JSONModel jsonModel = new JSONModel();
-        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda.old.json"));
+        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda.json"));
     }
 
     private void setAgenda() {
