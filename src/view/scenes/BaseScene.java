@@ -18,6 +18,10 @@ public abstract class BaseScene {
 
     protected VBox getMain() {
 
+        Button save = new Button("Save Agenda");
+        save.getStyleClass().add("base-button");
+        save.setOnMouseClicked(e -> this.observer.onSaveAgenda());
+
         Button agenda = new Button("Agenda");
         agenda.getStyleClass().add("base-button");
         agenda.setOnMouseClicked(e -> this.observer.onSelectAgenda());
@@ -39,7 +43,7 @@ public abstract class BaseScene {
         person.setOnMouseClicked(e -> this.observer.onSelectPerson());
 
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(agenda, group, schedule, classroom, person);
+        hBox.getChildren().addAll(save, agenda, group, schedule, classroom, person);
         hBox.getStyleClass().addAll("paddingless", "borderless-bottom");
 
         VBox vbox = new VBox();

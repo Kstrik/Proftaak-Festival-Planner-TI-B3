@@ -203,10 +203,10 @@ public class AgendaScene extends BaseScene {
 
         itemString.append(item.getName());
         itemString.append(" in ");
-        itemString.append(this.agenda.getTeacherById(item.getTeacherId()).getName());
+        itemString.append(this.agenda.getClassroomById(item.getClassroomId()).getName());
         itemString.append("\n");
         itemString.append("Teacher: ");
-        itemString.append(this.agenda.getClassroomById(item.getClassroomId()).getName());
+        itemString.append(this.agenda.getTeacherById(item.getTeacherId()).getName());
         itemString.append("\n");
         itemString.append(item.getParsedStart());
         itemString.append(" - ");
