@@ -13,6 +13,7 @@ import model.entity.Schedule;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ScheduleScene extends BaseScene {
@@ -206,7 +207,7 @@ public class ScheduleScene extends BaseScene {
         if (this.selected.getId() == -1)
             this.selected.setId(this.agenda.getNewScheduleId());
 
-        this.selected.setDate(LocalDateTime.from(this.date.getValue()));
+        this.selected.setDate(LocalDateTime.of(LocalDate.from(this.date.getValue()), LocalTime.now()));
 
         return selected;
     }
