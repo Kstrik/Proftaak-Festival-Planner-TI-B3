@@ -13,6 +13,5 @@ Functies van de agenda applicatie:
 
 Functies van de simulatie applicatie:
 - collision met NPC's en muren.
-- pathfinding met het A* alogoritme.
-- tijdsnelheid bepalen.
+- pathfinding met het Breadth First Search alogoritme.
 - leerlingen zullen een pad vinden om op bepaalde tijden in lokalen aanwezig te zijn.
