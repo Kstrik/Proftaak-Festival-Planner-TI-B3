@@ -1,0 +1,14 @@
+{ "columns":9,
+ "image":"..\/src\/files\/Tilemap_LD\/toilet_area.png",
+ "imageheight":352,
+ "imagewidth":288,
+ "margin":0,
+ "name":"toilet_area",
+ "spacing":0,
+ "tilecount":99,
+ "tiledversion":"1.2.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":1.2
+}

@@ -1,0 +1,14 @@
+{ "columns":7,
+ "image":"..\/src\/files\/DemoMap_old\/2dpixx_ccart_indoor_tiles.png",
+ "imageheight":1152,
+ "imagewidth":896,
+ "margin":0,
+ "name":"2dpixx_ccart_indoor_tiles",
+ "spacing":0,
+ "tilecount":63,
+ "tiledversion":"1.2.2",
+ "tileheight":128,
+ "tilewidth":128,
+ "type":"tileset",
+ "version":1.2
+}

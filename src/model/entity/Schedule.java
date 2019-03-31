@@ -1,70 +1,77 @@
 package model.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Schedule {
 
     private int id;
-    private LocalDateTime date;
-    private ArrayList<ScheduleItem> scheduleItems;
+    private LocalDate date;
+    private ArrayList<Item> items;
 
-    public Schedule(int id, LocalDateTime date, ArrayList<ScheduleItem> scheduleItems) {
-
-        this.id = id;
-        this.date = date;
-        this.scheduleItems = scheduleItems;
-    }
-
-    public Schedule(int id, LocalDateTime date) {
+    public Schedule(int id, LocalDate date, ArrayList<Item> items) {
 
         this.id = id;
         this.date = date;
-        this.scheduleItems = new ArrayList<>();
+        this.items = items;
     }
 
     public Schedule() {
 
+        this.id = -1;
+        this.date = LocalDate.now();
+        this.items = new ArrayList<>();
     }
 
     // methods
-    public void addScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+    public boolean overlaps(Item overlappedItem) {
 
-        this.scheduleItems.addAll(scheduleItems);
+        for (Item item : this.items)
+            if (item.getClassroomId() == overlappedItem.getClassroomId())
+                if (overlappedItem.getStart().isAfter(item.getStart()) &&
+                    overlappedItem.getStart().isBefore(item.getEnd()) ||
+                    overlappedItem.getEnd().isAfter(item.getStart()) &&
+                    overlappedItem.getEnd().isBefore(item.getEnd()))
+                        return true;
+
+
+        return false;
     }
 
-    public void addScheduleItem(ScheduleItem scheduleItem) {
+    public boolean containsItem(Item searchedItem) {
 
-        this.scheduleItems.add(scheduleItem);
-    }
-
-    public boolean containsScheduleItem(ScheduleItem searchedScheduleItem) {
-
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (scheduleItem.getId() == searchedScheduleItem.getId())
+        for (Item item : this.items)
+            if (item.getId() == searchedItem.getId())
                 return true;
         
         return false;
     }
 
-    public LocalDateTime getScheduleStart() {
+    public LocalTime getScheduleStart() {
 
-        LocalDateTime time = this.scheduleItems.get(0).getStart();
+        if (this.items.size() == 0)
+            return LocalTime.now();
 
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (time.isAfter(scheduleItem.getStart()))
-                time = scheduleItem.getStart();
+        LocalTime time = this.items.get(0).getStart();
+
+        for (Item item : this.items)
+            if (time.isAfter(item.getStart()))
+                time = item.getStart();
 
         return time;
     }
 
-    public LocalDateTime getScheduleEnd() {
+    public LocalTime getScheduleEnd() {
 
-        LocalDateTime time = this.scheduleItems.get(0).getEnd();
+        if (this.items.size() == 0)
+            return LocalTime.now().plusSeconds(1);
 
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (time.isBefore(scheduleItem.getEnd()))
-                time = scheduleItem.getEnd();
+        LocalTime time = this.items.get(0).getEnd();
+
+        for (Item item : this.items)
+            if (time.isBefore(item.getEnd()))
+                time = item.getEnd();
 
         return time;
     }
@@ -74,46 +81,14 @@ public class Schedule {
         return (getScheduleEnd().getHour() - getScheduleStart().getHour());
     }
 
-    public ScheduleItem getScheduleItem(int key) {
+    public Item getItem(int key) {
 
-        return this.scheduleItems.get(key);
+        return this.items.get(key);
     }
 
-    public int getAmountOfScheduleItems() {
+    public int getAmountOfItems() {
 
-        return this.scheduleItems.size();
-    }
-
-    public ArrayList<Member> getAllTeachers() {
-
-        ArrayList<Member> teachers = new ArrayList<>();
-
-        for (ScheduleItem scheduleItem : this.scheduleItems)
-            if (!teachers.contains(scheduleItem.getTeacher()) && scheduleItem.getTeacher().isTeacher())
-                teachers.add(scheduleItem.getTeacher());
-
-        return teachers;
-    }
-
-    public int getAmountOfClassrooms() {
-
-        return getAllClassrooms().size();
-    }
-
-    public ArrayList<Classroom> getAllClassrooms() {
-
-        ArrayList<Classroom> classrooms = new ArrayList<>();
-
-        for(ScheduleItem scheduleItem : this.scheduleItems)
-            if (!classrooms.contains(scheduleItem.getClassroom()))
-                classrooms.add(scheduleItem.getClassroom());
-
-        return classrooms;
-    }
-
-    public int getClassRoomKey(Classroom classroom) {
-
-        return this.getAllClassrooms().indexOf(classroom);
+        return this.items.size();
     }
 
     // getters
@@ -122,14 +97,14 @@ public class Schedule {
         return this.id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
 
         return date;
     }
 
-    public ArrayList<ScheduleItem> getScheduleItems() {
+    public ArrayList<Item> getItems() {
 
-        return scheduleItems;
+        return items;
     }
 
     // setters
@@ -138,13 +113,39 @@ public class Schedule {
         this.id = id;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
 
         this.date = date;
     }
 
-    public void setScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+    public void setItems(ArrayList<Item> items) {
 
-        this.scheduleItems = scheduleItems;
+        this.items = items;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+
+        StringBuilder schedule = new StringBuilder();
+
+        schedule.append("{\n");
+        schedule.append("\t\"id\": ")     .append(this.id)              .append(",\n");
+        schedule.append("\t\"date\": \"") .append(this.date.toString()) .append("\",\n");
+        schedule.append("\t\"items\": ")  .append(this.ItemsToString()) .append("\n");
+        schedule.append("}");
+
+        return schedule.toString();
+    }
+
+    private String ItemsToString() {
+
+        StringBuilder items = new StringBuilder();
+
+        items.append("[\n");
+        for (int i = 0; i < this.items.size(); i++)
+            items.append(this.items.get(i).toString()).append(i == (this.items.size() - 1) ? "" : ",\n");
+
+        return items.toString().replace("\n", "\n\t\t") + "\n\t]";
     }
 }

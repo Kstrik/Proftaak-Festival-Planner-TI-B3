@@ -1,0 +1,217 @@
+{
+  "id": 0,
+  "name": "1.3",
+  "classrooms": [
+    {
+      "id": 0,
+      "name": "LD001"
+    },
+    {
+      "id": 1,
+      "name": "LD002"
+    },
+    {
+      "id": 2,
+      "name": "LD003"
+    },
+    {
+      "id": 3,
+      "name": "LD004"
+    },
+    {
+      "id": 4,
+      "name": "LD005"
+    },
+    {
+      "id": 5,
+      "name": "LD006"
+    },
+    {
+      "id": 6,
+      "name": "LD007"
+    },
+    {
+      "id": 7,
+      "name": "LD008"
+    },
+    {
+      "id": 8,
+      "name": "Aula"
+    },
+    {
+      "id": 9,
+      "name": "Kantine"
+    }
+  ],
+  "groups": [
+    {
+      "id": 0,
+      "name": "Teachers",
+      "members": [
+        {
+          "id": 0,
+          "name": "Paul",
+          "gender": "Male",
+          "personId": 1234567,
+          "isTeacher": true
+        }
+      ],
+      "schedules" : [
+        {
+          "id": 3,
+          "date": "2013-12-31T00:00:00",
+          "items": [
+            {
+              "id": 0,
+              "name": "Wiskunde",
+              "classroomId": 0,
+              "start": "11:00:00",
+              "end": "14:05:00",
+              "teacherId": 0
+            }
+          ]
+        }
+      ],
+      "isTeacherGroup": true
+    },
+    {
+      "id": 1,
+      "name": "B3",
+      "members": [
+        {
+          "id": 1,
+          "name": "Wessel",
+          "gender": "Male",
+          "personId": 2143717,
+          "isTeacher": false
+        },
+        {
+          "id": 2,
+          "name": "Luuk",
+          "gender": "Male",
+          "personId": 2194867,
+          "isTeacher": false
+        },
+        {
+          "id": 3,
+          "name": "Bas",
+          "gender": "Male",
+          "personId": 2164867,
+          "isTeacher": false
+        },
+        {
+          "id": 4,
+          "name": "Pacal",
+          "gender": "Male",
+          "personId": 2190867,
+          "isTeacher": false
+        },
+        {
+          "id": 5,
+          "name": "Levi",
+          "gender": "Male",
+          "personId": 2233867,
+          "isTeacher": false
+        },
+        {
+          "id": 6,
+          "name": "Thijs",
+          "gender": "Male",
+          "personId": 2195867,
+          "isTeacher": false
+        },
+        {
+          "id": 7,
+          "name": "Sebastiaan",
+          "gender": "Male",
+          "personId": 2134867,
+          "isTeacher": false
+        }
+      ],
+      "schedules": [
+        {
+          "id": 0,
+          "date": "2013-12-31T00:00:00",
+          "items": [
+            {
+              "id": 0,
+              "name": "Wiskunde",
+              "classroomId": 0,
+              "start": "11:00:00",
+              "end": "14:05:00",
+              "teacherId": 0
+            }
+          ]
+        }
+      ],
+      "isTeacherGroup": false
+    },
+    {
+      "id": 2,
+      "name": "B6",
+      "members": [
+        {
+          "id": 8,
+          "name": "Kenley",
+          "gender": "Male",
+          "personId": 2136177,
+          "isTeacher": false
+        },
+        {
+          "id": 9,
+          "name": "Tessa",
+          "gender": "Female",
+          "personId": 2136178,
+          "isTeacher": false
+        },        {
+          "id": 10,
+          "name": "Amber",
+          "gender": "Female",
+          "personId": 2186178,
+          "isTeacher": false
+        },        {
+          "id": 11,
+          "name": "Puck",
+          "gender": "Female",
+          "personId": 2136189,
+          "isTeacher": false
+        },        {
+          "id": 12,
+          "name": "Masha",
+          "gender": "Female",
+          "personId": 2136128,
+          "isTeacher": false
+        },        {
+          "id": 13,
+          "name": "Dieke",
+          "gender": "Female",
+          "personId": 2112788,
+          "isTeacher": false
+        },        {
+          "id": 14,
+          "name": "Eline",
+          "gender": "Female",
+          "personId": 2146487,
+          "isTeacher": false
+        }
+      ],
+      "schedules": [
+        {
+          "id": 0,
+          "date": "2013-12-31T00:00:00",
+          "items": [
+            {
+              "id": 1,
+              "name": "Wiskunde",
+              "classroomId": 0,
+              "start": "05:00:00",
+              "end": "06:05:00",
+              "teacherId": 0
+            }
+          ]
+        }
+      ],
+      "isTeacherGroup": false
+    }
+  ]
+}
