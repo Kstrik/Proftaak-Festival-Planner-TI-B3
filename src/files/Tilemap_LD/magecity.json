@@ -1,0 +1,14 @@
+{ "columns":8,
+ "image":"..\/src\/files\/Tilemap_LD\/magecity.png",
+ "imageheight":1450,
+ "imagewidth":256,
+ "margin":0,
+ "name":"magecity",
+ "spacing":0,
+ "tilecount":360,
+ "tiledversion":"1.2.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":1.2
+}

@@ -1,96 +1,153 @@
-Gridpane, Canvas, VBox, .classroom-label, .button, .main {
+/* all */
+* {
 
-    -fx-border-width: 3;
-    -fx-border-insets: -1;
-    -fx-border-color: black;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-border-color: gray;
+    -fx-border-width: 0;
 }
 
+/* element */
 ComboBox, TextField {
 
     -fx-pref-width: 174;
 }
 
+HBox, VBox {
+
+    -fx-padding: 3;
+}
+
+Button {
+
+    -fx-border-insets: 2;
+    -fx-pref-height: 30;
+    -fx-font-size: 10px;
+}
+
+Label {
+
+    -fx-pref-width: 115;
+}
+
 Pane {
 
     -fx-border-style: dashed inside;
+    -fx-border-color: darkgrey;
     -fx-border-width: 0 0 1 0;
-    -fx-border-color: grey;
     -fx-pref-height: 20;
 }
 
-HBox {
+/* table */
+.-column-button, .-column, .-row {
 
-    -fx-padding: 3;
-    -fx-border-width: 0 0 3 0;
-    -fx-border-color: black;
+    -fx-padding: 3 6;
 }
 
-VBox {
+.-column-button, .-column {
 
-    -fx-pref-height: 75;
-    -fx-min-width: 40;
+    -fx-border-width: 0 0 1 1;
 }
 
-.scheduleItem-button {
+.-column, .-row {
 
-    -fx-pref-width: 125;
-    -fx-border-width: 2;
+    -fx-pref-width: 115;
 }
 
-.scheduleItem-label {
+.-table {
 
-    -fx-padding: 5;
+    -fx-border-width: 0 1 0 0;
+    -fx-translate-y: 3;
+}
+
+/* buttons */
+.-create-menu-button {
+
+    -fx-pref-width: 144;
+}
+
+.-column-button {
+
+    -fx-border-width: 0 0 1 1;
+    -fx-pref-width: 105;
+}
+
+.-base-button {
+
     -fx-pref-width: 100;
 }
 
-.classroom-label {
+.-item-button {
 
-    -fx-pref-height: 43;
-    -fx-pref-width: 200;
+    -fx-translate-x: 1;
+    -fx-pref-width: 96;
 }
 
-.time-comboBox {
+.-add-button {
+
+    -fx-font-size: 18px !important;
+    -fx-translate-x: 5;
+    -fx-translate-y: -1;
+}
+
+/* boxes */
+.-base-box, .-schedule-box {
+
+    -fx-background-color: royalblue;
+    -fx-border-color: darkgray;
+    -fx-border-width: 0 0 2 0;
+    -fx-pref-width: 1010;
+    -fx-spacing: 5;
+    -fx-padding: 5;
+}
+
+.-time-combo-box {
 
     -fx-pref-width: 87 !important;
 }
 
-.paddingless {
+.-schedule-box {
 
-    -fx-padding: 0 !important;
+    -fx-translate-y: -5;
+    -fx-padding: 5 5 7;
 }
 
-.borderless {
+.-main {
 
-    -fx-border-width: 0 !important;
+    -fx-padding: 0;
 }
 
-.add-button {
+.-time-box {
 
-    -fx-border-width: 4 3 3 3;
-    -fx-font-size: 18px !important;
+    -fx-border-width: 0 1 1 0;
+    -fx-pref-height: 75;
+    -fx-translate-x: 1;
+    -fx-min-width: 40;
 }
 
-.button-box {
+/* labels */
+.-classroom-label {
 
-    -fx-padding: -1;
-    -fx-border-insets: -1;
-    -fx-border-width: 0;
+    -fx-border-width: 0 1 1 0;
+    -fx-pref-height: 43;
+    -fx-pref-width: 200;
 }
 
-.button {
+.-error-label {
 
-    -fx-background-color: white;
-    -fx-text-fill: black;
-    -fx-pref-height: 30;
+    -fx-pref-width: 270;
+    -fx-text-fill: darkred;
     -fx-font-size: 10px;
+    -fx-padding: 5;
 }
-.button:hover {
 
-    -fx-background-color: black;
+.-title-label {
+
+    -fx-translate-x: 170;
+    -fx-translate-y: 8;
     -fx-text-fill: white;
 }
 
-.main {
+.-time-label {
 
-    -fx-border-insets: 3;
+    -fx-pref-width: 40;
 }

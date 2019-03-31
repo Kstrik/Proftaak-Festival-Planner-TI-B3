@@ -5,38 +5,65 @@ import model.entity.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class JSONModel {
 
-    public JSONArray readJSONArray(String fileName) {
-
-        JSONArray file = null;
-
-        JSONParser parser = new JSONParser();
-
-        String path = "src/data/" + fileName + ".json";
-
-        try                 { file = (JSONArray) parser.parse(new FileReader(path)); }
-        catch (Exception e) { e.printStackTrace(); }
-
-        return file;
-    }
-
-    public JSONObject readJSONObject(String fileName) {
+    // TODO: Remove on complete database connection
+    public JSONObject parseJSONFile(String fileName) {
 
         JSONObject file = null;
         JSONParser parser = new JSONParser();
 
-        String path = "src/data/" + fileName + ".json";
+        try {
 
-        try                 { file = (JSONObject) parser.parse(new FileReader(path)); }
-        catch (Exception e) { e.printStackTrace(); }
+            file = (JSONObject) parser.parse(new FileReader(ConfigModel.FILE_PATH + fileName));
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
 
         return file;
+    }
+
+    public void saveJSONFile(Agenda agenda, String fileName) {
+
+        try {
+
+            FileWriter out = new FileWriter(ConfigModel.FILE_PATH + fileName);
+            out.write(agenda.toString());
+            out.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public JSONObject parseJSON(String jsonString) {
+
+        JSONObject json = null;
+        JSONParser parser = new JSONParser();
+
+        try {
+
+            json = (JSONObject) parser.parse(jsonString);
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
+
+        return json;
     }
 
     public Agenda convertJSONAgenda(JSONObject jsonAgenda) {
@@ -44,14 +71,18 @@ public class JSONModel {
         Agenda agenda = new Agenda();
         agenda.setId(Math.toIntExact((long) jsonAgenda.get("id")));
         agenda.setName((String) jsonAgenda.get("name"));
+        agenda.setClassrooms(this.convertJSONClassrooms((JSONArray) jsonAgenda.get("classrooms")));
         agenda.setGroups(this.convertJSONGroups((JSONArray) jsonAgenda.get("groups")));
 
         return agenda;
     }
 
-    public ArrayList<Group> convertJSONGroups(JSONArray jsonGroups) {
+    private ArrayList<Group> convertJSONGroups(JSONArray jsonGroups) {
 
         ArrayList<Group> groups = new ArrayList<>();
+
+        if (jsonGroups == null)
+            return groups;
 
         for (Object objectGroup : jsonGroups)
             groups.add(this.convertJSONGroup((JSONObject) objectGroup));
@@ -59,41 +90,46 @@ public class JSONModel {
         return groups;
     }
 
-    public Group convertJSONGroup(JSONObject jsonGroup) {
+    private Group convertJSONGroup(JSONObject jsonGroup) {
 
         Group group = new Group();
         group.setId(Math.toIntExact((long) jsonGroup.get("id")));
         group.setName((String) jsonGroup.get("name"));
-        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members")));
+        group.setMembers(this.convertJSONMembers((JSONArray) jsonGroup.get("members"), (boolean) jsonGroup.get("isTeacherGroup")));
         group.setSchedules(this.convertJSONSchedules((JSONArray) jsonGroup.get("schedules")));
         group.setTeacherGroup((boolean) jsonGroup.get("isTeacherGroup"));
 
         return group;
     }
 
-    public ArrayList<Member> convertJSONMembers(JSONArray jsonMembers) {
+    private ArrayList<Person> convertJSONMembers(JSONArray jsonMembers, boolean isTeacher) {
 
-        ArrayList<Member> members = new ArrayList<>();
+        ArrayList<Person> people = new ArrayList<>();
+
+        if (jsonMembers == null)
+            return people;
 
         for (Object objectMember : jsonMembers)
-            members.add(this.convertJSONMember((JSONObject) objectMember));
+            people.add(this.convertJSONMember((JSONObject) objectMember, isTeacher));
 
-        return members;
+        return people;
     }
 
-    public Member convertJSONMember(JSONObject jsonMember) {
+    private Person convertJSONMember(JSONObject jsonMember, boolean isTeacher) {
 
-        Member member = new Member();
-        member.setId(Math.toIntExact((long) jsonMember.get("id")));
-        member.setName((String) jsonMember.get("name"));
-        member.setGender((String) jsonMember.get("gender"));
-        member.setMemberID((long) jsonMember.get("memberNumber"));
-        member.setIsTeacher((boolean) jsonMember.get("isTeacher"));
+        Person person = new Person();
+        person.setId(Math.toIntExact((long) jsonMember.get("id")));
+        person.setName((String) jsonMember.get("name"));
+        person.setGender((String) jsonMember.get("gender"));
+        person.setMemberId(Math.toIntExact((long) jsonMember.get("personId")));
 
-        return member;
+        if (isTeacher)
+            person.setIsTeacher(true);
+
+        return person;
     }
 
-    public ArrayList<Schedule> convertJSONSchedules(JSONArray jsonSchedules) {
+    private ArrayList<Schedule> convertJSONSchedules(JSONArray jsonSchedules) {
 
         ArrayList<Schedule> schedules = new ArrayList<>();
 
@@ -103,42 +139,48 @@ public class JSONModel {
         return schedules;
     }
 
-    public Schedule convertJSONSchedule(JSONObject jsonSchedule) {
+    private Schedule convertJSONSchedule(JSONObject jsonSchedule) {
 
         Schedule schedule = new Schedule();
         schedule.setId(Math.toIntExact((long) jsonSchedule.get("id")));
-        schedule.setDate(LocalDateTime.parse((String) jsonSchedule.get("date")));
-        schedule.setScheduleItems(this.convertJSONScheduleItems((JSONArray) jsonSchedule.get("scheduleItems")));
+        schedule.setDate(LocalDate.parse(((String) jsonSchedule.get("date"))));
+        schedule.setItems(this.convertJSONItems((JSONArray) jsonSchedule.get("items")));
 
         return schedule;
     }
 
-    public ArrayList<ScheduleItem> convertJSONScheduleItems(JSONArray jsonScheduleItems) {
+    private ArrayList<Item> convertJSONItems(JSONArray jsonItems) {
 
-        ArrayList<ScheduleItem> scheduleItems = new ArrayList<>();
+        ArrayList<Item> items = new ArrayList<>();
 
-        for (Object objectScheduleItem : jsonScheduleItems)
-            scheduleItems.add(this.convertJSONScheduleItem((JSONObject) objectScheduleItem));
+        if (jsonItems == null)
+            return items;
 
-        return scheduleItems;
+        for (Object objectItem : jsonItems)
+            items.add(this.convertJSONItem((JSONObject) objectItem));
+
+        return items;
     }
 
-    public ScheduleItem convertJSONScheduleItem(JSONObject jsonScheduleItem) {
+    private Item convertJSONItem(JSONObject jsonItem) {
 
-        ScheduleItem scheduleItem = new ScheduleItem();
-        scheduleItem.setId(Math.toIntExact((long) jsonScheduleItem.get("id")));
-        scheduleItem.setName((String) jsonScheduleItem.get("name"));
-        scheduleItem.setClassroom(this.convertJSONClassroom((JSONObject) jsonScheduleItem.get("classroom")));
-        scheduleItem.setStart(LocalDateTime.parse((String) jsonScheduleItem.get("start")));
-        scheduleItem.setEnd(LocalDateTime.parse((String) jsonScheduleItem.get("end")));
-        scheduleItem.setTeacher(this.convertJSONMember((JSONObject) jsonScheduleItem.get("teacher")));
+        Item item = new Item();
+        item.setId(Math.toIntExact((long) jsonItem.get("id")));
+        item.setName((String) jsonItem.get("name"));
+        item.setClassroomId(Math.toIntExact((long) jsonItem.get("classroomId")));
+        item.setStart(LocalTime.parse((String) jsonItem.get("start")));
+        item.setEnd(LocalTime.parse((String) jsonItem.get("end")));
+        item.setTeacherId(Math.toIntExact((long) jsonItem.get("teacherId")));
 
-        return scheduleItem;
+        return item;
     }
 
-    public ArrayList<Classroom> convertJSONClassrooms(JSONArray jsonClassrooms) {
+    private ArrayList<Classroom> convertJSONClassrooms(JSONArray jsonClassrooms) {
 
         ArrayList<Classroom> classrooms = new ArrayList<>();
+
+        if (jsonClassrooms == null)
+            return classrooms;
 
         for (Object objectClassroom : jsonClassrooms)
             classrooms.add(this.convertJSONClassroom((JSONObject) objectClassroom));
@@ -146,7 +188,7 @@ public class JSONModel {
         return classrooms;
     }
 
-    public Classroom convertJSONClassroom(JSONObject jsonClassroom) {
+    private Classroom convertJSONClassroom(JSONObject jsonClassroom) {
 
         Classroom classroom = new Classroom();
         classroom.setId(Math.toIntExact((long) jsonClassroom.get("id")));
