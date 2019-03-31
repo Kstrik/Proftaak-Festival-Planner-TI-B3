@@ -16,7 +16,7 @@
 					"id": "0",
 					"isTeacher": "true",
 					"name": "Paul",
-					"gender": "Male",
+					"gender": "male",
 					"personId": "1234567"
 				}
 			],
@@ -33,22 +33,22 @@
 					"id": "1",
 					"isTeacher": "false",
 					"name": "Wessel",
-					"gender": "Male",
+					"gender": "male",
 					"personId": "2143717"
 				}
 			],
 			"schedules": [
 				{
 					"id": "0",
-					"date": "2013-12-31T00:00",
+					"date": "2013-12-31",
 					"Items": [
 						{
 							"id":0,
 							"teacherId":0,
 							"classroomId":0,
 							"name": "Wiskunde",
-							"start":"2019-03-31 11:00:00",
-							"end":"2019-03-31 14:05:00"
+							"start":"11:00:00",
+							"end":"14:05:00"
 						}
 					]
 				}

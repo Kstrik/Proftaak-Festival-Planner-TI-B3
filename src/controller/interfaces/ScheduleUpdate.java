@@ -6,5 +6,5 @@ import model.entity.Schedule;
 public interface ScheduleUpdate extends BaseUpdate {
 
     void onScheduleChange(Group group, Schedule schedule);
-    void onScheduleDelete(int scheduleId);
+    boolean onScheduleDelete(int scheduleId);
 }

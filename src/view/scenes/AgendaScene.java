@@ -21,9 +21,7 @@ import controller.interfaces.AgendaUpdate;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,10 +184,10 @@ public class AgendaScene extends BaseScene {
         int height   = getItemHeight(item);
 
         Rectangle rectangle = new Rectangle(x, y, width, height);
-        graphics.setColor(Color.getHSBColor((float) Math.random(), 1, (float) 0.5));
+        graphics.setColor(Color.getHSBColor((float) Math.random(), (float) 0.75, 1));
         graphics.fill(rectangle);
 
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(Color.BLACK);
         graphics.drawString(this.getItemString(item), (x + 10), (y + 20));
 
         this.canvasItemLocations.put(rectangle, item);

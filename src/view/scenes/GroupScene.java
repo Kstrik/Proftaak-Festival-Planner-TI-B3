@@ -103,7 +103,11 @@ public class GroupScene extends BaseScene {
     private HBox getTableButtons(Group group) {
 
         Button delete = new Button("Delete");
-        delete.setOnMouseClicked(e -> this.observer.onGroupDelete(group.getId()));
+        delete.setOnMouseClicked(e -> {
+
+            if (!this.observer.onGroupDelete(group.getId()))
+                this.error.setText("This Group still contains members or schedules!");
+        });
 
         Button select = new Button("Select");
         select.setOnMouseClicked(e -> this.selectGroup(group));

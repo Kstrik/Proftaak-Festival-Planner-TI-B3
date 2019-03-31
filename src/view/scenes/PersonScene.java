@@ -124,7 +124,11 @@ public class PersonScene extends BaseScene {
     private HBox getTableButtons(Person person) {
 
         Button delete = new Button("Delete");
-        delete.setOnMouseClicked(e -> this.observer.onPersonDelete(person.getId()));
+        delete.setOnMouseClicked(e -> {
+
+            if (!this.observer.onPersonDelete(person.getId()))
+                this.error.setText("This person is still used in some items!");
+        });
 
         Button select = new Button("Select");
         select.setOnMouseClicked(e -> this.selectPerson(person));

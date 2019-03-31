@@ -117,8 +117,6 @@ public class JSONModel {
 
     private Person convertJSONMember(JSONObject jsonMember, boolean isTeacher) {
 
-        System.out.println("test");
-
         Person person = new Person();
         person.setId(Math.toIntExact((long) jsonMember.get("id")));
         person.setName((String) jsonMember.get("name"));

@@ -6,5 +6,5 @@ import model.entity.Person;
 public interface PersonUpdate extends BaseUpdate {
 
     void onPersonChange(Group group, Person person);
-    void onPersonDelete(int personId);
+    boolean onPersonDelete(int personId);
 }

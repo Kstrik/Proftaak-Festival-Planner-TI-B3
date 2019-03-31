@@ -98,7 +98,11 @@ public class ClassroomScene extends BaseScene {
     private HBox getTableButtons(Classroom classroom) {
 
         Button delete = new Button("Delete");
-        delete.setOnMouseClicked(e -> this.observer.onClassroomDelete(classroom.getId()));
+        delete.setOnMouseClicked(e -> {
+
+            if (!this.observer.onClassroomDelete(classroom.getId()))
+                this.error.setText("This classroom is still used in some items!");
+        });
 
         Button select = new Button("Select");
         select.setOnMouseClicked(e -> this.selectClassroom(classroom));

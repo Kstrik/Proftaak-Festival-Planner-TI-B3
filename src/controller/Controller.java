@@ -92,10 +92,12 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     }
 
     @Override
-    public void onClassroomDelete(int classroomID) {
+    public boolean onClassroomDelete(int classroomID) {
 
-        this.agenda.deleteClassroom(classroomID);
+        boolean deleted = this.agenda.deleteClassroom(classroomID);
         this.setClassroomScene();
+
+        return deleted;
     }
 
     // groupUpdate
@@ -107,24 +109,26 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     }
 
     @Override
-    public void onGroupDelete(int groupId) {
+    public boolean onGroupDelete(int groupId) {
 
-        this.agenda.deleteGroup(groupId);
+        boolean deleted = this.agenda.deleteGroup(groupId);
         this.setGroupScene();
+
+        return deleted;
     }
 
     // itemUpdate
     @Override
-    public void onItemDelete(int itemId) {
+    public void onItemChange(Group group, Schedule schedule, Item item) {
 
-        this.agenda.deleteItem(itemId);
+        this.agenda.setItem(group, schedule, item);
         this.setAgendaScene();
     }
 
     @Override
-    public void onItemChange(Group group, Schedule schedule, Item item) {
+    public void onItemDelete(int itemId) {
 
-        this.agenda.setItem(group, schedule, item);
+        this.agenda.deleteItem(itemId);
         this.setAgendaScene();
     }
 
@@ -143,10 +147,12 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     }
 
     @Override
-    public void onPersonDelete(int personId) {
+    public boolean onPersonDelete(int personId) {
 
-        this.agenda.deletePerson(personId);
+        boolean deleted = this.agenda.deletePerson(personId);
         this.setPersonScene();
+
+        return deleted;
     }
 
     // scheduleUpdate
@@ -158,10 +164,12 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     }
 
     @Override
-    public void onScheduleDelete(int scheduleId) {
+    public boolean onScheduleDelete(int scheduleId) {
 
-        this.agenda.deleteSchedule(scheduleId);
+        boolean deleted = this.agenda.deleteSchedule(scheduleId);
         this.setScheduleScene();
+
+        return deleted;
     }
 
     // methods
@@ -210,6 +218,7 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
 
     private void setScene(Scene scene) {
 
+        this.stage.setTitle(this.agenda.getName());
         this.stage.setScene(scene);
         this.stage.show();
     }

@@ -5,12 +5,6 @@ public class Classroom {
     private int id;
     private String name;
 
-    public Classroom (int id, String name) {
-
-        this.id = id;
-        this.name = name;
-    }
-
     public Classroom () {
 
         this.id = -1;

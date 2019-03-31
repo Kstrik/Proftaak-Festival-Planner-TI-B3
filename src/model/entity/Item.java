@@ -10,7 +10,7 @@ public class Item {
     private int classroomId;
     private String name;
     private LocalTime start, end;
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public Item(int id, int teacherId, int classroomId, String name, LocalTime start, LocalTime end) {
 

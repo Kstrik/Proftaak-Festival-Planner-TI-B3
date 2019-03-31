@@ -1,7 +1,6 @@
 package model.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -81,22 +80,36 @@ public class Agenda {
 
     public void setGroup(Group setGroup) {
 
+        Group foundGroup = new Group();
+
         for (Group group : this.groups)
             if (group.getId() == setGroup.getId()) {
 
                 setGroup.setMembers(group.getMembers());
                 setGroup.setSchedules(group.getSchedules());
-                this.groups.remove(group);
+                foundGroup = group;
             }
 
+        this.groups.remove(foundGroup);
         this.groups.add(setGroup);
     }
 
-    public void deleteGroup(int groupId) {
+    public boolean deleteGroup(int groupId) {
+
+        boolean deleted = false;
+
+        Group foundGroup = new Group();
 
         for (Group group : this.groups)
-            if (group.getMembers().size() == 0 && group.getSchedules().size() == 0 && group.getId() == groupId)
-                this.groups.remove(group);
+            if (group.getMembers().size() == 0 && group.getSchedules().size() == 0 && group.getId() == groupId) {
+
+                foundGroup = group;
+                deleted = true;
+            }
+
+        this.groups.remove(foundGroup);
+
+        return deleted;
     }
 
     public int getNewGroupId() {
@@ -162,25 +175,46 @@ public class Agenda {
 
     public void setSchedule(Group setGroup, Schedule setSchedule) {
 
+        Group foundGroup = new Group();
+        Schedule foundSchedule = new Schedule();
+
         for (Group group : this.groups)
             for (Schedule schedule : group.getSchedules())
                 if (schedule.getId() == setSchedule.getId()) {
 
                     setSchedule.setItems(schedule.getItems());
-                    group.getSchedules().remove(schedule);
+                    foundGroup = group;
+                    foundSchedule = schedule;
                 }
+
+        foundGroup.getSchedules().remove(foundSchedule);
 
         for (Group group : this.groups)
             if (group.getId() == setGroup.getId())
-                group.getSchedules().add(setSchedule);
+                foundGroup = group;
+
+        foundGroup.getSchedules().add(setSchedule);
     }
 
-    public void deleteSchedule(int scheduleId) {
+    public boolean deleteSchedule(int scheduleId) {
+
+        boolean deleted = false;
+
+        Group foundGroup = new Group();
+        Schedule foundSchedule = new Schedule();
 
         for (Group group : this.groups)
             for (Schedule schedule : group.getSchedules())
-                if (schedule.getItems().size() == 0 && schedule.getId() == scheduleId)
-                    group.getSchedules().remove(schedule);
+                if (schedule.getItems().size() == 0 && schedule.getId() == scheduleId) {
+
+                    foundGroup = group;
+                    foundSchedule = schedule;
+                    deleted = true;
+                }
+
+        foundGroup.getSchedules().remove(foundSchedule);
+
+        return deleted;
     }
 
     public int getNewScheduleId() {
@@ -208,24 +242,41 @@ public class Agenda {
 
     public void setItem(Group setGroup, Schedule setSchedule, Item setItem) {
 
+        Schedule foundSchedule = new Schedule();
+        Item foundItem = new Item();
+
         for (Schedule schedule : this.getAllSchedules())
             for (Item item : schedule.getItems())
-                if (item.getId() == setItem.getId())
-                    schedule.getItems().remove(item);
+                if (item.getId() == setItem.getId()) {
+
+                    foundSchedule = schedule;
+                    foundItem = item;
+                }
+
+        foundSchedule.getItems().remove(foundItem);
 
         for (Group group : this.groups)
             if (group.getId() == setGroup.getId())
                 for (Schedule schedule : group.getSchedules())
                     if (schedule.getId() == setSchedule.getId())
                         schedule.getItems().add(setItem);
+
     }
 
     public void deleteItem(int itemId) {
 
-        for (Schedule schedules : this.getAllSchedules())
-            for (Item item : schedules.getItems())
-                if (item.getId() == itemId)
-                    schedules.getItems().remove(item);
+        Schedule foundSchedule = new Schedule();
+        Item foundItem = new Item();
+
+        for (Schedule schedule : this.getAllSchedules())
+            for (Item item : schedule.getItems())
+                if (item.getId() == itemId) {
+
+                    foundSchedule = schedule;
+                    foundItem = item;
+                }
+
+        foundSchedule.getItems().remove(foundItem);
     }
 
     public int getNewItemId() {
@@ -292,25 +343,33 @@ public class Agenda {
 
     public void setClassroom(Classroom setClassroom) {
 
+        Classroom foundClassroom = new Classroom();
+
         for (Classroom classroom : this.classrooms)
             if (classroom.getId() == setClassroom.getId())
-                this.classrooms.remove(classroom);
+                foundClassroom = classroom;
 
+        this.classrooms.remove(foundClassroom);
         this.classrooms.add(setClassroom);
     }
 
-    public void deleteClassroom(int classroomId) {
+    public boolean deleteClassroom(int classroomId) {
 
-        boolean contains = false;
+        boolean canDelete = true;
+        Classroom foundClassroom = new Classroom();
 
         for (Item item : this.getAllItems())
             if (item.getClassroomId() == classroomId)
-                contains = true;
+                canDelete = false;
 
-        if (!contains)
+        if (canDelete)
             for (Classroom classroom : this.classrooms)
                 if (classroom.getId() == classroomId)
-                    this.classrooms.remove(classroom);
+                    foundClassroom = classroom;
+
+        this.classrooms.remove(foundClassroom);
+
+        return canDelete;
     }
 
     public int getNewClassroomId() {
@@ -338,27 +397,44 @@ public class Agenda {
 
     public void setPerson(Group setGroup, Person setPerson) {
 
+        Group foundGroup = new Group();
+        Person foundPerson = new Person();
+
         for (Group group : this.groups)
             for (Person person : group.getMembers())
-                if (person.getId() == setPerson.getId())
-                    group.getMembers().remove(person);
+                if (person.getId() == setPerson.getId()) {
+
+                    foundGroup = group;
+                    foundPerson = person;
+                }
+
+        foundGroup.getMembers().remove(foundPerson);
 
         this.getGroupByName(setGroup.getName()).getMembers().add(setPerson);
     }
 
-    public void deletePerson(int personId) {
+    public boolean deletePerson(int personId) {
 
-        boolean contains = false;
+        boolean canDelete = true;
+        Group foundGroup = new Group();
+        Person foundPerson = new Person();
 
         for (Item item : this.getAllItems())
             if (item.getId() == personId)
-                contains = true;
+                canDelete = false;
 
-        if (!contains)
+        if (canDelete)
             for (Group group : this.groups)
                 for (Person person : group.getMembers())
-                    if (person.getId() == personId)
-                        group.getMembers().remove(person);
+                    if (person.getId() == personId) {
+
+                        foundGroup = group;
+                        foundPerson = person;
+                    }
+
+        foundGroup.getMembers().remove(foundPerson);
+
+        return canDelete;
     }
 
     public int getNewPersonId() {

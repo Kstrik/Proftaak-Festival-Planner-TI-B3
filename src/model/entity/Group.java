@@ -68,26 +68,6 @@ public class Group {
         return dates;
     }
 
-    public void addMember(Person person) {
-
-        this.members.add(person);
-    }
-
-    public void addSchedule(Schedule schedule) {
-
-        this.schedules.add(schedule);
-    }
-
-    public Person getPerson(int key) {
-
-        return this.members.get(key);
-    }
-
-    public Schedule getSchedule(int key) {
-
-        return this.schedules.get(key);
-    }
-
     // getters
     public int getId() {
 

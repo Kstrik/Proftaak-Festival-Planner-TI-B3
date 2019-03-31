@@ -12,8 +12,6 @@ import model.entity.Agenda;
 import model.entity.Schedule;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ScheduleScene extends BaseScene {
@@ -106,7 +104,11 @@ public class ScheduleScene extends BaseScene {
     private HBox getTableButtons(Schedule schedules) {
 
         Button delete = new Button("Delete");
-        delete.setOnMouseClicked(e -> this.observer.onScheduleDelete(schedules.getId()));
+        delete.setOnMouseClicked(e -> {
+
+            if (!this.observer.onScheduleDelete(schedules.getId()))
+                this.error.setText("This schedule is still used in some items!");
+        });
 
         Button select = new Button("Select");
         select.setOnMouseClicked(e -> this.selectSchedule(schedules));

@@ -8,15 +8,6 @@ public class Person {
     private int personId;
     private boolean isTeacher;
 
-    public Person(int id, String name, String gender, int personId, boolean isTeacher) {
-
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.personId = personId;
-        this.isTeacher = isTeacher;
-    }
-
     public Person() {
 
         this.id = -1;
