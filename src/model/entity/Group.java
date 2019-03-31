@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Group {
@@ -48,7 +48,7 @@ public class Group {
         return new Schedule();
     }
 
-    public Schedule getScheduleByDate(LocalDateTime date) {
+    public Schedule getScheduleByDate(LocalDate date) {
 
         for (Schedule schedule : this.schedules)
             if (schedule.getDate() == date)
@@ -57,9 +57,9 @@ public class Group {
         return new Schedule();
     }
 
-    public ArrayList<LocalDateTime> getScheduleDates() {
+    public ArrayList<LocalDate> getScheduleDates() {
 
-        ArrayList<LocalDateTime> dates = new ArrayList<>();
+        ArrayList<LocalDate> dates = new ArrayList<>();
 
         for (Schedule schedule : this.schedules)
             if (!dates.contains(schedule.getDate()))
@@ -163,10 +163,9 @@ public class Group {
 
         members.append("[\n");
         for (int i = 0; i < this.members.size(); i++)
-            members.append(this.members.get(i).toString()).append(i == (this.members.size() - 1) ? "\n" : ",\n");
-        members.append("]");
+            members.append(this.members.get(i).toString()).append(i == (this.members.size() - 1) ? "" : ",\n");
 
-        return members.toString().replace("\n", "\n\t\t");
+        return members.toString().replace("\n", "\n\t\t") + "\n\t]";
     }
 
     private String schedulesToString() {
@@ -175,9 +174,8 @@ public class Group {
 
         schedules.append("[\n");
         for (int i = 0; i < this.schedules.size(); i++)
-            schedules.append(this.schedules.get(i).toString()).append(i == (this.schedules.size() - 1) ? "\n" : ",\n");
-        schedules.append("]");
+            schedules.append(this.schedules.get(i).toString()).append(i == (this.schedules.size() - 1) ? "" : ",\n");
 
-        return schedules.toString().replace("\n", "\n\t\t");
+        return schedules.toString().replace("\n", "\n\t\t") + "\n\t]";
     }
 }

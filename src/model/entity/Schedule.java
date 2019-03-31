@@ -1,15 +1,16 @@
 package model.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Schedule {
 
     private int id;
-    private LocalDateTime date;
+    private LocalDate date;
     private ArrayList<Item> items;
 
-    public Schedule(int id, LocalDateTime date, ArrayList<Item> items) {
+    public Schedule(int id, LocalDate date, ArrayList<Item> items) {
 
         this.id = id;
         this.date = date;
@@ -19,7 +20,7 @@ public class Schedule {
     public Schedule() {
 
         this.id = -1;
-        this.date = LocalDateTime.now();
+        this.date = LocalDate.now();
         this.items = new ArrayList<>();
     }
 
@@ -47,12 +48,12 @@ public class Schedule {
         return false;
     }
 
-    public LocalDateTime getScheduleStart() {
+    public LocalTime getScheduleStart() {
 
         if (this.items.size() == 0)
-            return LocalDateTime.now();
+            return LocalTime.now();
 
-        LocalDateTime time = this.items.get(0).getStart();
+        LocalTime time = this.items.get(0).getStart();
 
         for (Item item : this.items)
             if (time.isAfter(item.getStart()))
@@ -61,12 +62,12 @@ public class Schedule {
         return time;
     }
 
-    public LocalDateTime getScheduleEnd() {
+    public LocalTime getScheduleEnd() {
 
         if (this.items.size() == 0)
-            return LocalDateTime.now().plusSeconds(1);
+            return LocalTime.now().plusSeconds(1);
 
-        LocalDateTime time = this.items.get(0).getEnd();
+        LocalTime time = this.items.get(0).getEnd();
 
         for (Item item : this.items)
             if (time.isBefore(item.getEnd()))
@@ -96,7 +97,7 @@ public class Schedule {
         return this.id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
 
         return date;
     }
@@ -112,7 +113,7 @@ public class Schedule {
         this.id = id;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
 
         this.date = date;
     }
@@ -131,7 +132,7 @@ public class Schedule {
         schedule.append("{\n");
         schedule.append("\t\"id\": \"")    .append(this.id)              .append("\",\n");
         schedule.append("\t\"date\": \"")  .append(this.date.toString()) .append("\",\n");
-        schedule.append("\t\"Items\": ") .append(this.ItemsToString()) .append("\n");
+        schedule.append("\t\"Items\": ")   .append(this.ItemsToString()) .append("\n");
         schedule.append("}");
 
         return schedule.toString();
@@ -143,9 +144,8 @@ public class Schedule {
 
         items.append("[\n");
         for (int i = 0; i < this.items.size(); i++)
-            items.append(this.items.get(i).toString()).append(i == (this.items.size() - 1) ? "\n" : ",\n");
-        items.append("]");
+            items.append(this.items.get(i).toString()).append(i == (this.items.size() - 1) ? "" : ",\n");
 
-        return items.toString().replace("\n", "\n\t\t");
+        return items.toString().replace("\n", "\n\t\t") + "\n\t]";
     }
 }

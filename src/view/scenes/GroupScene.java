@@ -32,7 +32,6 @@ public class GroupScene extends BaseScene {
         VBox main = this.getMain();
 
         this.container = new HBox();
-        this.container.getStyleClass().addAll("paddingless", "borderless");
 
         this.setGroupTable();
         this.setCreateMenu();
@@ -68,15 +67,16 @@ public class GroupScene extends BaseScene {
         Label isTeacherGroupColumn = new Label("Is teacher group");
         Label buttonsColumn = new Label();
 
-        nameColumn.getStyleClass().add("column");
-        isTeacherGroupColumn.getStyleClass().add("column");
-        buttonsColumn.getStyleClass().add("button-column");
+        nameColumn.getStyleClass().add("-column");
+        isTeacherGroupColumn.getStyleClass().add("-column");
+        buttonsColumn.getStyleClass().add("-column-button");
 
         GridPane.setConstraints(nameColumn, 0, 0);
         GridPane.setConstraints(isTeacherGroupColumn, 1, 0);
         GridPane.setConstraints(buttonsColumn, 2, 0);
 
         groupTable.getChildren().addAll(nameColumn, isTeacherGroupColumn, buttonsColumn);
+        groupTable.getStyleClass().add("-table");
 
         ArrayList<Group> groups = this.agenda.getAllGroups();
 
@@ -85,8 +85,8 @@ public class GroupScene extends BaseScene {
             Label name = new Label(groups.get(i).getName());
             Label isTeacherGroup = new Label(Boolean.toString(groups.get(i).isTeacherGroup()));
 
-            name.getStyleClass().add("row");
-            isTeacherGroup.getStyleClass().add("row");
+            name.getStyleClass().add("-row");
+            isTeacherGroup.getStyleClass().add("-row");
 
             HBox buttons = this.getTableButtons(groups.get(i));
 
@@ -103,15 +103,12 @@ public class GroupScene extends BaseScene {
     private HBox getTableButtons(Group group) {
 
         Button delete = new Button("Delete");
-        delete.getStyleClass().addAll("button", "table-button");
         delete.setOnMouseClicked(e -> this.observer.onGroupDelete(group.getId()));
 
         Button select = new Button("Select");
-        select.getStyleClass().addAll("button", "table-button");
         select.setOnMouseClicked(e -> this.selectGroup(group));
 
         HBox hBox = new HBox();
-        hBox.getStyleClass().addAll("paddingless", "borderless");
         hBox.getChildren().addAll(delete, select);
 
         return hBox;
@@ -122,7 +119,6 @@ public class GroupScene extends BaseScene {
         // name
         this.name = new TextField();
         Label nameLabel = new Label("Name: ");
-        nameLabel.getStyleClass().add("item-label");
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, this.name);
 
@@ -130,7 +126,6 @@ public class GroupScene extends BaseScene {
         this.isTeacherGroup = new ComboBox<>();
         this.isTeacherGroup.setItems(FXCollections.observableArrayList(new ArrayList<Boolean>() {{ add(true); add(false); }}));
         Label isTeacherGroupLabel = new Label("Is teacher group: ");
-        isTeacherGroupLabel.getStyleClass().add("item-label");
         HBox isTeacherGroupBox = new HBox();
         isTeacherGroupBox.getChildren().addAll(isTeacherGroupLabel, this.isTeacherGroup);
 
@@ -139,7 +134,6 @@ public class GroupScene extends BaseScene {
         HBox buttons = this.getCreateMenuButtons();
 
         VBox vBox = new VBox();
-        vBox.getStyleClass().add("createMenu");
         vBox.getChildren().addAll(nameBox, isTeacherGroupBox, error, buttons);
 
         this.container.getChildren().add(vBox);
@@ -148,15 +142,14 @@ public class GroupScene extends BaseScene {
     private HBox getCreateMenuButtons() {
 
         Button reset = new Button("Reset");
-        reset.getStyleClass().addAll("button", "createMenu-reset");
+        reset.getStyleClass().add("-create-menu-button");
         reset.setOnMouseClicked(e -> this.selectGroup(new Group()));
 
         Button apply = new Button("Apply");
-        apply.getStyleClass().addAll("button", "createMenu-apply");
+        apply.getStyleClass().add("-create-menu-button");
         apply.setOnMouseClicked(e -> this.validateInput());
 
         HBox buttons = new HBox();
-        buttons.getStyleClass().addAll("paddingless", "item-button-box");
         buttons.getChildren().addAll(reset, apply);
 
         return buttons;
@@ -165,7 +158,7 @@ public class GroupScene extends BaseScene {
     private HBox setError() {
 
         this.error = new Label();
-        this.error.getStyleClass().add("error");
+        this.error.getStyleClass().add("-error-label");
 
         return new HBox(this.error);
     }

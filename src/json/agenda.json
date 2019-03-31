@@ -15,7 +15,7 @@
         {
           "id": 0,
           "name": "Paul",
-          "gender": "Male",
+          "gender": "male",
           "personId": 1234567,
           "isTeacher": true
         }
@@ -30,7 +30,7 @@
         {
           "id": 1,
           "name": "Wessel",
-          "gender": "Male",
+          "gender": "male",
           "personId": 2143717,
           "isTeacher": false
         }
@@ -38,7 +38,7 @@
       "schedules": [
         {
           "id": 0,
-          "date": "2013-12-31T00:00:00",
+          "date": "2013-12-31",
           "items": [
             {
               "id": 0,

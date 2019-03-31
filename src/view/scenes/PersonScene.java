@@ -35,7 +35,6 @@ public class PersonScene extends BaseScene {
         VBox main = this.getMain();
 
         this.container = new HBox();
-        this.container.getStyleClass().addAll("paddingless", "borderless");
 
         this.setPersonTable();
         this.setCreateMenu();
@@ -74,12 +73,12 @@ public class PersonScene extends BaseScene {
         Label isTeacherColumn = new Label("Is teacher");
         Label buttonsColumn = new Label();
 
-        groupColumn.getStyleClass().add("column");
-        nameColumn.getStyleClass().add("column");
-        genderColumn.getStyleClass().add("column");
-        personIDColumn.getStyleClass().add("column");
-        isTeacherColumn.getStyleClass().add("column");
-        buttonsColumn.getStyleClass().add("button-column");
+        groupColumn.getStyleClass().add("-column");
+        nameColumn.getStyleClass().add("-column");
+        genderColumn.getStyleClass().add("-column");
+        personIDColumn.getStyleClass().add("-column");
+        isTeacherColumn.getStyleClass().add("-column");
+        buttonsColumn.getStyleClass().add("-column-button");
 
         GridPane.setConstraints(groupColumn, 0, 0);
         GridPane.setConstraints(nameColumn, 1, 0);
@@ -89,6 +88,7 @@ public class PersonScene extends BaseScene {
         GridPane.setConstraints(buttonsColumn, 5, 0);
 
         personTable.getChildren().addAll(groupColumn, nameColumn, genderColumn, personIDColumn, isTeacherColumn, buttonsColumn);
+        personTable.getStyleClass().add("-table");
 
         ArrayList<Person> persons = this.agenda.getAllPersons();
 
@@ -100,11 +100,11 @@ public class PersonScene extends BaseScene {
             Label personID = new Label(Long.toString(persons.get(i).getPersonId()));
             Label isTeacher = new Label(Boolean.toString(persons.get(i).isTeacher()));
 
-            group.getStyleClass().add("row");
-            name.getStyleClass().add("row");
-            gender.getStyleClass().add("row");
-            personID.getStyleClass().add("row");
-            isTeacher.getStyleClass().add("row");
+            group.getStyleClass().add("-row");
+            name.getStyleClass().add("-row");
+            gender.getStyleClass().add("-row");
+            personID.getStyleClass().add("-row");
+            isTeacher.getStyleClass().add("-row");
 
             HBox buttons = this.getTableButtons(persons.get(i));
 
@@ -124,15 +124,12 @@ public class PersonScene extends BaseScene {
     private HBox getTableButtons(Person person) {
 
         Button delete = new Button("Delete");
-        delete.getStyleClass().addAll("button", "table-button");
         delete.setOnMouseClicked(e -> this.observer.onPersonDelete(person.getId()));
 
         Button select = new Button("Select");
-        select.getStyleClass().addAll("button", "table-button");
         select.setOnMouseClicked(e -> this.selectPerson(person));
 
         HBox hBox = new HBox();
-        hBox.getStyleClass().addAll("paddingless", "borderless");
         hBox.getChildren().addAll(delete, select);
 
         return hBox;
@@ -144,14 +141,12 @@ public class PersonScene extends BaseScene {
         this.group = new ComboBox<>();
         this.group.setItems(FXCollections.observableArrayList(this.agenda.getAllGroupNames()));
         Label groupLabel = new Label("Group: ");
-        groupLabel.getStyleClass().add("item-label");
         HBox groupBox = new HBox();
         groupBox.getChildren().addAll(groupLabel, this.group);
 
         // name
         this.name = new TextField();
         Label nameLabel = new Label("Name: ");
-        nameLabel.getStyleClass().add("item-label");
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, this.name);
 
@@ -159,14 +154,12 @@ public class PersonScene extends BaseScene {
         this.gender = new ComboBox<>();
         this.gender.setItems(FXCollections.observableArrayList(new ArrayList<String>() {{ add("male"); add("female"); add("other"); }}));
         Label genderLabel = new Label("Gender: ");
-        genderLabel.getStyleClass().add("item-label");
         HBox genderBox = new HBox();
         genderBox.getChildren().addAll(genderLabel, this.gender);
 
         // personID
         this.personID = new TextField();
         Label personIDLabel = new Label("PersonID: ");
-        personIDLabel.getStyleClass().add("item-label");
         HBox personIDBox = new HBox();
         personIDBox.getChildren().addAll(personIDLabel, this.personID);
 
@@ -174,7 +167,6 @@ public class PersonScene extends BaseScene {
         this.isTeacher = new ComboBox<>();
         this.isTeacher.setItems(FXCollections.observableArrayList(new ArrayList<Boolean>() {{ add(true); add(false); }}));
         Label isTeacherLabel = new Label("Is teacher: ");
-        isTeacherLabel.getStyleClass().add("item-label");
         HBox isTeacherBox = new HBox();
         isTeacherBox.getChildren().addAll(isTeacherLabel, this.isTeacher);
 
@@ -183,7 +175,6 @@ public class PersonScene extends BaseScene {
         HBox buttons = this.getCreateMenuButtons();
 
         VBox vBox = new VBox();
-        vBox.getStyleClass().add("createMenu");
         vBox.getChildren().addAll(groupBox, nameBox, genderBox, personIDBox, isTeacherBox, error, buttons);
 
         this.container.getChildren().add(vBox);
@@ -192,15 +183,14 @@ public class PersonScene extends BaseScene {
     private HBox getCreateMenuButtons() {
 
         Button reset = new Button("Reset");
-        reset.getStyleClass().addAll("button", "createMenu-reset");
+        reset.getStyleClass().add("-create-menu-button");
         reset.setOnMouseClicked(e -> this.selectPerson(new Person()));
 
         Button apply = new Button("Apply");
-        apply.getStyleClass().addAll("button", "createMenu-apply");
+        apply.getStyleClass().add("-create-menu-button");
         apply.setOnMouseClicked(e -> this.validateInput());
 
         HBox buttons = new HBox();
-        buttons.getStyleClass().addAll("paddingless", "item-button-box");
         buttons.getChildren().addAll(reset, apply);
 
         return buttons;
@@ -209,7 +199,7 @@ public class PersonScene extends BaseScene {
     private HBox setError() {
 
         this.error = new Label();
-        this.error.getStyleClass().add("error");
+        this.error.getStyleClass().add("-error-label");
 
         return new HBox(this.error);
     }

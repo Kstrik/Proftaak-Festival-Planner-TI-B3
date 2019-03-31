@@ -35,7 +35,6 @@ public class ScheduleScene extends BaseScene {
         VBox main = this.getMain();
 
         this.container = new HBox();
-        this.container.getStyleClass().addAll("paddingless", "borderless");
 
         this.setScheduleTable();
         this.setCreateMenu();
@@ -71,25 +70,26 @@ public class ScheduleScene extends BaseScene {
         Label nameColumn = new Label("Date");
         Label buttonsColumn = new Label();
 
-        groupColumn.getStyleClass().add("column");
-        nameColumn.getStyleClass().add("column");
-        buttonsColumn.getStyleClass().add("button-column");
+        groupColumn.getStyleClass().add("-column");
+        nameColumn.getStyleClass().add("-column");
+        buttonsColumn.getStyleClass().add("-column-button");
 
         GridPane.setConstraints(groupColumn, 0, 0);
         GridPane.setConstraints(nameColumn, 1, 0);
         GridPane.setConstraints(buttonsColumn, 2, 0);
 
         schedulesTable.getChildren().addAll(groupColumn, nameColumn, buttonsColumn);
+        schedulesTable.getStyleClass().add("-table");
 
         ArrayList<Schedule> schedules = this.agenda.getAllSchedules();
 
         for (int i = 0; i < schedules.size(); i++) {
 
             Label group = new Label(this.agenda.getGroupBySchedule(schedules.get(i)).getName());
-            Label date = new Label(schedules.get(i).getDate().toString());
+            Label date = new Label(LocalDate.from(schedules.get(i).getDate()).toString());
 
-            group.getStyleClass().add("row");
-            date.getStyleClass().add("row");
+            group.getStyleClass().add("-row");
+            date.getStyleClass().add("-row");
 
             HBox buttons = this.getTableButtons(schedules.get(i));
 
@@ -106,15 +106,12 @@ public class ScheduleScene extends BaseScene {
     private HBox getTableButtons(Schedule schedules) {
 
         Button delete = new Button("Delete");
-        delete.getStyleClass().addAll("button", "table-button");
         delete.setOnMouseClicked(e -> this.observer.onScheduleDelete(schedules.getId()));
 
         Button select = new Button("Select");
-        select.getStyleClass().addAll("button", "table-button");
         select.setOnMouseClicked(e -> this.selectSchedule(schedules));
 
         HBox hBox = new HBox();
-        hBox.getStyleClass().addAll("paddingless", "borderless");
         hBox.getChildren().addAll(delete, select);
 
         return hBox;
@@ -126,14 +123,12 @@ public class ScheduleScene extends BaseScene {
         this.group = new ComboBox<>();
         this.group.setItems(FXCollections.observableArrayList(this.agenda.getAllGroupNames()));
         Label groupLabel = new Label("Group: ");
-        groupLabel.getStyleClass().add("item-label");
         HBox groupBox = new HBox();
         groupBox.getChildren().addAll(groupLabel, this.group);
 
         // date
         this.date = new DatePicker();
         Label dateLabel = new Label("Date: ");
-        dateLabel.getStyleClass().add("item-label");
         HBox dateBox = new HBox();
         dateBox.getChildren().addAll(dateLabel, this.date);
 
@@ -142,7 +137,6 @@ public class ScheduleScene extends BaseScene {
         HBox buttons = this.getCreateMenuButtons();
 
         VBox vBox = new VBox();
-        vBox.getStyleClass().add("createMenu");
         vBox.getChildren().addAll(groupBox, dateBox, error, buttons);
 
         this.container.getChildren().add(vBox);
@@ -151,15 +145,14 @@ public class ScheduleScene extends BaseScene {
     private HBox getCreateMenuButtons() {
 
         Button reset = new Button("Reset");
-        reset.getStyleClass().addAll("button", "createMenu-reset");
+        reset.getStyleClass().add("-create-menu-button");
         reset.setOnMouseClicked(e -> this.selectSchedule(new Schedule()));
 
         Button apply = new Button("Apply");
-        apply.getStyleClass().addAll("button", "createMenu-apply");
+        apply.getStyleClass().add("-create-menu-button");
         apply.setOnMouseClicked(e -> this.validateInput());
 
         HBox buttons = new HBox();
-        buttons.getStyleClass().addAll("paddingless", "item-button-box");
         buttons.getChildren().addAll(reset, apply);
 
         return buttons;
@@ -168,7 +161,7 @@ public class ScheduleScene extends BaseScene {
     private HBox setError() {
 
         this.error = new Label();
-        this.error.getStyleClass().add("error");
+        this.error.getStyleClass().add("-error-label");
 
         return new HBox(this.error);
     }
@@ -207,7 +200,7 @@ public class ScheduleScene extends BaseScene {
         if (this.selected.getId() == -1)
             this.selected.setId(this.agenda.getNewScheduleId());
 
-        this.selected.setDate(LocalDateTime.of(LocalDate.from(this.date.getValue()), LocalTime.now()));
+        this.selected.setDate(LocalDate.from(this.date.getValue()));
 
         return selected;
     }

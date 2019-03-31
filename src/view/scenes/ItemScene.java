@@ -14,6 +14,7 @@ import model.entity.Schedule;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ItemScene {
@@ -26,7 +27,7 @@ public class ItemScene {
     private VBox main;
 
     private ComboBox<String> group;
-    private ComboBox<LocalDateTime> schedule;
+    private ComboBox<LocalDate> schedule;
     private TextField name;
     private ComboBox<String> teacher;
     private ComboBox<Integer> startHour;
@@ -82,21 +83,18 @@ public class ItemScene {
             this.schedule.setItems(FXCollections.observableArrayList(group.getScheduleDates()));
         });
         Label groupLabel = new Label("Group: ");
-        groupLabel.getStyleClass().add("item-label");
         HBox groupBox = new HBox();
         groupBox.getChildren().addAll(groupLabel, this.group);
 
         // date
         this.schedule = new ComboBox<>();
         Label dateLabel = new Label("Date: ");
-        dateLabel.getStyleClass().add("item-label");
         HBox dateBox = new HBox();
         dateBox.getChildren().addAll(dateLabel, this.schedule);
 
         // name
         this.name = new TextField();
         Label nameLabel = new Label("Name: ");
-        nameLabel.getStyleClass().add("item-label");
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, this.name);
 
@@ -104,31 +102,28 @@ public class ItemScene {
         this.teacher = new ComboBox<>();
         this.teacher.setItems(FXCollections.observableArrayList(this.agenda.getAllTeacherNames()));
         Label teacherLabel = new Label("Teacher: ");
-        teacherLabel.getStyleClass().add("item-label");
         HBox teacherBox = new HBox();
         teacherBox.getChildren().addAll(teacherLabel, this.teacher);
 
         // start time
         this.startHour = new ComboBox<>();
-        this.startHour.getStyleClass().add("time-comboBox");
+        this.startHour.getStyleClass().add("-time-combo-box");
         this.startHour.setItems(FXCollections.observableArrayList(this.getNumbers(24)));
         this.startMinute = new ComboBox<>();
-        this.startMinute.getStyleClass().add("time-comboBox");
+        this.startMinute.getStyleClass().add("-time-combo-box");
         this.startMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
         Label startTimeLabel = new Label("Start time: ");
-        startTimeLabel.getStyleClass().add("item-label");
         HBox startTimeBox = new HBox();
         startTimeBox.getChildren().addAll(startTimeLabel, this.startHour, this.startMinute);
 
         // end time
         this.endHour = new ComboBox<>();
-        this.endHour.getStyleClass().add("time-comboBox");
+        this.endHour.getStyleClass().add("-time-combo-box");
         this.endHour.setItems(FXCollections.observableArrayList(this.getNumbers(24)));
         this.endMinute = new ComboBox<>();
-        this.endMinute.getStyleClass().add("time-comboBox");
+        this.endMinute.getStyleClass().add("-time-combo-box");
         this.endMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
         Label endTimeLabel = new Label("End time: ");
-        endTimeLabel.getStyleClass().add("item-label");
         HBox endTimeBox = new HBox();
         endTimeBox.getChildren().addAll(endTimeLabel, this.endHour, this.endMinute);
 
@@ -136,60 +131,41 @@ public class ItemScene {
         this.classroom = new ComboBox<>();
         this.classroom.setItems(FXCollections.observableArrayList(this.agenda.getAllClassroomNames()));
         Label classroomLabel = new Label("Classroom: ");
-        classroomLabel.getStyleClass().add("item-label");
         HBox classroomBox = new HBox();
         classroomBox.getChildren().addAll(classroomLabel, this.classroom);
 
         this.main.getChildren().addAll(groupBox, dateBox, nameBox, startTimeBox, endTimeBox, teacherBox, classroomBox);
-        this.main.getStyleClass().addAll("main");
+        this.main.getStyleClass().add("-main");
     }
 
     private void setErrorLabel() {
 
         this.error = new Label("");
-        this.error.getStyleClass().add("error");
+        this.error.getStyleClass().add("-error-label");
         this.main.getChildren().add(new HBox(this.error));
     }
 
     private void setButtons() {
 
         HBox buttonBox = new HBox();
-        buttonBox.getStyleClass().add("button-box");
-
-        buttonBox.getChildren().add(this.getCancelButton());
-        buttonBox.getChildren().add(this.getApplyButton());
-
-        if (this.selected.getId() != -1)
-            buttonBox.getChildren().add(this.getDeleteButton());
-
-        this.main.getChildren().add(buttonBox);
-    }
-
-    private Button getCancelButton() {
 
         Button cancel = new Button("Cancel");
-        cancel.getStyleClass().addAll("button", "item-button");
         cancel.setOnMouseClicked(e -> this.observer.onItemCancel());
 
-        return cancel;
-    }
-
-    private Button getApplyButton() {
-
         Button apply = new Button("Apply");
-        apply.getStyleClass().addAll("button", "item-button");
         apply.setOnMouseClicked(e -> this.validateInput());
 
-        return apply;
-    }
+        buttonBox.getChildren().addAll(cancel, apply);
 
-    private Button getDeleteButton() {
+        if (this.selected.getId() != -1) {
 
-        Button delete = new Button("delete");
-        delete.getStyleClass().addAll("button", "item-button");
-        delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.selected.getId()));
+            Button delete = new Button("delete");
+            delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.selected.getId()));
 
-        return delete;
+            buttonBox.getChildren().add(delete);
+        }
+
+        this.main.getChildren().add(buttonBox);
     }
 
     private void validateInput() {
@@ -252,11 +228,9 @@ public class ItemScene {
         return this.selected;
     }
 
-    private LocalDateTime parseTime(int hour, int minute) {
+    private LocalTime parseTime(int hour, int minute) {
 
-        LocalDate date = LocalDate.from(this.schedule.getValue());
-
-        return LocalDateTime.parse(date + "T" +
+        return LocalTime.parse(
             ((Integer.toString(hour).length() == 1) ? "0" + hour : hour) + ":" +
             ((Integer.toString(minute).length() == 1) ? "0" + minute : minute) + ":00"
         );

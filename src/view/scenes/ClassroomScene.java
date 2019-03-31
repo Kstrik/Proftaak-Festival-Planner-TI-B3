@@ -31,9 +31,7 @@ public class ClassroomScene extends BaseScene {
     public Scene getScene(Stage stage) {
 
         this.selected = new Classroom();
-
         this.container = new HBox();
-        this.container.getStyleClass().addAll("paddingless", "borderless");
 
         this.setClassroomTable();
         this.setCreateMenu();
@@ -69,13 +67,14 @@ public class ClassroomScene extends BaseScene {
         Label nameColumn = new Label("Name");
         Label buttonsColumn = new Label();
 
-        nameColumn.getStyleClass().add("column");
-        buttonsColumn.getStyleClass().add("button-column");
+        nameColumn.getStyleClass().add("-column");
+        buttonsColumn.getStyleClass().add("-column-button");
 
         GridPane.setConstraints(nameColumn, 0, 0);
         GridPane.setConstraints(buttonsColumn, 1, 0);
 
         classroomTable.getChildren().addAll(nameColumn, buttonsColumn);
+        classroomTable.getStyleClass().add("-table");
 
         ArrayList<Classroom> classrooms = this.agenda.getAllClassrooms();
 
@@ -83,7 +82,7 @@ public class ClassroomScene extends BaseScene {
 
             Label name = new Label(classrooms.get(i).getName());
 
-            name.getStyleClass().add("row");
+            name.getStyleClass().add("-row");
 
             HBox buttons = this.getTableButtons(classrooms.get(i));
 
@@ -99,15 +98,12 @@ public class ClassroomScene extends BaseScene {
     private HBox getTableButtons(Classroom classroom) {
 
         Button delete = new Button("Delete");
-        delete.getStyleClass().addAll("button", "table-button");
         delete.setOnMouseClicked(e -> this.observer.onClassroomDelete(classroom.getId()));
 
         Button select = new Button("Select");
-        select.getStyleClass().addAll("button", "table-button");
         select.setOnMouseClicked(e -> this.selectClassroom(classroom));
 
         HBox hBox = new HBox();
-        hBox.getStyleClass().addAll("paddingless", "borderless");
         hBox.getChildren().addAll(delete, select);
 
         return hBox;
@@ -118,7 +114,6 @@ public class ClassroomScene extends BaseScene {
         this.name = new TextField();
 
         Label nameLabel = new Label("Name: ");
-        nameLabel.getStyleClass().add("item-label");
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, this.name);
 
@@ -126,7 +121,6 @@ public class ClassroomScene extends BaseScene {
         HBox buttons = this.getCreateMenuButtons();
 
         VBox vBox = new VBox();
-        vBox.getStyleClass().add("createMenu");
         vBox.getChildren().addAll(nameBox, error, buttons);
 
         this.container.getChildren().add(vBox);
@@ -135,15 +129,14 @@ public class ClassroomScene extends BaseScene {
     private HBox getCreateMenuButtons() {
 
         Button reset = new Button("Reset");
-        reset.getStyleClass().addAll("button", "createMenu-reset");
+        reset.getStyleClass().add("-create-menu-button");
         reset.setOnMouseClicked(e -> this.selectClassroom(new Classroom()));
 
         Button apply = new Button("Apply");
-        apply.getStyleClass().addAll("button", "createMenu-apply");
+        apply.getStyleClass().add("-create-menu-button");
         apply.setOnMouseClicked(e -> this.validateInput());
 
         HBox buttons = new HBox();
-        buttons.getStyleClass().addAll("paddingless", "item-button-box");
         buttons.getChildren().addAll(reset, apply);
 
         return buttons;
@@ -152,7 +145,7 @@ public class ClassroomScene extends BaseScene {
     private HBox setError() {
 
         this.error = new Label();
-        this.error.getStyleClass().add("error");
+        this.error.getStyleClass().add("-error-label");
 
         return new HBox(this.error);
     }

@@ -22,7 +22,9 @@ import controller.interfaces.AgendaUpdate;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +49,6 @@ public class AgendaScene extends BaseScene {
         this.canvasItemLocations = new HashMap<>();
         this.scheduleGrid = new GridPane();
         this.canvas = new Canvas();
-
         this.main = this.getMain();
 
         this.setScheduleDateButtons();
@@ -57,7 +58,7 @@ public class AgendaScene extends BaseScene {
 
         this.draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
 
-        Scene scene = new Scene(new ScrollPane(this.main), 1000, 500);
+        Scene scene = new Scene(new ScrollPane(main), 1000, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         return scene;
@@ -87,18 +88,17 @@ public class AgendaScene extends BaseScene {
     private void setScheduleDateButtons() {
 
         HBox hBox = new HBox();
-        hBox.getStyleClass().addAll("paddingless", "borderless-bottom");
+        hBox.getStyleClass().add("-schedule-box");
 
-        for (LocalDateTime date : this.agenda.getAllScheduleDates()) {
+        for (LocalDate date : this.agenda.getAllScheduleDates()) {
 
             Button button = new Button(getParsedDate(date));
-            button.getStyleClass().addAll("button", "schedule-button");
             button.setOnMouseClicked(e -> this.observer.onAgendaSelectByDate(date));
 
             hBox.getChildren().add(button);
         }
 
-        main.getChildren().add(hBox);
+        this.main.getChildren().add(hBox);
     }
 
     private void setScheduleClassrooms() {
@@ -108,7 +108,7 @@ public class AgendaScene extends BaseScene {
         for (int i = 0; i < classrooms.size(); i++) {
 
             Label label = new Label(" " + classrooms.get(i).getName());
-            label.getStyleClass().add("classroom-label");
+            label.getStyleClass().add("-classroom-label");
 
             GridPane.setConstraints(label, i + 1, 0);
 
@@ -118,13 +118,17 @@ public class AgendaScene extends BaseScene {
 
     private void setScheduleTime() {
 
-        LocalDateTime start = this.schedule.getScheduleStart();
-        LocalDateTime end = this.schedule.getScheduleEnd();
+        LocalTime start = this.schedule.getScheduleStart();
+        LocalTime end = this.schedule.getScheduleEnd();
 
         for (int i = start.getHour(); i <= end.getHour(); i++) {
 
+            Label label = new Label(" " + i + ":00");
+            label.getStyleClass().add("-time-label");
+
             VBox vBox = new VBox();
-            vBox.getChildren().addAll(new Label(" " + i + ":00"), new Pane());
+            vBox.getChildren().addAll(label, new Pane());
+            vBox.getStyleClass().add("-time-box");
 
             GridPane.setConstraints(vBox, 0, (i - start.getHour()) + 1);
 
@@ -135,7 +139,7 @@ public class AgendaScene extends BaseScene {
     private void setScheduleGrid() {
 
         Button button = new Button("+");
-        button.getStyleClass().addAll("button", "add-button");
+        button.getStyleClass().add("-add-button");
         button.setOnMouseClicked(e -> this.observer.onAgendaItemCreate());
 
         this.canvas = new Canvas(
@@ -155,7 +159,6 @@ public class AgendaScene extends BaseScene {
     // canvas methods
     private void draw(FXGraphics2D graphics) {
 
-        this.drawBorder(graphics);
         this.drawLines(graphics);
 
         for (int i = 0; i < this.schedule.getAmountOfItems(); i++)
@@ -164,19 +167,14 @@ public class AgendaScene extends BaseScene {
         this.canvas.setOnMouseClicked(this::canvasOnClick);
     }
 
-    private void drawBorder(FXGraphics2D graphics2D) {
-
-        graphics2D.draw(new Rectangle2D.Double(2, 2, this.canvas.getWidth() - 2, this.canvas.getHeight() - 2));
-    }
-
     private void drawLines(FXGraphics2D graphics) {
 
-        graphics.setColor(Color.GRAY);
+        graphics.setColor(Color.LIGHT_GRAY);
         graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {2}, 0));
 
         for (int a = 1; a < this.agenda.getAmountOfClassrooms(); a++) {
 
-            graphics.draw(new Line2D.Double((ConfigModel.BLOCK_WIDTH * a) + 1, 3, (ConfigModel.BLOCK_WIDTH * a) + 1, this.canvas.getHeight() - 2));
+            graphics.draw(new Line2D.Double((ConfigModel.BLOCK_WIDTH * a), 3, (ConfigModel.BLOCK_WIDTH * a), this.canvas.getHeight() - 2));
         }
     }
 
@@ -188,10 +186,10 @@ public class AgendaScene extends BaseScene {
         int height   = getItemHeight(item);
 
         Rectangle rectangle = new Rectangle(x, y, width, height);
-        graphics.setColor(Color.getHSBColor((float) Math.random(), 1, 1));
+        graphics.setColor(Color.getHSBColor((float) Math.random(), 1, (float) 0.5));
         graphics.fill(rectangle);
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Color.WHITE);
         graphics.drawString(this.getItemString(item), (x + 10), (y + 20));
 
         this.canvasItemLocations.put(rectangle, item);
@@ -223,7 +221,7 @@ public class AgendaScene extends BaseScene {
     }
 
     // other methods
-    private String getParsedDate(LocalDateTime date) {
+    private String getParsedDate(LocalDate date) {
 
         return
             date.getDayOfWeek()     + " ( " +

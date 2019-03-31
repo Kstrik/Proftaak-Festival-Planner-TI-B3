@@ -11,6 +11,7 @@ import model.entity.*;
 import view.scenes.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Controller extends Application implements AgendaUpdate, ClassroomUpdate, GroupUpdate, ItemUpdate, PersonUpdate, ScheduleUpdate {
@@ -76,7 +77,7 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     }
 
     @Override
-    public void onAgendaSelectByDate(LocalDateTime date) {
+    public void onAgendaSelectByDate(LocalDate date) {
 
         this.agendaScene.setSchedule(this.getAgenda().getCombinedScheduleByDate(date));
         this.setAgendaScene();

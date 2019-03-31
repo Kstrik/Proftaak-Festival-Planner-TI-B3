@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Item {
@@ -9,10 +9,10 @@ public class Item {
     private int teacherId;
     private int classroomId;
     private String name;
-    private LocalDateTime start, end;
+    private LocalTime start, end;
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public Item(int id, int teacherId, int classroomId, String name, LocalDateTime start, LocalDateTime end) {
+    public Item(int id, int teacherId, int classroomId, String name, LocalTime start, LocalTime end) {
 
         this.id = id;
         this.name = name;
@@ -26,8 +26,8 @@ public class Item {
 
         this.id = -1;
         this.name = "";
-        this.start = LocalDateTime.now();
-        this.end = LocalDateTime.now().plusSeconds(1);
+        this.start = LocalTime.now();
+        this.end = LocalTime.now().plusSeconds(1);
         this.teacherId = -1;
         this.classroomId = -1;
     }
@@ -84,12 +84,12 @@ public class Item {
         return this.teacherId;
     }
 
-    public LocalDateTime getStart() {
+    public LocalTime getStart() {
 
         return this.start;
     }
 
-    public LocalDateTime getEnd() {
+    public LocalTime getEnd() {
 
         return this.end;
     }
@@ -115,12 +115,12 @@ public class Item {
         this.teacherId = teacherId;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(LocalTime start) {
 
         this.start = start;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(LocalTime end) {
 
         this.end = end;
     }

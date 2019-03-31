@@ -1,173 +1,146 @@
-Gridpane, Canvas, VBox, .createMenu-button, .classroom-label, .button-column, .column, .button, .main, .row {
+/* all */
+* {
 
-    -fx-border-width: 3;
-    -fx-border-insets: -1;
-    -fx-border-color: black;
+    -fx-border-color: gray;
+    -fx-border-width: 0;
+    -fx-font-family: "Arial Rounded MT Bold";
 }
 
+/* element */
 ComboBox, TextField {
 
     -fx-pref-width: 174;
+}
+
+HBox, VBox {
+
+    -fx-padding: 3;
+}
+
+Button {
+
+    -fx-border-insets: 2;
+    -fx-pref-height: 30;
+    -fx-font-size: 10px;
+}
+
+Label {
+
+    -fx-pref-width: 115;
 }
 
 Pane {
 
     -fx-border-style: dashed inside;
     -fx-border-width: 0 0 1 0;
-    -fx-border-color: grey;
+    -fx-border-color: darkgrey;
     -fx-pref-height: 20;
 }
 
-HBox {
+/* table */
+.-column-button, .-column, .-row {
 
-    -fx-padding: 3;
-    -fx-border-width: 0 0 3 0;
-    -fx-border-color: black;
+    -fx-padding: 3 6;
 }
 
-VBox {
+.-column-button, .-column {
 
-    -fx-pref-height: 75;
-    -fx-min-width: 40;
+    -fx-border-width: 0 0 1 1;
 }
 
-.createMenu-reset, .createMenu-apply {
+.-column, .-row {
 
-    -fx-pref-width: 165 !important;
-    /*-fx-border-insets: -2;*/
+    -fx-pref-width: 115;
 }
 
-.button-column, .column, .row {
+.-table {
 
-    -fx-padding: 3;
+    -fx-translate-y: 3;
+    -fx-border-width: 0 1 0 0;
 }
 
-.borderless-bottom {
+/* buttons */
+.-create-menu-button {
 
-    -fx-border-insets: 0 0 -2 0 !important;
-    -fx-border-width: 0 0 5 0 !important;
+    -fx-pref-width: 144;
 }
 
-.createMenu-reset {
+.-column-button {
 
-    /*-fx-border-width: 0 4 2 0;*/
+    -fx-pref-width: 105;
+    -fx-border-width: 0 0 1 1;
 }
 
-.createMenu-apply {
-
-    /*-fx-border-width: 0 0 2 4;*/
-}
-
-.item-button-box {
-
-    -fx-border-insets: -1 -1 -1 -1;
-}
-
-.classroom-label {
-
-    -fx-pref-height: 43;
-    -fx-pref-width: 200;
-}
-
-.schedule-button {
-
-    -fx-border-insets: -1 -1 -3 -1 !important;
-    -fx-pref-width: 150;
-}
-
-.button-column {
+.-base-button {
 
     -fx-pref-width: 100;
 }
 
-.time-comboBox {
+.-add-button {
+
+    -fx-translate-x: 5;
+    -fx-translate-y: -1;
+    -fx-font-size: 18px !important;
+}
+
+/* boxes */
+.-base-box, .-schedule-box {
+
+    -fx-spacing: 5;
+    -fx-padding: 5;
+    -fx-pref-width: 1000;
+    -fx-background-color: royalblue;
+    -fx-border-color: darkgray;
+    -fx-border-width: 0 0 2 0;
+}
+
+.-time-combo-box {
 
     -fx-pref-width: 87 !important;
 }
 
-.table-button {
+.-schedule-box {
 
-    -fx-pref-width: 50 !important;
+    -fx-translate-y: -5;
+    -fx-padding: 5 5 7;
 }
 
-.paddingless {
+.-time-box {
 
-    -fx-padding: 0 !important;
+    -fx-pref-height: 75;
+    -fx-min-width: 40;
+    -fx-border-width: 0 1 1 0;
+    -fx-translate-x: 1;
 }
 
-.base-button {
+.-main {
 
-    -fx-border-insets: -1 -1 -3 -1 !important;
-    -fx-pref-width: 100;
+    -fx-padding: 0;
 }
 
-.item-button {
+/* labels */
+.-classroom-label {
 
-    -fx-pref-width: 94;
-    -fx-border-width: 2;
+    -fx-pref-height: 43;
+    -fx-pref-width: 200;
+    -fx-border-width: 0 1 1 0;
 }
 
-.item-label {
+.-error-label {
 
     -fx-padding: 5;
-    -fx-pref-width: 150;
-}
-
-.createMenu {
-
-    -fx-border-width: 3 3 0 3;
-    -fx-border-insets: -1 -1 -3 -1;
-}
-
-.borderless {
-
-    -fx-border-width: 0 !important;
-}
-
-.add-button {
-
-    -fx-border-width: 4 3 3 3;
-    -fx-font-size: 18px !important;
-}
-
-.button-box {
-
-    -fx-padding: -1;
-    -fx-border-insets: -1;
-    -fx-border-width: 0;
-}
-
-.button {
-
-    -fx-background-color: white;
-    -fx-text-fill: black;
-    -fx-pref-height: 30;
-    -fx-font-size: 10px;
-}
-.button:hover {
-
-    -fx-background-color: black;
-    -fx-text-fill: white;
-}
-
-.column {
-
-    -fx-pref-width: 125;
-}
-
-.error {
-
-    -fx-padding: 5 5;
+    -fx-pref-width: 270;
     -fx-text-fill: darkred;
 }
 
-.main {
+.-title-label {
 
-    -fx-border-insets: 3;
+    -fx-translate-x: 270;
+    -fx-translate-y: 8;
+    -fx-text-fill: white;
 }
 
-.row {
+.-time-label {
 
-    -fx-pref-width: 125;
-    -fx-pref-height: 30;
+    -fx-pref-width: 40;
 }

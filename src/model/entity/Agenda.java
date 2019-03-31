@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,7 +122,7 @@ public class Agenda {
         return new ArrayList<Schedule>() {{ addAll(schedules.values()); }};
     }
 
-    public Schedule getCombinedScheduleByDate(LocalDateTime date) {
+    public Schedule getCombinedScheduleByDate(LocalDate date) {
 
         Schedule combinedSchedule = new Schedule(-1, date, new ArrayList<>());
 
@@ -132,9 +133,9 @@ public class Agenda {
         return combinedSchedule;
     }
 
-    public ArrayList<LocalDateTime> getAllScheduleDates() {
+    public ArrayList<LocalDate> getAllScheduleDates() {
 
-        ArrayList<LocalDateTime> dates = new ArrayList<>();
+        ArrayList<LocalDate> dates = new ArrayList<>();
 
         for (Schedule schedule : this.getAllSchedules())
             if (!dates.contains(schedule.getDate()))
@@ -143,11 +144,11 @@ public class Agenda {
         return dates;
     }
 
-    public LocalDateTime getFirstScheduleDate() {
+    public LocalDate getFirstScheduleDate() {
 
-        LocalDateTime firstDate = LocalDateTime.now();
+        LocalDate firstDate = LocalDate.now();
 
-        for (LocalDateTime localDateTime : this.getAllScheduleDates())
+        for (LocalDate localDateTime : this.getAllScheduleDates())
             if (firstDate.isAfter(localDateTime))
                 firstDate = localDateTime;
 
@@ -466,10 +467,9 @@ public class Agenda {
 
         classrooms.append("[\n");
         for (int i = 0; i < this.classrooms.size(); i++)
-            classrooms.append(this.classrooms.get(i).toString()).append(i == (this.classrooms.size() - 1) ? "\n" : ",\n");
-        classrooms.append("]");
+            classrooms.append(this.classrooms.get(i).toString()).append(i == (this.classrooms.size() - 1) ? "" : ",\n");
 
-        return classrooms.toString().replace("\n", "\n\t\t");
+        return classrooms.toString().replace("\n", "\n\t\t") + "\n\t]";
     }
 
     private String groupsToString() {
@@ -478,9 +478,8 @@ public class Agenda {
 
         groups.append("[\n");
         for (int i = 0; i < this.groups.size(); i++)
-            groups.append(this.groups.get(i).toString()).append(i == (this.groups.size() - 1) ? "\n" : ",\n");
-        groups.append("]");
+            groups.append(this.groups.get(i).toString()).append(i == (this.groups.size() - 1) ? "" : ",\n");
 
-        return groups.toString().replace("\n", "\n\t\t");
+        return groups.toString().replace("\n", "\n\t\t") + "\n\t]";
     }
 }

@@ -145,7 +145,7 @@ public class JSONModel {
 
         Schedule schedule = new Schedule();
         schedule.setId(Math.toIntExact((long) jsonSchedule.get("id")));
-        schedule.setDate(LocalDateTime.parse(((String) jsonSchedule.get("date")).replace(" ", "T")));
+        schedule.setDate(LocalDate.parse(((String) jsonSchedule.get("date"))));
         schedule.setItems(this.convertJSONItems((JSONArray) jsonSchedule.get("items")));
 
         return schedule;
@@ -170,8 +170,8 @@ public class JSONModel {
         item.setId(Math.toIntExact((long) jsonItem.get("id")));
         item.setName((String) jsonItem.get("name"));
         item.setClassroomId(Math.toIntExact((long) jsonItem.get("classroomId")));
-        item.setStart(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("start"))));
-        item.setEnd(LocalDateTime.of(LocalDate.now(), LocalTime.parse((String) jsonItem.get("end"))));
+        item.setStart(LocalTime.parse((String) jsonItem.get("start")));
+        item.setEnd(LocalTime.parse((String) jsonItem.get("end")));
         item.setTeacherId(Math.toIntExact((long) jsonItem.get("teacherId")));
 
         return item;
