@@ -130,9 +130,9 @@ public class Schedule {
         StringBuilder schedule = new StringBuilder();
 
         schedule.append("{\n");
-        schedule.append("\t\"id\": \"")    .append(this.id)              .append("\",\n");
-        schedule.append("\t\"date\": \"")  .append(this.date.toString()) .append("\",\n");
-        schedule.append("\t\"Items\": ")   .append(this.ItemsToString()) .append("\n");
+        schedule.append("\t\"id\": ")     .append(this.id)              .append(",\n");
+        schedule.append("\t\"date\": \"") .append(this.date.toString()) .append("\",\n");
+        schedule.append("\t\"items\": ")  .append(this.ItemsToString()) .append("\n");
         schedule.append("}");
 
         return schedule.toString();

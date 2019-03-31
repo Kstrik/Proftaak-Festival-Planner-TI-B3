@@ -137,12 +137,12 @@ public class Item {
         StringBuilder item = new StringBuilder();
 
         item.append("{\n");
-        item.append("\t\"id\":")          .append(this.id)                                   .append(",\n");
-        item.append("\t\"teacherId\":")   .append(this.teacherId)                            .append(",\n");
-        item.append("\t\"classroomId\":") .append(this.classroomId)                          .append(",\n");
-        item.append("\t\"name\": \"")     .append(this.name)                                 .append("\",\n");
-        item.append("\t\"start\":\"")     .append(this.start.format(this.dateTimeFormatter)) .append("\",\n");
-        item.append("\t\"end\":\"")       .append(this.end.format(this.dateTimeFormatter))   .append("\"\n");
+        item.append("\t\"id\": ")          .append(this.id)                                   .append(",\n");
+        item.append("\t\"teacherId\": ")   .append(this.teacherId)                            .append(",\n");
+        item.append("\t\"classroomId\": ") .append(this.classroomId)                          .append(",\n");
+        item.append("\t\"name\": \"")      .append(this.name)                                 .append("\",\n");
+        item.append("\t\"start\": \"")     .append(this.start.format(this.dateTimeFormatter)) .append("\",\n");
+        item.append("\t\"end\": \"")       .append(this.end.format(this.dateTimeFormatter))   .append("\"\n");
         item.append("}");
 
         return item.toString();

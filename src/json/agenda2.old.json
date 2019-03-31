@@ -1,0 +1,57 @@
+{
+  "id": 0,
+  "name": "1.3",
+  "classrooms": [
+    {
+      "id": 0,
+      "name": "LD310"
+    }
+  ],
+  "groups": [
+    {
+      "id": 0,
+      "name": "Teachers",
+      "members": [
+        {
+          "id": 0,
+          "name": "Paul",
+          "gender": "male",
+          "personId": 1234567,
+          "isTeacher": true
+        }
+      ],
+      "schedules" : [],
+      "isTeacherGroup": true
+    },
+    {
+      "id": 1,
+      "name": "B3",
+      "members": [
+        {
+          "id": 1,
+          "name": "Wessel",
+          "gender": "male",
+          "personId": 2143717,
+          "isTeacher": false
+        }
+      ],
+      "schedules": [
+        {
+          "id": 0,
+          "date": "2013-12-31",
+          "items": [
+            {
+              "id": 0,
+              "name": "Wiskunde",
+              "classroomId": 0,
+              "start": "11:00:00",
+              "end": "14:05:00",
+              "teacherId": 0
+            }
+          ]
+        }
+      ],
+      "isTeacherGroup": false
+    }
+  ]
+}

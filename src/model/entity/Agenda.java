@@ -528,7 +528,7 @@ public class Agenda {
         StringBuilder agenda = new StringBuilder();
 
         agenda.append("{\n");
-        agenda.append("\t\"id\": \"")       .append(this.id)                   .append("\",\n");
+        agenda.append("\t\"id\": ")         .append(this.id)                   .append(",\n");
         agenda.append("\t\"name\": \"")     .append(this.name)                 .append("\",\n");
         agenda.append("\t\"classrooms\": ") .append(this.classroomsToString()) .append(",\n");
         agenda.append("\t\"groups\": ")     .append(this.groupsToString())     .append("\n");

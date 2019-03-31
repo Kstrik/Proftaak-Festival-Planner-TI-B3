@@ -59,7 +59,7 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     @Override
     public void onSelectSchedule()  { this.setScheduleScene(); }
     @Override
-    public void onSaveAgenda()      { this.jsonModel.saveJSONFile(this.agenda, "output.json"); }
+    public void onSaveAgenda()      { this.jsonModel.saveJSONFile(this.agenda, "agenda.json"); }
 
     // agendaUpdate
     @Override

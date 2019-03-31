@@ -127,11 +127,11 @@ public class Group {
         StringBuilder group = new StringBuilder();
 
         group.append("{\n");
-        group.append("\t\"id\": \"")             .append(this.id)                  .append("\",\n");
-        group.append("\t\"name\": \"")           .append(this.name)                .append("\",\n");
-        group.append("\t\"members\": ")          .append(this.membersToString())   .append(",\n");
-        group.append("\t\"schedules\": ")        .append(this.schedulesToString()) .append(",\n");
-        group.append("\t\"isTeacherGroup\": \"") .append(this.isTeacherGroup)      .append("\"\n");
+        group.append("\t\"id\": ")             .append(this.id)                  .append(",\n");
+        group.append("\t\"name\": \"")         .append(this.name)                .append("\",\n");
+        group.append("\t\"members\": ")        .append(this.membersToString())   .append(",\n");
+        group.append("\t\"schedules\": ")      .append(this.schedulesToString()) .append(",\n");
+        group.append("\t\"isTeacherGroup\": ") .append(this.isTeacherGroup)      .append("\n");
         group.append("}");
 
         return group.toString();
