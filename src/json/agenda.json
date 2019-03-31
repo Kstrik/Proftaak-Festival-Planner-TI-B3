@@ -54,23 +54,31 @@
 					"name": "Paul",
 					"gender": "male",
 					"personId": 1234567
+				},
+				{
+					"id": 10,
+					"isTeacher": true,
+					"name": "Johan",
+					"gender": "male",
+					"personId": 4242
+				},
+				{
+					"id": 11,
+					"isTeacher": true,
+					"name": "Maurice",
+					"gender": "male",
+					"personId": 20
+				},
+				{
+					"id": 40,
+					"isTeacher": true,
+					"name": "The Truth",
+					"gender": "other",
+					"personId": 420420
 				}
 			],
 			"schedules": [
-				{
-					"id": 0,
-					"date": "2013-12-31",
-					"items": [
-						{
-							"id": 4,
-							"teacherId": 0,
-							"classroomId": 1,
-							"name": "OGP",
-							"start": "00:00:00",
-							"end": "00:01:00"
-						}
-					]
-				}
+				
 			],
 			"isTeacherGroup": true
 		},
@@ -84,20 +92,70 @@
 					"name": "Wessel",
 					"gender": "male",
 					"personId": 2143717
+				},
+				{
+					"id": 9,
+					"isTeacher": false,
+					"name": "Bas",
+					"gender": "male",
+					"personId": 42
+				},
+				{
+					"id": 12,
+					"isTeacher": false,
+					"name": "Luuk",
+					"gender": "male",
+					"personId": 1234
+				},
+				{
+					"id": 2,
+					"isTeacher": false,
+					"name": "Kenley",
+					"gender": "male",
+					"personId": 123
+				},
+				{
+					"id": 3,
+					"isTeacher": false,
+					"name": "Reinout",
+					"gender": "other",
+					"personId": 4206969
+				},
+				{
+					"id": 13,
+					"isTeacher": false,
+					"name": "Pascal",
+					"gender": "male",
+					"personId": 1
+				},
+				{
+					"id": 44,
+					"isTeacher": false,
+					"name": "Pieter",
+					"gender": "male",
+					"personId": 39
 				}
 			],
 			"schedules": [
 				{
-					"id": 0,
-					"date": "2013-12-31",
+					"id": 1,
+					"date": "2019-04-01",
 					"items": [
 						{
 							"id": 1,
-							"teacherId": 0,
-							"classroomId": 0,
+							"teacherId": 11,
+							"classroomId": 3,
+							"name": "OGP",
+							"start": "09:00:00",
+							"end": "11:00:00"
+						},
+						{
+							"id": 5,
+							"teacherId": 11,
+							"classroomId": 3,
 							"name": "OGP",
 							"start": "00:01:00",
-							"end": "00:02:00"
+							"end": "04:00:00"
 						}
 					]
 				}
@@ -109,25 +167,46 @@
 			"name": "B2",
 			"members": [
 				{
-					"id": 2,
+					"id": 14,
 					"isTeacher": false,
-					"name": "Kenley",
+					"name": "Stan",
 					"gender": "male",
-					"personId": 123
+					"personId": 2
+				},
+				{
+					"id": 15,
+					"isTeacher": false,
+					"name": "Kyle",
+					"gender": "male",
+					"personId": 3
+				},
+				{
+					"id": 16,
+					"isTeacher": false,
+					"name": "Eric",
+					"gender": "male",
+					"personId": 4
+				},
+				{
+					"id": 18,
+					"isTeacher": false,
+					"name": "Butters",
+					"gender": "male",
+					"personId": 6
 				}
 			],
 			"schedules": [
 				{
 					"id": 2,
-					"date": "2019-03-09",
+					"date": "2019-04-01",
 					"items": [
 						{
-							"id": 2,
-							"teacherId": 4,
-							"classroomId": 1,
-							"name": "OOM",
-							"start": "00:00:00",
-							"end": "00:01:00"
+							"id": 6,
+							"teacherId": 0,
+							"classroomId": 0,
+							"name": "2D",
+							"start": "00:01:00",
+							"end": "05:00:00"
 						}
 					]
 				}
@@ -139,28 +218,326 @@
 			"name": "B1",
 			"members": [
 				{
-					"id": 3,
+					"id": 19,
 					"isTeacher": false,
-					"name": "Reinout",
-					"gender": "other",
-					"personId": 4206969
+					"name": "Bebe",
+					"gender": "female",
+					"personId": 7
+				},
+				{
+					"id": 20,
+					"isTeacher": false,
+					"name": "Wendy",
+					"gender": "female",
+					"personId": 8
+				},
+				{
+					"id": 21,
+					"isTeacher": false,
+					"name": "The one that was fat for 2 episodes",
+					"gender": "female",
+					"personId": 10
+				},
+				{
+					"id": 17,
+					"isTeacher": false,
+					"name": "Scott",
+					"gender": "male",
+					"personId": 11
+				},
+				{
+					"id": 42,
+					"isTeacher": false,
+					"name": "Madd Dogg",
+					"gender": "male",
+					"personId": 36
+				},
+				{
+					"id": 43,
+					"isTeacher": false,
+					"name": "Tenpenny",
+					"gender": "male",
+					"personId": 37
+				},
+				{
+					"id": 45,
+					"isTeacher": false,
+					"name": "Zero",
+					"gender": "male",
+					"personId": -1
 				}
 			],
 			"schedules": [
 				{
-					"id": 1,
-					"date": "2019-02-26",
+					"id": 3,
+					"date": "2019-04-01",
 					"items": [
 						{
 							"id": 3,
 							"teacherId": 0,
-							"classroomId": 2,
-							"name": "SLO",
-							"start": "00:03:00",
-							"end": "00:04:00"
+							"classroomId": 7,
+							"name": "2D",
+							"start": "12:00:00",
+							"end": "15:00:00"
 						}
 					]
 				}
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 4,
+			"name": "Grove street",
+			"members": [
+				{
+					"id": 4,
+					"isTeacher": false,
+					"name": "CJ",
+					"gender": "male",
+					"personId": 69
+				},
+				{
+					"id": 5,
+					"isTeacher": false,
+					"name": "Big smoke",
+					"gender": "male",
+					"personId": 0
+				},
+				{
+					"id": 6,
+					"isTeacher": false,
+					"name": "Number",
+					"gender": "other",
+					"personId": 9
+				},
+				{
+					"id": 7,
+					"isTeacher": false,
+					"name": "two number",
+					"gender": "other",
+					"personId": 45
+				},
+				{
+					"id": 8,
+					"isTeacher": false,
+					"name": "Large Soda",
+					"gender": "other",
+					"personId": 5
+				}
+			],
+			"schedules": [
+				{
+					"id": 4,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 4,
+							"teacherId": 11,
+							"classroomId": 9,
+							"name": "Pauze",
+							"start": "09:00:00",
+							"end": "15:00:00"
+						},
+						{
+							"id": 7,
+							"teacherId": 10,
+							"classroomId": 8,
+							"name": "Pauze",
+							"start": "03:00:00",
+							"end": "10:00:00"
+						}
+					]
+				}
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 5,
+			"name": "A5",
+			"members": [
+				{
+					"id": 22,
+					"isTeacher": false,
+					"name": "Michael Z. Riley",
+					"gender": "male",
+					"personId": 13
+				},
+				{
+					"id": 23,
+					"isTeacher": false,
+					"name": "Peter",
+					"gender": "male",
+					"personId": 14
+				},
+				{
+					"id": 24,
+					"isTeacher": false,
+					"name": "Lois",
+					"gender": "female",
+					"personId": 15
+				},
+				{
+					"id": 25,
+					"isTeacher": false,
+					"name": "brian",
+					"gender": "male",
+					"personId": 16
+				},
+				{
+					"id": 36,
+					"isTeacher": false,
+					"name": "Ryders on the storm",
+					"gender": "other",
+					"personId": 30
+				},
+				{
+					"id": 37,
+					"isTeacher": false,
+					"name": "Ryder",
+					"gender": "male",
+					"personId": 31
+				}
+			],
+			"schedules": [
+				
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 6,
+			"name": "A4",
+			"members": [
+				{
+					"id": 26,
+					"isTeacher": false,
+					"name": "stewie",
+					"gender": "male",
+					"personId": 17
+				},
+				{
+					"id": 27,
+					"isTeacher": false,
+					"name": "Meg",
+					"gender": "female",
+					"personId": 18
+				},
+				{
+					"id": 28,
+					"isTeacher": false,
+					"name": "Chris",
+					"gender": "male",
+					"personId": 19
+				},
+				{
+					"id": 35,
+					"isTeacher": false,
+					"name": "Sweet",
+					"gender": "male",
+					"personId": 29
+				},
+				{
+					"id": 46,
+					"isTeacher": false,
+					"name": "theDonald",
+					"gender": "male",
+					"personId": -2
+				}
+			],
+			"schedules": [
+				
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 7,
+			"name": "A3",
+			"members": [
+				{
+					"id": 29,
+					"isTeacher": false,
+					"name": "Bert",
+					"gender": "male",
+					"personId": 20
+				},
+				{
+					"id": 30,
+					"isTeacher": false,
+					"name": "Ernie",
+					"gender": "other",
+					"personId": 21
+				},
+				{
+					"id": 31,
+					"isTeacher": false,
+					"name": "Koekiemonster",
+					"gender": "male",
+					"personId": 23
+				},
+				{
+					"id": 32,
+					"isTeacher": false,
+					"name": "Banaan",
+					"gender": "other",
+					"personId": 24
+				},
+				{
+					"id": 33,
+					"isTeacher": false,
+					"name": "Kermit",
+					"gender": "male",
+					"personId": 25
+				},
+				{
+					"id": 34,
+					"isTeacher": false,
+					"name": "Miss Piggie",
+					"gender": "female",
+					"personId": 26
+				}
+			],
+			"schedules": [
+				
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 8,
+			"name": "The West Side",
+			"members": [
+				{
+					"id": 41,
+					"isTeacher": false,
+					"name": "Wu Zi",
+					"gender": "male",
+					"personId": 35
+				}
+			],
+			"schedules": [
+				
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 9,
+			"name": "Appie",
+			"members": [
+				{
+					"id": 38,
+					"isTeacher": false,
+					"name": "Cesar",
+					"gender": "male",
+					"personId": 32
+				},
+				{
+					"id": 39,
+					"isTeacher": false,
+					"name": "Toreno",
+					"gender": "male",
+					"personId": 34
+				}
+			],
+			"schedules": [
+				
 			],
 			"isTeacherGroup": false
 		}
