@@ -85,11 +85,11 @@ public class Person {
         StringBuilder person = new StringBuilder();
 
         person.append("{\n");
-        person.append("\"id\": \"")        .append(this.id)        .append("\",\n");
-        person.append("\"isTeacher\": \"") .append(this.isTeacher) .append("\",\n");
-        person.append("\"name\": \"")      .append(this.name)      .append("\",\n");
-        person.append("\"gender\": \"")    .append(this.gender)    .append("\",\n");
-        person.append("\"personId\": \"")  .append(this.personId)  .append("\"\n");
+        person.append("\t\"id\": \"")        .append(this.id)        .append("\",\n");
+        person.append("\t\"isTeacher\": \"") .append(this.isTeacher) .append("\",\n");
+        person.append("\t\"name\": \"")      .append(this.name)      .append("\",\n");
+        person.append("\t\"gender\": \"")    .append(this.gender)    .append("\",\n");
+        person.append("\t\"personId\": \"")  .append(this.personId)  .append("\"\n");
         person.append("}");
 
         return person.toString();

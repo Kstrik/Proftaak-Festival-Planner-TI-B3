@@ -47,7 +47,7 @@ public class ItemScene {
         this.setButtons();
         this.setItemData();
 
-        Scene scene = new Scene(new ScrollPane(this.main), 345, 328);
+        Scene scene = new Scene(new ScrollPane(this.main), 1000, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         primaryStage.setTitle(getTitle());
@@ -127,7 +127,7 @@ public class ItemScene {
         this.endMinute = new ComboBox<>();
         this.endMinute.getStyleClass().add("time-comboBox");
         this.endMinute.setItems(FXCollections.observableArrayList(this.getNumbers(60)));
-        Label endTimeLabel = new Label("Start time: ");
+        Label endTimeLabel = new Label("End time: ");
         endTimeLabel.getStyleClass().add("item-label");
         HBox endTimeBox = new HBox();
         endTimeBox.getChildren().addAll(endTimeLabel, this.endHour, this.endMinute);

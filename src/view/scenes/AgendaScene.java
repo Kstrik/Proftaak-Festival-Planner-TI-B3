@@ -57,7 +57,7 @@ public class AgendaScene extends BaseScene {
 
         this.draw(new FXGraphics2D(this.canvas.getGraphicsContext2D()));
 
-        Scene scene = new Scene(new ScrollPane(this.main), this.getSceneWidth(), this.getSceneHeight());
+        Scene scene = new Scene(new ScrollPane(this.main), 1000, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         return scene;
@@ -231,16 +231,6 @@ public class AgendaScene extends BaseScene {
             date.getMonthValue()    + " - " +
             date.getDayOfMonth()    + " )"
         ;
-    }
-
-    private double getSceneWidth() {
-
-        return (this.canvas.getWidth() < 1000) ? (this.canvas.getWidth() + 68) : 1068;
-    }
-
-    private double getSceneHeight() {
-
-        return (this.canvas.getHeight() < 500) ? (this.canvas.getHeight() + 114) : 613;
     }
 
     private int getItemX(Item item) {

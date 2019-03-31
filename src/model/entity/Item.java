@@ -134,17 +134,17 @@ public class Item {
     @Override
     public String toString() {
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder item = new StringBuilder();
 
-        sb.append("{\n");
-        sb.append("\"id\":")          .append(this.id)                                   .append(",\n");
-        sb.append("\"teacherId\":")   .append(this.teacherId)                            .append("\",\n");
-        sb.append("\"classroomId\":") .append(this.classroomId)                          .append("\",\n");
-        sb.append("\"name\": \"")     .append(this.name)                                 .append("\",\n");
-        sb.append("\"start\":\"")     .append(this.start.format(this.dateTimeFormatter)) .append("\",\n");
-        sb.append("\"end\":\"")       .append(this.end.format(this.dateTimeFormatter))   .append("\"\n");
-        sb.append("}");
+        item.append("{\n");
+        item.append("\t\"id\":")          .append(this.id)                                   .append(",\n");
+        item.append("\t\"teacherId\":")   .append(this.teacherId)                            .append(",\n");
+        item.append("\t\"classroomId\":") .append(this.classroomId)                          .append(",\n");
+        item.append("\t\"name\": \"")     .append(this.name)                                 .append("\",\n");
+        item.append("\t\"start\":\"")     .append(this.start.format(this.dateTimeFormatter)) .append("\",\n");
+        item.append("\t\"end\":\"")       .append(this.end.format(this.dateTimeFormatter))   .append("\"\n");
+        item.append("}");
 
-        return sb.toString();
+        return item.toString();
     }
 }

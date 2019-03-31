@@ -43,7 +43,7 @@ public class ClassroomScene extends BaseScene {
 
         this.selected = new Classroom();
 
-        Scene scene = new Scene(new ScrollPane(main), 573, 289);
+        Scene scene = new Scene(new ScrollPane(main), 1000, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         return scene;

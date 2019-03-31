@@ -129,9 +129,9 @@ public class Schedule {
         StringBuilder schedule = new StringBuilder();
 
         schedule.append("{\n");
-        schedule.append("\"id\": \"")    .append(this.id)              .append("\",\n");
-        schedule.append("\"date\": \"")  .append(this.date.toString()) .append("\",\n");
-        schedule.append("\"Items\": \"") .append(this.ItemsToString()) .append("\"\n");
+        schedule.append("\t\"id\": \"")    .append(this.id)              .append("\",\n");
+        schedule.append("\t\"date\": \"")  .append(this.date.toString()) .append("\",\n");
+        schedule.append("\t\"Items\": ") .append(this.ItemsToString()) .append("\n");
         schedule.append("}");
 
         return schedule.toString();
@@ -142,15 +142,10 @@ public class Schedule {
         StringBuilder items = new StringBuilder();
 
         items.append("[\n");
-
         for (int i = 0; i < this.items.size(); i++)
-            if (i == (this.items.size() - 1))
-                items.append(this.items.get(i).toString()).append("\n");
-            else
-                items.append(this.items.get(i).toString()).append(",\n");
-
+            items.append(this.items.get(i).toString()).append(i == (this.items.size() - 1) ? "\n" : ",\n");
         items.append("]");
 
-        return items.toString();
+        return items.toString().replace("\n", "\n\t\t");
     }
 }

@@ -451,10 +451,10 @@ public class Agenda {
         StringBuilder agenda = new StringBuilder();
 
         agenda.append("{\n");
-        agenda.append("\"id\": \"")       .append(this.id)                   .append("\",\n");
-        agenda.append("\"name\": \"")     .append(this.name)                 .append("\",\n");
-        agenda.append("\"classrooms\": ") .append(this.classroomsToString()) .append("\",\n");
-        agenda.append("\"groups\": ")     .append(this.groupsToString())     .append("\n");
+        agenda.append("\t\"id\": \"")       .append(this.id)                   .append("\",\n");
+        agenda.append("\t\"name\": \"")     .append(this.name)                 .append("\",\n");
+        agenda.append("\t\"classrooms\": ") .append(this.classroomsToString()) .append(",\n");
+        agenda.append("\t\"groups\": ")     .append(this.groupsToString())     .append("\n");
         agenda.append("}");
 
         return agenda.toString();
@@ -465,16 +465,11 @@ public class Agenda {
         StringBuilder classrooms = new StringBuilder();
 
         classrooms.append("[\n");
-
         for (int i = 0; i < this.classrooms.size(); i++)
-            if (i == (this.classrooms.size() - 1))
-                classrooms.append(this.classrooms.get(i).toString()).append("\n");
-            else
-                classrooms.append(this.classrooms.get(i).toString()).append(",\n");
-
+            classrooms.append(this.classrooms.get(i).toString()).append(i == (this.classrooms.size() - 1) ? "\n" : ",\n");
         classrooms.append("]");
 
-        return classrooms.toString();
+        return classrooms.toString().replace("\n", "\n\t\t");
     }
 
     private String groupsToString() {
@@ -482,15 +477,10 @@ public class Agenda {
         StringBuilder groups = new StringBuilder();
 
         groups.append("[\n");
-
         for (int i = 0; i < this.groups.size(); i++)
-            if (i == (this.groups.size() - 1))
-                groups.append(this.groups.get(i).toString()).append("\n");
-            else
-                groups.append(this.groups.get(i).toString()).append(",\n");
-
+            groups.append(this.groups.get(i).toString()).append(i == (this.groups.size() - 1) ? "\n" : ",\n");
         groups.append("]");
 
-        return groups.toString();
+        return groups.toString().replace("\n", "\n\t\t");
     }
 }

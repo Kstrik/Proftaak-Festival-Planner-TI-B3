@@ -44,7 +44,7 @@ public class PersonScene extends BaseScene {
 
         this.selected = new Person();
 
-        Scene scene = new Scene(new ScrollPane(main), 1073, 289);
+        Scene scene = new Scene(new ScrollPane(main), 1000, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         return scene;

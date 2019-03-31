@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 public class Controller extends Application implements AgendaUpdate, ClassroomUpdate, GroupUpdate, ItemUpdate, PersonUpdate, ScheduleUpdate {
 
-    private HTTPModel httpModel;
+    private JSONModel jsonModel;
 
     private Agenda agenda;
 
@@ -37,9 +37,9 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     @Override
     public void start(Stage stage) {
 
-        this.httpModel = new HTTPModel();
-        this.stage = stage;
+        this.jsonModel = new JSONModel();
         this.agenda = this.getAgenda();
+        this.stage = stage;
 
         this.prepareScenes();
         this.setAgenda();
@@ -47,9 +47,6 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     }
 
     // baseUpdate
-    @Override
-    public void onSaveAgenda() {}
-
     @Override
     public void onSelectAgenda()    { this.setAgendaScene(); }
     @Override
@@ -60,13 +57,14 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     public void onSelectPerson()    { this.setPersonScene(); }
     @Override
     public void onSelectSchedule()  { this.setScheduleScene(); }
+    @Override
+    public void onSaveAgenda()      { this.jsonModel.saveJSONFile(this.agenda, "output.json"); }
 
     // agendaUpdate
     @Override
     public void onAgendaItemCreate() {
 
         this.itemScene.setItem(new Item());
-
         this.setItemScene();
     }
 
@@ -74,7 +72,6 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     public void onAgendaItemSelect(Item item) {
 
         this.itemScene.setItem(item);
-
         this.setItemScene();
     }
 
@@ -82,7 +79,6 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     public void onAgendaSelectByDate(LocalDateTime date) {
 
         this.agendaScene.setSchedule(this.getAgenda().getCombinedScheduleByDate(date));
-
         this.setAgendaScene();
     }
 
@@ -170,18 +166,17 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     // methods
     private Agenda getAgenda() {
 
-        JSONModel jsonModel = new JSONModel();
-        return jsonModel.convertJSONAgenda(jsonModel.parseJSONFile("agenda.json"));
+        return this.jsonModel.convertJSONAgenda(this.jsonModel.parseJSONFile("agenda.json"));
     }
 
     private void setAgenda() {
 
-        this.agendaScene.setAgenda(agenda);
-        this.classroomScene.setAgenda(agenda);
-        this.groupScene.setAgenda(agenda);
-        this.itemScene.setAgenda(agenda);
-        this.personScene.setAgenda(agenda);
-        this.scheduleScene.setAgenda(agenda);
+        this.agendaScene.setAgenda(this.agenda);
+        this.classroomScene.setAgenda(this.agenda);
+        this.groupScene.setAgenda(this.agenda);
+        this.itemScene.setAgenda(this.agenda);
+        this.personScene.setAgenda(this.agenda);
+        this.scheduleScene.setAgenda(this.agenda);
     }
 
     private void prepareScenes() {

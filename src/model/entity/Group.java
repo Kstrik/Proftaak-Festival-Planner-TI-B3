@@ -147,11 +147,11 @@ public class Group {
         StringBuilder group = new StringBuilder();
 
         group.append("{\n");
-        group.append("\"id\": \"")             .append(this.id)                  .append("\",\n");
-        group.append("\"name\": \"")           .append(this.name)                .append("\",\n");
-        group.append("\"members\": ")          .append(this.membersToString())   .append(",\n");
-        group.append("\"schedules\": ")        .append(this.schedulesToString()) .append(",\n");
-        group.append("\"isTeacherGroup\": \"") .append(this.isTeacherGroup)      .append("\"\n");
+        group.append("\t\"id\": \"")             .append(this.id)                  .append("\",\n");
+        group.append("\t\"name\": \"")           .append(this.name)                .append("\",\n");
+        group.append("\t\"members\": ")          .append(this.membersToString())   .append(",\n");
+        group.append("\t\"schedules\": ")        .append(this.schedulesToString()) .append(",\n");
+        group.append("\t\"isTeacherGroup\": \"") .append(this.isTeacherGroup)      .append("\"\n");
         group.append("}");
 
         return group.toString();
@@ -162,16 +162,11 @@ public class Group {
         StringBuilder members = new StringBuilder();
 
         members.append("[\n");
-
         for (int i = 0; i < this.members.size(); i++)
-            if (i == (this.members.size() - 1))
-                members.append(this.members.get(i).toString()).append("\n");
-            else
-                members.append(this.members.get(i).toString()).append(",\n");
-
+            members.append(this.members.get(i).toString()).append(i == (this.members.size() - 1) ? "\n" : ",\n");
         members.append("]");
 
-        return members.toString();
+        return members.toString().replace("\n", "\n\t\t");
     }
 
     private String schedulesToString() {
@@ -179,15 +174,10 @@ public class Group {
         StringBuilder schedules = new StringBuilder();
 
         schedules.append("[\n");
-
         for (int i = 0; i < this.schedules.size(); i++)
-            if (i == (this.schedules.size() - 1))
-                schedules.append(this.schedules.get(i).toString()).append(",\n");
-            else
-                schedules.append(this.schedules.get(i).toString()).append("\n");
-
+            schedules.append(this.schedules.get(i).toString()).append(i == (this.schedules.size() - 1) ? "\n" : ",\n");
         schedules.append("]");
 
-        return schedules.toString();
+        return schedules.toString().replace("\n", "\n\t\t");
     }
 }

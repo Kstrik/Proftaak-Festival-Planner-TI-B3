@@ -46,8 +46,8 @@ public class Classroom {
         StringBuilder classroom = new StringBuilder();
 
         classroom.append("{\n");
-        classroom.append("\"id\": \"")   .append(this.id)   .append("\",\n");
-        classroom.append("\"name\": \"") .append(this.name) .append("\"\n");
+        classroom.append("\t\"id\": \"")   .append(this.id)   .append("\",\n");
+        classroom.append("\t\"name\": \"") .append(this.name) .append("\"\n");
         classroom.append("}");
 
         return classroom.toString();

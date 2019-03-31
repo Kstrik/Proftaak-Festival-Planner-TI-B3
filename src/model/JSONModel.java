@@ -7,7 +7,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,14 +35,21 @@ public class JSONModel {
         return file;
     }
 
-    public void saveJSONFile(Agenda agenda) {
+    public void saveJSONFile(Agenda agenda, String fileName) {
 
+        try {
 
+            FileWriter out = new FileWriter(ConfigModel.FILE_PATH + fileName);
+            out.write(agenda.toString());
+            out.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     public JSONObject parseJSON(String jsonString) {
-
-        System.out.println(jsonString);
 
         JSONObject json = null;
         JSONParser parser = new JSONParser();
