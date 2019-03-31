@@ -6,9 +6,7 @@ public class ConfigModel {
     public static final int BLOCK_WIDTH = 200;
     public static final int BLOCK_HEIGHT = 75;
 
-    // HTTPModel
-    public static final String HOST = "api.jijbentzacht.nl:1337";
-
-    // FileModel
+    // JSONModel
     public static final String FILE_PATH = "src/json/";
+    public static final String FILE_NAME = "agenda.json";
 }

@@ -1,9 +1,9 @@
 /* all */
 * {
 
+    -fx-font-family: "Arial Rounded MT Bold";
     -fx-border-color: gray;
     -fx-border-width: 0;
-    -fx-font-family: "Arial Rounded MT Bold";
 }
 
 /* element */
@@ -32,8 +32,8 @@ Label {
 Pane {
 
     -fx-border-style: dashed inside;
-    -fx-border-width: 0 0 1 0;
     -fx-border-color: darkgrey;
+    -fx-border-width: 0 0 1 0;
     -fx-pref-height: 20;
 }
 
@@ -55,8 +55,8 @@ Pane {
 
 .-table {
 
-    -fx-translate-y: 3;
     -fx-border-width: 0 1 0 0;
+    -fx-translate-y: 3;
 }
 
 /* buttons */
@@ -67,8 +67,8 @@ Pane {
 
 .-column-button {
 
-    -fx-pref-width: 105;
     -fx-border-width: 0 0 1 1;
+    -fx-pref-width: 105;
 }
 
 .-base-button {
@@ -76,22 +76,28 @@ Pane {
     -fx-pref-width: 100;
 }
 
+.-item-button {
+
+    -fx-translate-x: 1;
+    -fx-pref-width: 96;
+}
+
 .-add-button {
 
+    -fx-font-size: 18px !important;
     -fx-translate-x: 5;
     -fx-translate-y: -1;
-    -fx-font-size: 18px !important;
 }
 
 /* boxes */
 .-base-box, .-schedule-box {
 
-    -fx-spacing: 5;
-    -fx-padding: 5;
-    -fx-pref-width: 1000;
     -fx-background-color: royalblue;
     -fx-border-color: darkgray;
     -fx-border-width: 0 0 2 0;
+    -fx-pref-width: 1010;
+    -fx-spacing: 5;
+    -fx-padding: 5;
 }
 
 .-time-combo-box {
@@ -105,32 +111,33 @@ Pane {
     -fx-padding: 5 5 7;
 }
 
-.-time-box {
-
-    -fx-pref-height: 75;
-    -fx-min-width: 40;
-    -fx-border-width: 0 1 1 0;
-    -fx-translate-x: 1;
-}
-
 .-main {
 
     -fx-padding: 0;
 }
 
+.-time-box {
+
+    -fx-border-width: 0 1 1 0;
+    -fx-pref-height: 75;
+    -fx-translate-x: 1;
+    -fx-min-width: 40;
+}
+
 /* labels */
 .-classroom-label {
 
+    -fx-border-width: 0 1 1 0;
     -fx-pref-height: 43;
     -fx-pref-width: 200;
-    -fx-border-width: 0 1 1 0;
 }
 
 .-error-label {
 
-    -fx-padding: 5;
     -fx-pref-width: 270;
     -fx-text-fill: darkred;
+    -fx-font-size: 10px;
+    -fx-padding: 5;
 }
 
 .-title-label {

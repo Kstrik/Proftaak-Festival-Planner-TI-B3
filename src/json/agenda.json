@@ -8,7 +8,15 @@
 		},
 		{
 			"id": 1,
-			"name": "Test!"
+			"name": "LD307"
+		},
+		{
+			"id": 2,
+			"name": "LD029"
+		},
+		{
+			"id": 3,
+			"name": "LD401"
 		}
 	],
 	"groups": [
@@ -22,6 +30,13 @@
 					"name": "Paul",
 					"gender": "male",
 					"personId": 1234567
+				},
+				{
+					"id": 4,
+					"isTeacher": true,
+					"name": "Pieter",
+					"gender": "male",
+					"personId": 314
 				}
 			],
 			"schedules": [
@@ -53,7 +68,61 @@
 							"name": "Wiskunde",
 							"start": "11:00:00",
 							"end": "14:05:00"
+						},
+						{
+							"id": 1,
+							"teacherId": 0,
+							"classroomId": 1,
+							"name": "SLO gesprek",
+							"start": "12:07:00",
+							"end": "13:18:00"
 						}
+					]
+				}
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 2,
+			"name": "B2",
+			"members": [
+				{
+					"id": 2,
+					"isTeacher": false,
+					"name": "Kenley",
+					"gender": "male",
+					"personId": 123
+				}
+			],
+			"schedules": [
+				{
+					"id": 2,
+					"date": "2019-03-09",
+					"items": [
+						
+					]
+				}
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 3,
+			"name": "B1",
+			"members": [
+				{
+					"id": 3,
+					"isTeacher": false,
+					"name": "Reinout",
+					"gender": "other",
+					"personId": 4206969
+				}
+			],
+			"schedules": [
+				{
+					"id": 1,
+					"date": "2019-02-26",
+					"items": [
+						
 					]
 				}
 			],

@@ -47,7 +47,7 @@ public class ItemScene {
         this.setButtons();
         this.setItemData();
 
-        Scene scene = new Scene(new ScrollPane(this.main), 1000, 500);
+        Scene scene = new Scene(new ScrollPane(this.main), 1010, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         primaryStage.setTitle(getTitle());
@@ -149,9 +149,11 @@ public class ItemScene {
         HBox buttonBox = new HBox();
 
         Button cancel = new Button("Cancel");
+        cancel.getStyleClass().add("-item-button");
         cancel.setOnMouseClicked(e -> this.observer.onItemCancel());
 
         Button apply = new Button("Apply");
+        apply.getStyleClass().add("-item-button");
         apply.setOnMouseClicked(e -> this.validateInput());
 
         buttonBox.getChildren().addAll(cancel, apply);
@@ -159,6 +161,7 @@ public class ItemScene {
         if (this.selected.getId() != -1) {
 
             Button delete = new Button("delete");
+            delete.getStyleClass().add("-item-button");
             delete.setOnMouseClicked(e -> this.observer.onItemDelete(this.selected.getId()));
 
             buttonBox.getChildren().add(delete);
@@ -202,6 +205,7 @@ public class ItemScene {
             Group group = this.agenda.getGroupByItem(this.selected);
 
             this.group.setValue(group.getName());
+            this.schedule.setItems(FXCollections.observableArrayList(group.getScheduleDates()));
             this.schedule.setValue(group.getScheduleByItem(this.selected).getDate());
             this.name.setText(this.selected.getName());
             this.teacher.setValue(this.agenda.getTeacherById(this.selected.getTeacherId()).getName());

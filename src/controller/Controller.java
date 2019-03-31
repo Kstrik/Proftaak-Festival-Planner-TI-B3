@@ -59,7 +59,7 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     @Override
     public void onSelectSchedule()  { this.setScheduleScene(); }
     @Override
-    public void onSaveAgenda()      { this.jsonModel.saveJSONFile(this.agenda, "agenda.json"); }
+    public void onSaveAgenda()      { this.jsonModel.saveJSONFile(this.agenda, ConfigModel.FILE_NAME); }
 
     // agendaUpdate
     @Override
@@ -175,7 +175,7 @@ public class Controller extends Application implements AgendaUpdate, ClassroomUp
     // methods
     private Agenda getAgenda() {
 
-        return this.jsonModel.convertJSONAgenda(this.jsonModel.parseJSONFile("agenda.json"));
+        return this.jsonModel.convertJSONAgenda(this.jsonModel.parseJSONFile(ConfigModel.FILE_NAME));
     }
 
     private void setAgenda() {

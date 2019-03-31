@@ -43,7 +43,7 @@ public class PersonScene extends BaseScene {
 
         this.selected = new Person();
 
-        Scene scene = new Scene(new ScrollPane(main), 1000, 500);
+        Scene scene = new Scene(new ScrollPane(main), 1010, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         return scene;
@@ -247,6 +247,15 @@ public class PersonScene extends BaseScene {
         if (this.gender.getValue()    == null) {this.setErrorMessage("gender");         valid = false;}
         if (this.name.getText()    .isEmpty()) {this.setErrorMessage("name");           valid = false;}
         if (this.group.getValue()     == null) {this.setErrorMessage("group");          valid = false;}
+
+        try {
+
+            Integer.parseInt(this.personID.getText());
+        } catch (Exception e) {
+
+            this.error.setText("Invalid personID! Only use numbers!");
+            valid = false;
+        }
 
         if (valid)
             this.observer.onPersonChange(this.agenda.getGroupByName(this.group.getValue()), this.getPerson());

@@ -40,7 +40,7 @@ public class GroupScene extends BaseScene {
 
         this.selected = new Group();
 
-        Scene scene = new Scene(new ScrollPane(main), 1000, 500);
+        Scene scene = new Scene(new ScrollPane(main), 1010, 500);
         scene.getStylesheets().add("view/style/style.css");
 
         return scene;
