@@ -41,6 +41,14 @@
 		{
 			"id": 9,
 			"name": "Kantine"
+		},
+		{
+			"id": 10,
+			"name": "Jonko"
+		},
+		{
+			"id": 11,
+			"name": "AH"
 		}
 	],
 	"groups": [
@@ -157,6 +165,13 @@
 							"start": "00:01:00",
 							"end": "04:00:00"
 						}
+					]
+				},
+				{
+					"id": 12,
+					"date": "2019-04-02",
+					"items": [
+						
 					]
 				}
 			],
@@ -576,8 +591,8 @@
 						{
 							"id": 8,
 							"teacherId": 40,
-							"classroomId": 9,
-							"name": "Werken kut",
+							"classroomId": 11,
+							"name": "Werken",
 							"start": "00:01:00",
 							"end": "04:00:00"
 						}
@@ -585,6 +600,96 @@
 				}
 			],
 			"isTeacherGroup": false
+		},
+		{
+			"id": 10,
+			"name": "Jonko klap groep",
+			"members": [
+				{
+					"id": 47,
+					"isTeacher": false,
+					"name": "Snoopy",
+					"gender": "other",
+					"personId": 420
+				}
+			],
+			"schedules": [
+				{
+					"id": 9,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 11,
+							"teacherId": 40,
+							"classroomId": 10,
+							"name": "roken",
+							"start": "00:00:00",
+							"end": "23:59:00"
+						}
+					]
+				}
+			],
+			"isTeacherGroup": false
+		},
+		{
+			"id": 11,
+			"name": "M_docent",
+			"members": [
+				{
+					"id": 48,
+					"isTeacher": true,
+					"name": "ike",
+					"gender": "male",
+					"personId": 117
+				}
+			],
+			"schedules": [
+				{
+					"id": 10,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 12,
+							"teacherId": 48,
+							"classroomId": 0,
+							"name": "2D",
+							"start": "00:00:00",
+							"end": "03:00:00"
+						}
+					]
+				}
+			],
+			"isTeacherGroup": true
+		},
+		{
+			"id": 12,
+			"name": "Wiskude_Docent",
+			"members": [
+				{
+					"id": 49,
+					"isTeacher": true,
+					"name": "Pieter",
+					"gender": "male",
+					"personId": 314
+				}
+			],
+			"schedules": [
+				{
+					"id": 11,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 13,
+							"teacherId": 49,
+							"classroomId": 1,
+							"name": "Wiskunde",
+							"start": "00:00:00",
+							"end": "04:00:00"
+						}
+					]
+				}
+			],
+			"isTeacherGroup": true
 		}
 	]
 }
