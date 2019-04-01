@@ -399,7 +399,20 @@
 				}
 			],
 			"schedules": [
-				
+				{
+					"id": 5,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 9,
+							"teacherId": 11,
+							"classroomId": 1,
+							"name": "Wis",
+							"start": "00:01:00",
+							"end": "06:00:00"
+						}
+					]
+				}
 			],
 			"isTeacherGroup": false
 		},
@@ -444,7 +457,13 @@
 				}
 			],
 			"schedules": [
-				
+				{
+					"id": 6,
+					"date": "2019-04-01",
+					"items": [
+						
+					]
+				}
 			],
 			"isTeacherGroup": false
 		},
@@ -496,7 +515,20 @@
 				}
 			],
 			"schedules": [
-				
+				{
+					"id": 7,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 10,
+							"teacherId": 40,
+							"classroomId": 7,
+							"name": "asdfghj",
+							"start": "00:01:00",
+							"end": "03:00:00"
+						}
+					]
+				}
 			],
 			"isTeacherGroup": false
 		},
@@ -537,7 +569,20 @@
 				}
 			],
 			"schedules": [
-				
+				{
+					"id": 8,
+					"date": "2019-04-01",
+					"items": [
+						{
+							"id": 8,
+							"teacherId": 40,
+							"classroomId": 9,
+							"name": "Werken kut",
+							"start": "00:01:00",
+							"end": "04:00:00"
+						}
+					]
+				}
 			],
 			"isTeacherGroup": false
 		}
