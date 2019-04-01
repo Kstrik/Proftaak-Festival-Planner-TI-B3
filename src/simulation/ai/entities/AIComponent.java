@@ -170,10 +170,13 @@ public class AIComponent {
             }
             else if(this.timer > startSeconds && this.timer < endSeconds && this.targetRoom.getName().equals("aula"))
             {
-                this.targetRoom = null;
-                this.targetSeat.setTaken(false);
-                this.targetSeat = null;
-                this.setActivePathfinderMap(null);
+                if(this.targetSeat != null)
+                {
+                    this.targetRoom = null;
+                    this.targetSeat.setTaken(false);
+                    this.targetSeat = null;
+                    this.setActivePathfinderMap(null);
+                }
             }
 
 //        if(this.timer > startSeconds && this.timer < endSeconds)
